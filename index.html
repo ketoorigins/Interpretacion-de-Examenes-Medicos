@@ -260,7 +260,6 @@
              // Orina Completa (PRIORITIZED)
             urinalysisColor: {
                 label: 'Color Orina', unit: '', keywords: ['color'], type: 'text',
-                description: 'Evalúa el color de la orina, que puede indicar el estado de hidratación y la presencia de ciertas sustancias.',
                 interpret: (v) => {
                     v = v.toLowerCase();
                     if (v.includes('amarillo')) return { conventional: '', tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'Un color amarillo claro a pálido es normal e indica una buena hidratación. Un amarillo más oscuro sugiere que necesitas beber más agua.', advice: `¡Buena señal! Un color normal indica que estás bien hidratado. Consejo: Sigue bebiendo suficiente agua durante el día. ${HYDRATION_ADVICE}` };
@@ -269,7 +268,6 @@
             },
             urinalysisAspect: {
                 label: 'Aspecto Orina', unit: '', keywords: ['aspecto'], type: 'text',
-                description: 'Evalúa la turbidez o claridad de la orina.',
                 interpret: (v) => {
                     v = v.toLowerCase();
                     if (v.includes('transparente') || v.includes('claro')) return { conventional: '', tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'Una orina clara y transparente es normal. Indica que no hay un exceso de células, cristales o moco.', advice: `¡Perfecto! Una orina transparente es señal de un tracto urinario saludable. Consejo: Mantener una buena hidratación es la mejor forma de asegurar que tu orina se mantenga así. ${HYDRATION_ADVICE}` };
@@ -278,7 +276,6 @@
             },
             urinalysisReaction: {
                 label: 'Reacción Orina', unit: '', keywords: ['reaccion'], type: 'text',
-                description: 'Generalmente se refiere a la acidez o alcalinidad, complementando el valor de pH.',
                 interpret: (v) => {
                     v = v.toLowerCase();
                     if (v.includes('acida')) return { conventional: '', tag: { text: 'ÁCIDA', color: 'bg-yellow-500' }, physiological: 'Una reacción ácida es común y a menudo está relacionada con la dieta (alta en proteínas) o el estado metabólico. Corresponde a un pH bajo.', advice: 'Una reacción ácida es común, sobre todo con dietas altas en proteína. Consejo: Para equilibrar, puedes incorporar más vegetales y frutas a tu dieta. Si sufres de cálculos renales, este dato es importante para tu médico.' };
@@ -288,7 +285,6 @@
             },
             urinalysisDensity: {
                 label: 'Densidad Urinaria', unit: '', keywords: ['densidad'], type: 'numeric',
-                description: 'Mide la concentración de la orina. Compara el peso de la orina con el del agua pura.',
                 interpret: (v) => {
                     if(v > 10000) v = v / 1000000;
                     if(v > 100) v = v / 1000; 
@@ -299,7 +295,6 @@
             },
             urinalysisLeukocytes: {
                 label: 'Leucocitos (Orina)', unit: '', keywords: ['leucocitos'], type: 'text',
-                description: 'Presencia de glóbulos blancos en la orina (examen químico/tira reactiva). Son los "soldados" de tu sistema inmunitario.',
                 interpret: (v) => {
                     if (v === 'negativo') return { conventional: 'Rango: Negativo', tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'No hay señales de "soldados" en tu orina, lo que indica que no hay una batalla (infección) en tu tracto urinario.', advice: '¡Todo en calma! Negativo para leucocitos significa que no hay signos de infección o inflamación en tu tracto urinario. ¡Sigue así!' };
                     return { conventional: 'Rango: Negativo', tag: { text: 'REQUIERE ATENCIÓN', color: 'bg-red-500' }, physiological: 'La presencia de "soldados" (leucocitos) en la orina es un signo clásico de una infección del tracto urinario (ITU). Tu cuerpo ha enviado al ejército para combatir a los invasores.', advice: '¡Alerta de infección! La presencia de leucocitos es un signo claro de una ITU. Consulta a tu médico; probablemente necesites un urocultivo y tratamiento.', question: 'Tengo leucocitos en la orina. ¿Deberíamos hacer un urocultivo para identificar la bacteria y tratar la infección?' };
@@ -307,7 +302,6 @@
             },
             urinalysisNitrites: {
                 label: 'Nitritos (Orina)', unit: '', keywords: ['nitritos'], type: 'text',
-                description: 'Detecta la presencia de bacterias que convierten los nitratos (normales en la orina) en nitritos.',
                 interpret: (v) => { 
                     if (v === 'negativo') return { conventional: 'Rango: Negativo', tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'Negativo para nitritos es una buena señal. Significa que no hay "huellas" químicas de las bacterias más comunes que causan infecciones urinarias.', advice: '¡Sin rastros de bacterias! Este es un excelente indicador de que no tienes una infección urinaria por las bacterias más comunes. ¡Bien hecho!' };
                     return { conventional: 'Rango: Negativo', tag: { text: 'REQUIERE ATENCIÓN', color: 'bg-red-500' }, physiological: 'Un resultado positivo es una fuerte evidencia de una infección bacteriana. <strong>Es como encontrar las "cáscaras de plátano" que dejan los microbios tras de sí.</strong> Confirma que hay bacterias trabajando activamente.', advice: '¡Confirmado! Los nitritos positivos son una señal casi segura de infección bacteriana. Es crucial que hables con tu médico para iniciar el tratamiento adecuado.', question: 'Mis nitritos son positivos. ¿Confirma esto una ITU y cuál sería el siguiente paso?' };
@@ -315,7 +309,6 @@
             },
             urinalysisPh: {
                 label: 'pH Orina', unit: '', keywords: ['ph'], type: 'numeric',
-                description: 'Mide la acidez o alcalinidad de tu orina. Puede dar pistas sobre la dieta, la salud renal y el tipo de bacterias en una infección.',
                 interpret: (v) => {
                     if (v >= 5 && v <= 7) return { conventional: 'Rango: 5.0 - 7.0', tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'Tu pH urinario está en un rango normal. Refleja un buen equilibrio ácido-base en tu cuerpo, influenciado por tu dieta y metabolismo.', advice: '¡Equilibrio perfecto! Un pH normal refleja un buen balance en tu cuerpo. Consejo: Una dieta variada con frutas y verduras ayuda a mantener este equilibrio.' };
                     if (v < 5) return { conventional: 'Rango: 5.0 - 7.0', tag: { text: 'ÁCIDA', color: 'bg-yellow-500' }, physiological: 'Una orina ácida puede ser causada por una dieta alta in proteínas, acidosis metabólica o ciertos tipos de cálculos renales. <strong>Es como si tu cuerpo estuviera eliminando un exceso de "ácidos".</strong>', advice: 'Tu orina es ácida. Consejo: Si tienes antecedentes de cálculos renales, esto es importante. Incrementar el consumo de vegetales y reducir las carnes rojas puede ayudar a alcalinizar la orina.' };
@@ -324,7 +317,6 @@
             },
              urinalysisKetones: {
                 label: 'Cetonas (Orina)', unit: '', keywords: ['cetonas'], type: 'text',
-                description: 'Las cetonas son moléculas de energía que el cuerpo produce al quemar grasa en lugar de glucosa.',
                 interpret: (v, diet) => {
                     if (diet === 'keto' && v !== 'negativo') return { conventional: 'Rango: Negativo', tag: { text: 'ESPERADO', color: 'bg-blue-500' }, physiological: 'Positivo para cetonas es normal y esperado en una dieta cetogénica. Significa que tu cuerpo está en cetosis, usando grasa como su principal fuente de energía. <strong>¡Estás quemando grasa!</strong>', advice: '¡Estás en cetosis! Este resultado es el objetivo de una dieta keto. Significa que tu cuerpo está usando eficientemente la grasa como combustible. ¡Sigue así!' };
                     if (v === 'negativo') return { conventional: 'Rango: Negativo', tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'Negativo para cetonas es lo normal para la mayoría de las dietas. Indica que tu cuerpo está usando glucosa (carbohidratos) como su principal combustible.', advice: 'Resultado normal. Tu cuerpo está usando carbohidratos como energía. Si tu objetivo es entrar en cetosis, deberás reducir aún más los carbohidratos.' };
@@ -333,7 +325,6 @@
             },
             urinalysisProtein: {
                 label: 'Proteína (Orina)', unit: '', keywords: ['proteina'], type: 'text',
-                description: 'Detecta la presencia de proteínas en la orina, principalmente albúmina.',
                 interpret: (v) => {
                     if (v === 'negativo') return { conventional: 'Rango: Negativo', tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'Negativo es el resultado normal. Significa que los "filtros" de tus riñones están funcionando correctamente y no dejan escapar proteínas importantes a la orina.', advice: '¡Riñones saludables! Un resultado negativo es excelente. Muestra que los filtros de tus riñones están intactos y funcionando bien. ' };
                     return { conventional: 'Rango: Negativo', tag: { text: 'REQUIERE ATENCIÓN', color: 'bg-red-500' }, physiological: 'La presencia de proteínas en la orina (proteinuria) es una señal temprana y clave de daño renal. Indica que los "filtros" están dañados y se han vuelto permeables.', advice: '¡Alerta renal! La presencia de proteínas en la orina es una señal temprana de daño en los riñones. Es crucial que hables con tu médico para investigar la causa y proteger tu función renal.', question: 'Tengo proteínas en la orina. ¿Qué tan seria es esta señal de daño renal y qué podemos hacer para proteger mis riñones?' };
@@ -341,7 +332,6 @@
             },
             urinalysisGlucose: {
                 label: 'Glucosa (Orina)', unit: '', keywords: ['glucosa (o)', 'glucosa (0)', 'glucosa o'], type: 'text',
-                description: 'Detecta la presencia de azúcar (glucosa) en la orina.',
                 interpret: (v) => {
                     if (v === 'negativo') return { conventional: 'Rango: Negativo', tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'Negativo es normal. Tus riñones son capaces de reabsorber toda la glucosa filtrada, por lo que no debería aparecer en la orina.', advice: '¡Buen control del azúcar! Negativo para glucosa en orina es el resultado ideal. Muestra que tus niveles de azúcar en sangre no son excesivamente altos.' };
                     return { conventional: 'Rango: Negativo', tag: { text: 'REQUIERE ATENCIÓN', color: 'bg-red-500' }, physiological: 'La presencia de glucosa en la orina (glucosuria) ocurre cuando los niveles de azúcar en la sangre son tan altos que superan la capacidad de los riñones para reabsorberla. Es un signo clásico de diabetes no controlada.', advice: '¡Azúcar alta! La glucosa solo aparece en la orina cuando los niveles en sangre son muy elevados. Es un signo claro de diabetes descontrolada. Habla con tu médico urgentemente.', question: 'Tengo glucosa en la orina. ¿Indica esto que mi nivel de azúcar en sangre es muy elevado?' };
@@ -349,7 +339,6 @@
             },
             urinalysisBlood: {
                 label: 'Sangre (Orina)', unit: '', keywords: ['sangre'], type: 'text',
-                description: 'Detecta la presencia de glóbulos rojos en la orina.',
                 interpret: (v) => {
                     if (v === 'negativo') return { conventional: 'Rango: Negativo', tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'Negativo es el resultado normal. No debería haber sangre en la orina.', advice: '¡Todo bien! No tener sangre en la orina es el resultado normal y esperado.' };
                     return { conventional: 'Rango: Negativo', tag: { text: 'REQUIERE ATENCIÓN', color: 'bg-red-500' }, physiological: 'La presencia de sangre (hematuria), incluso microscópica, siempre requiere investigación. Puede ser causada por infecciones, cálculos renales, o condiciones más serias.', advice: 'La presencia de sangre en la orina siempre debe ser investigada por un médico. Puede ir desde una simple infección hasta cálculos renales. No lo ignores.', question: 'Se detectó sangre en mi orina. ¿Cuál es el plan para investigar la causa?' };
@@ -357,7 +346,6 @@
             },
              urinalysisUrobilinogen: {
                 label: 'Urobilinógeno', unit: '', keywords: ['urobilinogeno'], type: 'text',
-                description: 'Es un producto de la descomposición de la bilirrubina. Se forma en los intestinos y una pequeña cantidad es normal en la orina.',
                 interpret: (v) => {
                     if (v === 'normal') return { conventional: 'Rango: Normal', tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'Un nivel normal indica que tu hígado y tus intestinos están procesando la bilirrubina correctamente.', advice: '¡Función hepática en orden! Un resultado normal aquí es una buena señal del trabajo en equipo entre tu hígado y tu sistema digestivo.' };
                     return { conventional: 'Rango: Normal', tag: { text: 'REQUIERE ATENCIÓN', color: 'bg-red-500' }, physiological: 'Niveles anormales pueden sugerir problemas hepáticos o una destrucción excesiva de glóbulos rojos.', advice: 'Un resultado anormal aquí puede ser una pista temprana de problemas hepáticos. Coméntalo con tu médico para una evaluación más profunda.', question: 'Mi urobilinógeno está fuera del rango normal. ¿Deberíamos investigar la salud de mi hígado?' };
@@ -365,7 +353,6 @@
             },
             urinalysisBilirubin: {
                 label: 'Bilirrubina (Orina)', unit: '', keywords: ['bilirrubina'], type: 'text',
-                description: 'Detecta bilirrubina en la orina, lo cual no es normal.',
                 interpret: (v) => {
                     if (v === 'negativo') return { conventional: 'Rango: Negativo', tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'Negativo es el resultado normal. La bilirrubina no debería estar presente en la orina si el hígado funciona bien.', advice: '¡Hígado funcionando bien! Negativo para bilirrubina en orina es una excelente señal de salud hepática.' };
                     return { conventional: 'Rango: Negativo', tag: { text: 'REQUIERE ATENCIÓN', color: 'bg-red-500' }, physiological: 'La presencia de bilirrubina en la orina es un signo temprano de enfermedad hepática o de una obstrucción en las vías biliares.', advice: '¡Alerta hepática! La bilirrubina en la orina es un signo claro de que tu hígado no está procesando los desechos correctamente. Consulta a tu médico sin demora.', question: 'Tengo bilirrubina en la orina. ¿Es esto una señal clara de un problema hepático?' };
@@ -373,7 +360,6 @@
             },
             urinalysisSedimentLeukocytes: {
                 label: 'Leucocitos (Sedimento)', unit: 'por campo', keywords: ['leucocitos '], type: 'text',
-                description: 'Conteo de glóbulos blancos en el sedimento urinario tras centrifugar.',
                 interpret: (v) => {
                     const numericValue = parseInt(v.split('-')[1] || v.split('-')[0]);
                     if (numericValue < 5) return { conventional: 'Rango: < 5 por campo', tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'Un conteo bajo de leucocitos en el sedimento confirma la ausencia de inflamación o infección en el tracto urinario.', advice: '¡Confirmado, sin infección! El análisis microscópico no muestra signos de inflamación. Tu tracto urinario está saludable.' };
@@ -382,28 +368,24 @@
             },
             urinalysisEpithelialCells: {
                 label: 'Células Epiteliales', unit: 'por campo', keywords: ['celulas epiteliales'], type: 'text',
-                description: 'Células del revestimiento del tracto urinario. Es normal encontrar algunas.',
                 interpret: (v) => {
                     return { conventional: '', tag: { text: 'INFO', color: 'bg-gray-500' }, physiological: `La presencia de algunas células epiteliales (${v}) es normal, ya que se desprenden de forma natural. Un número muy elevado podría sugerir inflamación.`, advice: 'Este es un hallazgo normal. El revestimiento de tu tracto urinario se renueva constantemente, por lo que es común ver algunas células en la orina.' };
                 }
             },
             urinalysisMucus: {
                 label: 'Mucus', unit: '', keywords: ['mucus'], type: 'text',
-                description: 'El moco es secretado por las membranas del tracto urinario.',
                 interpret: (v) => {
                     return { conventional: '', tag: { text: 'INFO', color: 'bg-gray-500' }, physiological: `Una cantidad ${v} de mucus es generalmente normal y no indica un problema.`, advice: 'Hallazgo sin importancia clínica. La presencia de moco en pequeñas cantidades es normal y no representa un problema de salud.' };
                 }
             },
             urinalysisAmorphousUrates: {
                 label: 'Urato Amorfo', unit: '', keywords: ['urato amorfo'], type: 'text',
-                description: 'Son cristales que se pueden formar en la orina ácida.',
                 interpret: (v) => {
                     return { conventional: '', tag: { text: 'INFO', color: 'bg-gray-500' }, physiological: `Una cantidad ${v} de urato amorfo es común en orinas ácidas y concentradas. Generalmente no es un signo de enfermedad, pero en grandes cantidades podría estar relacionado con el riesgo de cálculos de ácido úrico.`, advice: `Común y generalmente benigno. Estos cristales aparecen si tu orina está concentrada o es ácida. Consejo: Mantener una buena hidratación ayuda a prevenirlos. ${HYDRATION_ADVICE}` };
                 }
             },
             psa: {
                 label: 'Antígeno Prostático (PSA)', unit: 'ng/mL', keywords: ['antigeno prostatico', 'psa'], type: 'numeric',
-                description: 'El PSA es una proteína producida por la glándula prostática. Sus niveles en sangre pueden elevarse por diversas condiciones, incluyendo la inflamación (prostatitis), el agrandamiento (HPB) o el cáncer de próstata.',
                 interpret: (v, age) => {
                     let limit = 4.0;
                     if (age < 50) limit = 2.5;
@@ -415,7 +397,6 @@
             },
             colesterolTotal: { 
                 label: 'Colesterol Total', unit: 'mg/dL', keywords: ['colesterol total'], type: 'numeric',
-                description: 'Es la suma de todo el colesterol en tu sangre (HDL, LDL, VLDL).',
                 interpret: (v) => ({ 
                     conventional: 'Rango de laboratorio: 140 - 200 mg/dL.', 
                     tag: {text: 'INFO', color: 'bg-gray-500'}, 
@@ -425,7 +406,6 @@
             },
             ldl: { 
                 label: 'Colesterol LDL', unit: 'mg/dL', keywords: ['colesterol ldl', 'ldl-c', 'ldl'], type: 'numeric',
-                description: 'Lipoproteína de Baja Densidad. Su función principal es transportar colesterol y triglicéridos desde el hígado hacia los tejidos para su uso como energía, reparación celular y producción de hormonas.',
                 interpret: (v, diet, tgHdlRatio) => {
                     let interpretation = { conventional: 'Rango de laboratorio: < 130 mg/dL.' };
                     if (diet === 'keto' && v > 130 && tgHdlRatio && tgHdlRatio < 2) {
@@ -438,7 +418,6 @@
             },
             hdl: { 
                 label: 'Colesterol HDL', unit: 'mg/dL', keywords: ['colesterol hdl', 'hdl-c', 'hdl'], type: 'numeric',
-                description: 'Lipoproteína de Alta Densidad. Realiza el "transporte reverso de colesterol", recogiendo el exceso de colesterol de los tejidos y arterias para llevarlo de vuelta al hígado para su eliminación.',
                 interpret: (v) => {
                     let interpretation = { conventional: 'Rango de laboratorio: > 40 mg/dL.' };
                     if (v > 60) return { ...interpretation, tag: {text: 'ÓPTIMO', color: 'bg-green-500'}, physiological: '¡Excelente! Tienes un "equipo de limpieza y mantenimiento" de arterias muy robusto y eficiente. Un HDL alto no solo limpia el colesterol, sino que también tiene potentes efectos antiinflamatorios y antioxidantes, siendo un fuerte factor de protección cardiovascular.', advice: '¡Excelente! Para mantener un HDL alto, sigue priorizando el ejercicio regular (especialmente HIIT), y el consumo de grasas saludables como palta, aceite de oliva, frutos secos y pescados grasos.'  };
@@ -448,7 +427,6 @@
             },
             triglycerides: { 
                 label: 'Triglicéridos', unit: 'mg/dL', keywords: ['trigliceridos'], type: 'numeric',
-                description: 'Los triglicéridos son la forma en que tu cuerpo almacena la energía de los alimentos que no usa de inmediato. Un nivel alto es como tener el "tanque de reserva de energía" constantemente lleno, lo que no es bueno.',
                 interpret: (v) => {
                     let interpretation = { conventional: 'Rango de laboratorio: < 150 mg/dL.' };
                     if (v < 100) return { ...interpretation, tag: {text: 'ÓPTIMO', color: 'bg-green-500'}, physiological: 'Excelente. Esto refleja que tu cuerpo está gestionando muy bien la energía que consumes, especialmente los carbohidratos. <strong>Es como si tuvieras un motor muy eficiente que quema el combustible al instante en lugar de almacenarlo.</strong> Unos triglicéridos bajos son un pilar de la buena salud metabólica.', advice: '¡Felicidades, este es uno de los marcadores más importantes! Unos triglicéridos bajos indican una excelente salud metabólica. Consejo: Sigue evitando los azúcares y carbohidratos procesados.' };
@@ -458,7 +436,6 @@
             },
              noHdl: { 
                 label: 'Colesterol No HDL', unit: 'mg/dL', keywords: ['colesterol no hdl'], type: 'numeric',
-                description: 'Es una medida de todo el colesterol "malo" o aterogénico. Se calcula restando el HDL del Colesterol Total. Incluye LDL, VLDL y otras partículas.',
                 interpret: (v) => {
                     if (v < 130) return { conventional: 'Rango: < 150 mg/dL', tag: {text: 'ÓPTIMO', color: 'bg-green-500'}, physiological: 'Indica una baja carga total de partículas que pueden depositarse en las arterias. <strong>Es como saber que el número total de "vehículos problemáticos" en la autopista es bajo.</strong> Es una excelente señal de salud cardiovascular, considerada por muchos expertos como un mejor predictor de riesgo que el LDL por sí solo.', advice: '¡Muy bien! Este es un marcador muy importante y tenerlo bajo es excelente. Refleja una baja cantidad de partículas que pueden dañar tus arterias.' };
                     return { ...interpretation, tag: {text: 'REQUIERE ATENCIÓN', color: 'bg-red-500'}, physiological: 'Un nivel elevado sugiere que hay una alta concentración de partículas aterogénicas en tu sangre, lo que aumenta el riesgo cardiovascular a largo plazo, independientemente de tu nivel de LDL.', advice: 'Este número es más importante que el LDL solo. Un No-HDL alto requiere los mismos consejos que para el LDL y los Triglicéridos: reducir azúcares y carbohidratos refinados.', question: `Mi colesterol No-HDL está elevado en ${v}. ¿Deberíamos darle más importancia a este marcador que a mi LDL aislado para evaluar mi riesgo cardiovascular?` };
@@ -466,7 +443,6 @@
             },
             relacionTotalHdl: { 
                 label: 'Relación Total/HDL', unit: '', keywords: ['relacion total/hdl'], type: 'numeric',
-                description: 'Este ratio compara tu colesterol total con tu colesterol "bueno". Es un potente predictor de riesgo cardiovascular.',
                 interpret: (v) => {
                     if (v < 3.5) return { conventional: 'Rango: 0 - 5', tag: {text: 'ÓPTIMO', color: 'bg-green-500'}, physiological: 'Un ratio bajo es un excelente indicador de bajo riesgo cardiovascular. <strong>Significa que tienes muchos "equipos de limpieza" (HDL) en proporción a todo el "tráfico" (Colesterol Total).</strong> ¡Tu equipo de limpieza está manejando bien la situación!', advice: '¡Excelente equilibrio! Este ratio demuestra que tu colesterol protector (HDL) es abundante en comparación con el resto. ¡Sigue con los hábitos que te llevaron aquí!' };
                     return { conventional: 'Rango: 0 - 5', tag: {text: 'REQUIERE ATENCIÓN', color: 'bg-red-500'}, physiological: 'Un ratio elevado sugiere un desequilibrio: hay demasiado "tráfico" para la capacidad de tu "equipo de limpieza", lo que aumenta el riesgo de "accidentes" y "embotellamientos" en tus arterias.', advice: 'Este desequilibrio es un factor de riesgo. Para mejorarlo, necesitas bajar el colesterol total (reduciendo azúcares) y subir el HDL (con ejercicio y grasas saludables).', question: `Mi relación Colesterol Total/HDL está en ${v}. ¿Qué significa este desequilibrio para mi riesgo cardiovascular a largo plazo?` };
@@ -474,61 +450,59 @@
             },
             relacionLdlHdl: { 
                 label: 'Relación LDL/HDL', unit: '', keywords: ['relacion ldl/hdl'], type: 'numeric',
-                description: 'Compara directamente los "camiones de reparto" (LDL) con el "equipo de limpieza" (HDL). Ofrece una visión muy clara del equilibrio entre el colesterol que se entrega a las células y el que se recoge de las arterias.',
                 interpret: (v) => {
                     if (v < 2.0) return { conventional: 'Rango: 0 - 3.5', tag: {text: 'ÓPTIMO', color: 'bg-green-500'}, physiological: 'Un ratio bajo indica un excelente equilibrio. Hay más capacidad de limpieza que de reparto, lo cual es protector. <strong>Es como tener más personal de mantenimiento que repartidores,</strong> asegurando que las calles siempre estén limpias.', advice: '¡Equilibrio ideal! Tienes una proporción saludable entre el colesterol "de reparto" y el "de limpieza". Es un fuerte indicador de protección cardiovascular.' };
                     return { conventional: 'Rango: 0 - 3.5', tag: {text: 'REQUIERE ATENCIÓN', color: 'bg-red-500'}, physiological: 'Un ratio elevado sugiere que hay más "camiones repartiendo" que "equipo limpiando", lo cual es un factor de riesgo a largo plazo, ya que aumenta la probabilidad de que el colesterol se acumule en las arterias.', advice: 'Este ratio muestra un desbalance. La estrategia es doble: bajar el LDL (menos azúcar y carbohidratos procesados) y subir el HDL (más ejercicio y grasas buenas).', question: `Mi relación LDL/HDL está en ${v}. ¿Cómo podemos mejorar este equilibrio específico entre las partículas LDL y HDL?` };
                 }
             },
             rbc: { label: 'Eritrocitos', unit: '10^6/uL', keywords: ['eritrocitos', 'globulos rojos', 'hematies'], type: 'numeric',
-                description: 'Son tus glóbulos rojos, los responsables de llevar oxígeno desde tus pulmones a cada rincón de tu cuerpo. Son vitales para tu energía y vitalidad.', interpret: (v, sex) => {
+                interpret: (v, sex) => {
                 const range = sex === 'male' ? '4.5-5.9' : '4.0-5.2';
                 const isOptimal = sex === 'male' ? (v >= 4.5 && v <= 5.9) : (v >= 4.0 && v <= 5.2);
                 if (isOptimal) return { conventional: `Rango: ${range}`, tag: {text: 'NORMAL', color: 'bg-green-500'}, physiological: 'Tu cantidad de "camiones de reparto de oxígeno" está en un rango saludable. Esto asegura que todas tus células reciben el combustible que necesitan para funcionar correctamente.', advice: 'Tus niveles de glóbulos rojos son saludables. Consejo: Para mantenerlos, asegúrate de consumir suficiente hierro (carnes rojas, legumbres), vitamina B12 y ácido fólico.' };
                 return { conventional: `Rango: ${range}`, tag: {text: 'REQUIERE ATENCIÓN', color: 'bg-red-500'}, physiological: 'Un valor fuera de rango necesita atención. Si es bajo, podrías tener muy pocos "camiones de oxígeno" (anemia), causando fatiga. Si es alto, la sangre puede volverse muy "espesa", lo que podría indicar deshidratación o una sobreproducción de células.', advice: 'Un valor fuera de rango requiere evaluación médica para determinar la causa, ya sea anemia, deshidratación u otra condición.', question: `Mis eritrocitos están en ${v}, fuera del rango de referencia. ¿Qué podría significar esto para mi energía y mi estado de hidratación?` };
             }},
             hemoglobin: { label: 'Hemoglobina', unit: 'g/dL', keywords: ['hemoglobina'], type: 'numeric',
-                description: 'Esta es la proteína estrella dentro de tus glóbulos rojos. Es la que literalmente "atrapa" el oxígeno para que pueda ser transportado. Es el principal indicador de si tienes o no anemia.', interpret: (v, sex) => {
+                interpret: (v, sex) => {
                 const range = sex === 'male' ? '13.5-17.5' : '12.0-15.5';
                 const isOptimal = sex === 'male' ? (v >= 13.5 && v <= 17.5) : (v >= 12.0 && v <= 15.5);
                 if (isOptimal) return { conventional: `Rango: ${range} g/dL`, tag: {text: 'NORMAL', color: 'bg-green-500'}, physiological: 'Tu capacidad para transportar oxígeno es saludable. Cada "camión" (glóbulo rojo) lleva una carga completa de "paquetes de oxígeno" (hemoglobina).', advice: 'Tu capacidad de transporte de oxígeno es ideal. Consejo: Mantén una dieta rica en hierro y vitaminas del complejo B para asegurar una buena producción de hemoglobina.' };
                 return { conventional: `Rango: ${range} g/dL`, tag: {text: 'REQUIERE ATENCIÓN', color: 'bg-red-500'}, physiological: 'Niveles bajos son el principal indicador de anemia; tus "camiones" no llevan suficiente oxígeno. Niveles altos pueden estar relacionados con deshidratación (la sangre está más concentrada) o problemas pulmonares (el cuerpo intenta compensar la falta de aire creando más transportadores).', advice: `Un nivel bajo es el principal signo de anemia. Un nivel alto puede indicar deshidratación. Para ello, ${HYDRATION_ADVICE.toLowerCase().replace('recuerda que ', '')} En ambos casos, es necesaria una evaluación médica.`, question: `Mi hemoglobina está en ${v}. ¿Deberíamos investigar una posible anemia o revisar mi estado de hidratación?` };
             }},
             hematocrit: { label: 'Hematocrito', unit: '%', keywords: ['hematocrito'], type: 'numeric',
-                description: 'Mide qué porcentaje de tu sangre está compuesto por glóbulos rojos. Es una buena forma de ver la "densidad" de tus transportadores de oxígeno y tu estado de hidratación.', interpret: (v, sex) => {
+                interpret: (v, sex) => {
                 const range = sex === 'male' ? '41-53' : '36-46';
                 const isOptimal = sex === 'male' ? (v >= 41 && v <= 53) : (v >= 36 && v <= 46);
                 if (isOptimal) return { conventional: `Rango: ${range} %`, tag: {text: 'NORMAL', color: 'bg-green-500'}, physiological: 'La proporción de tus glóbulos rojos en la sangre es adecuada. <strong>Imagina un vaso de agua con frutillas:</strong> el hematocrito te dice qué porcentaje del vaso está ocupado por las frutillas (glóbulos rojos) en comparación con el agua (plasma).', advice: `Una buena proporción entre tus células y el plasma sanguíneo. Consejo: Mantener una buena hidratación es clave para que este valor se mantenga en rango. ${HYDRATION_ADVICE}` };
                 return { conventional: `Rango: ${range} %`, tag: {text: 'REQUIERE ATENCIÓN', color: 'bg-red-500'}, physiological: 'Un valor bajo puede indicar anemia (pocas "frutillas"). Un valor alto puede indicar deshidratación (poca "agua", lo que hace que las frutillas parezcan más concentradas) o una producción excesiva de glóbulos rojos.', advice: `Un valor alto suele indicar deshidratación (bebe más agua). ${HYDRATION_ADVICE} Un valor bajo puede ser señal de anemia. Consulta a tu médico.`, question: `Mi hematocrito está en ${v}. ¿Podría estar relacionado con mi estado de hidratación o una posible anemia?` };
             }},
             wbc: { label: 'Leucocitos (Sangre)', unit: 'x10^3/uL', keywords: ['globulos blancos'], type: 'numeric',
-                description: 'Son tus glóbulos blancos, los soldados de tu sistema inmunitario. Su número nos da una pista sobre si tu cuerpo está combatiendo alguna infección o lidiando con inflamación.', interpret: (v) => {
+                interpret: (v) => {
                 if (v >= 4.5 && v <= 11.0) return { conventional: 'Rango: 4.5-11.0', tag: {text: 'NORMAL', color: 'bg-green-500'}, physiological: 'Tu "ejército de defensa" parece estar en calma y en niveles normales. No hay señales de una batalla importante en este momento.', advice: 'Tu sistema inmune está en calma. Consejo: Para mantenerlo fuerte, asegúrate de dormir bien, manejar el estrés y tener una dieta rica en nutrientes.' };
                 return { conventional: `Rango: 4.5-11.0`, tag: {text: 'REQUIERE ATENCIÓN', color: 'bg-red-500'}, physiological: 'Valores alterados son una señal. Si están altos, tu "ejército" ha sido movilizado para luchar contra una infección o inflamación. Si están bajos, podría indicar una "defensa debilitada" o que las "tropas" se han agotado tras una larga batalla.', advice: 'Un valor fuera de rango indica que tu sistema inmune está activo. Si está alto, probablemente estés combatiendo una infección. Si está bajo, tus defensas podrían estar debilitadas. Habla con tu médico.', question: `Mis leucocitos están en ${v}. ¿Podría indicar esto una infección o inflamación que no he notado?` };
             }},
             platelets: { label: 'Plaquetas', unit: 'x10^3/uL', keywords: ['plaquetas'], type: 'numeric',
-                description: 'Estas pequeñas células son los "paramédicos" de tu sangre. Cuando te cortas, ellas se agrupan para formar un coágulo y detener el sangrado.', interpret: (v) => {
+                interpret: (v) => {
                 if (v >= 150 && v <= 450) return { conventional: 'Rango: 150-450', tag: {text: 'NORMAL', color: 'bg-green-500'}, physiological: 'Tu capacidad de coagulación y "reparación de emergencias" parece estar en orden. Tienes suficientes "paramédicos" listos para actuar.', advice: 'Tu capacidad de coagulación es normal. Es un marcador que generalmente no se modifica con el estilo de vida, pero es bueno saber que está bien.' };
                 return { conventional: 'Rango: 150-450', tag: {text: 'REQUIERE ATENCIÓN', color: 'bg-red-500'}, physiological: 'Un desequilibrio aquí es importante. Niveles bajos (pocos "paramédicos") aumentan el riesgo de sangrado y moretones. Niveles altos (demasiados "paramédicos") pueden aumentar el riesgo de que se formen coágulos innecesarios dentro de los vasos sanguíneos.', advice: 'Valores fuera de rango deben ser evaluados por un médico para entender la causa, ya que pueden afectar tu capacidad de coagulación.', question: `Mis plaquetas están en ${v}. ¿Qué implicaciones tiene esto para la coagulación y la salud de mis vasos sanguíneos?` };
             }},
             vcm: { label: 'V.C.M.', unit: 'fL', keywords: ['v.c.m.', 'vcm'], type: 'numeric',
-                description: 'Volumen Corpuscular Medio. Mide el tamaño promedio de tus glóbulos rojos. Es una pista clave para saber por qué podrías tener anemia.', interpret: (v) => {
+                interpret: (v) => {
                 if (v >= 82 && v <= 96) return { conventional: 'Rango: 82-96 fL', tag: {text: 'NORMAL', color: 'bg-green-500'}, physiological: 'El tamaño de tus "camiones de oxígeno" es normal. Esto sugiere que la "fábrica" que los produce tiene todos los materiales necesarios (como B12, folato y hierro) para construirlos correctamente.', advice: 'El tamaño de tus glóbulos rojos es perfecto. Esto sugiere que tienes buenos niveles de Hierro, B12 y Folato. ¡Sigue con esa dieta nutritiva!' };
                 return { conventional: 'Rango: 82-96 fL', tag: {text: 'REQUIERE ATENCIÓN', color: 'bg-red-500'}, physiological: 'El tamaño importa. Un VCM bajo significa "camiones" pequeños (microcítica), lo que suele apuntar a falta de hierro. Un VCM alto significa "camiones" grandes e hinchados (macrocítica), lo que puede indicar falta de B12 o folato.', advice: 'El tamaño de tus glóbulos rojos está alterado. Si es bajo, podría ser falta de hierro. Si es alto, podría ser falta de B12 o folato. Tu médico te ayudará a identificar la causa.', question: `Mi VCM está en ${v}. ¿Qué nos dice esto sobre la posible causa nutricional de mi anemia?` };
             }},
             hcm: { label: 'H.C.M.', unit: 'pg', keywords: ['h.c.m.', 'hcm'], type: 'numeric',
-                description: 'Hemoglobina Corpuscular Media. Mide el "peso" promedio de hemoglobina que hay en cada glóbulo rojo. Complementa al VCM.', interpret: (v) => {
+                interpret: (v) => {
                 if (v >= 28 && v <= 32) return { conventional: 'Rango: 28-32 pg', tag: {text: 'NORMAL', color: 'bg-green-500'}, physiological: 'La cantidad de "carga de oxígeno" (hemoglobina) dentro de cada "camión" es la adecuada. Complementa la información del VCM.', advice: 'La cantidad de hemoglobina en cada glóbulo rojo es la correcta. Es otra señal de que tu producción de células sanguíneas es saludable.' };
                 return { conventional: 'Rango: 28-32 pg', tag: {text: 'REQUIERE ATENCIÓN', color: 'bg-red-500'}, physiological: 'Este valor ayuda a afinar el diagnóstico. Si los "camiones" son pequeños (VCM bajo) y además llevan poca "carga" (HCM bajo), refuerza la idea de una anemia por falta de hierro.', advice: 'Este valor alterado, junto al VCM, ayuda a tu médico a diagnosticar el tipo exacto de anemia que podrías tener.' };
             }},
             chcm: { label: 'C.H.C.M.', unit: '%', keywords: ['c.h.c.m.', 'chcm'], type: 'numeric',
-                description: 'Concentración de Hemoglobina Corpuscular Media. Mide cuán "concentrada" está la hemoglobina dentro de un glóbulo rojo.', interpret: (v) => {
+                interpret: (v) => {
                 if (v >= 33 && v <= 36) return { conventional: 'Rango: 33-36 %', tag: {text: 'NORMAL', color: 'bg-green-500'}, physiological: 'La concentración de "carga de oxígeno" dentro de tus "camiones" es adecuada. Esto se traduce en un color rojo saludable para las células.', advice: 'El color de tus glóbulos rojos es el adecuado. Una buena concentración de hemoglobina es sinónimo de eficiencia en el transporte de oxígeno.' };
                 return { conventional: 'Rango: 33-36 %', tag: {text: 'REQUIERE ATENCIÓN', color: 'bg-red-500'}, physiological: 'Valores bajos (hipocromía) son comunes en anemias por deficiencia de hierro, indicando que los glóbulos rojos están "pálidos" o "descoloridos" porque les falta hemoglobina. Es otra pista que apunta hacia el hierro.', advice: 'Un valor bajo indica que tus glóbulos rojos están "pálidos", lo que es una señal muy fuerte de anemia por deficiencia de hierro. Tu médico probablemente querrá medir tus niveles de ferritina.', question: `Mi C.H.C.M. está bajo. ¿Es esta una señal clara de que mis glóbulos rojos están "pálidos" por una posible deficiencia de hierro?` };
             }},
             glucose: { 
                 label: 'Glucosa Basal', unit: 'mg/dL', keywords: ['glucosa', 'glicemia'], type: 'numeric',
-                description: 'Es el nivel de azúcar en tu sangre en ayunas. Es el combustible principal de muchas células, pero un exceso constante es problemático. Es un indicador clave de cómo tu cuerpo maneja los carbohidratos.',
                 interpret: (v) => {
                     let interpretation = { conventional: 'Rango normal: 70-100 mg/dL.' };
                     if (v < 90) return { ...interpretation, tag: {text: 'ÓPTIMO', color: 'bg-green-500'}, physiological: 'Excelente control glucémico en ayunas. Esto indica que tus células son muy "sensibles" a la insulina, la hormona que actúa como una llave para dejar entrar el azúcar y usarla como energía. Es una señal de gran salud metabólica.', advice: '¡Nivel de azúcar ideal! Esto refleja una excelente sensibilidad a la insulina. Consejo: Sigue evitando los picos de azúcar limitando los alimentos procesados y los dulces.' };
@@ -538,7 +512,6 @@
             },
             uricAcid: {
                 label: 'Ácido Úrico', unit: 'mg/dL', keywords: ['acido urico', 'ácido úrico'], type: 'numeric',
-                description: 'Es un producto de desecho que se forma cuando el cuerpo descompone unas sustancias químicas llamadas purinas. Un exceso puede formar cristales en las articulaciones (gota) y está relacionado con la salud metabólica.',
                 interpret: (v) => {
                     let interpretation = { conventional: 'Rango: 3.5 - 7.2 mg/dL.' };
                     let baseText = 'Un nivel elevado, o incluso en el rango alto-normal, aumenta el riesgo de gota y es un marcador de disfunción metabólica. <strong>Imagina que el ácido úrico es el "humo" que genera el motor de tu metabolismo.</strong> Mucho humo indica que el motor está trabajando de forma ineficiente. Pero hay más: ese "humo" es corrosivo. El ácido úrico inhibe la producción de Óxido Nítrico, una molécula vital que actúa como el "aceite lubricante" de tus arterias, ayudándolas a relajarse y expandirse. Sin suficiente Óxido Nítrico, tus arterias se vuelven rígidas, lo que puede aumentar la presión arterial y el riesgo cardiovascular.';
@@ -547,16 +520,12 @@
                         let physiologicalText = 'Un nivel óptimo sugiere un buen metabolismo de las purinas y bajo riesgo de gota. <strong>Más importante aún, es un indicador indirecto de que no estás sobrecargando tu hígado con fructosa,</strong> ya que el metabolismo de la fructosa es una de las principales causas de ácido úrico elevado.';
                         return { ...interpretation, tag: { text: 'ÓPTIMO', color: 'bg-green-500' }, physiological: physiologicalText, advice: '¡Excelente! Un ácido úrico bajo es un gran indicador de salud metabólica. Consejo: Sigue evitando las bebidas azucaradas y el exceso de alcohol para mantenerlo en este rango óptimo.' };
                     }
-                    if (v <= 7.2) {
-                        let physiologicalText = 'Dentro del rango de laboratorio, pero un valor más bajo es preferible. Puede ser un indicador temprano de estrés metabólico, especialmente si tu dieta es alta en carnes rojas, mariscos, alcohol o bebidas azucaradas. ' + baseText;
-                         return { ...interpretation, tag: { text: 'ACEPTABLE', color: 'bg-yellow-500' }, physiological: physiologicalText, advice: 'Estás en un rango aceptable, pero más bajo es mejor. Consejo: Reduce el consumo de cerveza, bebidas azucaradas y carnes rojas para disminuir el "humo" metabólico y proteger tus arterias.', question: `Mi ácido úrico está en ${v}. Además de la dieta, ¿qué implicaciones tiene este nivel para mi salud vascular y mi presión arterial a través de su efecto sobre el óxido nítrico?` };
-                    }
+                    if (v <= 7.2) return { ...interpretation, tag: { text: 'ACEPTABLE', color: 'bg-yellow-500' }, physiological: 'Dentro del rango de laboratorio, pero un valor más bajo es preferible. Puede ser un indicador temprano de estrés metabólico, especialmente si tu dieta es alta en carnes rojas, mariscos, alcohol o bebidas azucaradas. ' + baseText, advice: 'Estás en un rango aceptable, pero más bajo es mejor. Consejo: Reduce el consumo de cerveza, bebidas azucaradas y carnes rojas para disminuir el "humo" metabólico y proteger tus arterias.', question: `Mi ácido úrico está en ${v}. Además de la dieta, ¿qué implicaciones tiene este nivel para mi salud vascular y mi presión arterial a través de su efecto sobre el óxido nítrico?` };
                     return { ...interpretation, tag: { text: 'REQUIERE ATENCIÓN', color: 'bg-red-500' }, physiological: baseText, advice: 'Un nivel alto requiere atención. Afecta tus articulaciones (riesgo de gota) y tus arterias. Consejo: Habla con tu médico sobre un plan dietético estricto para reducirlo.', question: `Mi ácido úrico está en ${v}. Además de la dieta, ¿qué implicaciones tiene este nivel para mi salud vascular y mi presión arterial a través de su efecto sobre el óxido nítrico?` };
                 }
             },
             totalProteins: {
                 label: 'Proteínas Totales', unit: 'g/dL', keywords: ['proteinas totales', 'proteínas totales'], type: 'numeric',
-                description: 'Mide la cantidad total de dos tipos de proteínas en tu sangre: albúmina y globulina. Refleja tu estado nutricional y la función de tu hígado y riñones.',
                 interpret: (v) => {
                     let interpretation = { conventional: 'Rango: 6.4 - 8.3 g/dL.' };
                     if (v >= 6.4 && v <= 8.3) return { ...interpretation, tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'La cantidad de "ladrillos" (proteínas) en tu sangre es adecuada. Esto sugiere que tu ingesta nutricional es buena y que tu hígado (la "fábrica de ladrillos") y tus riñones (el "sistema de reciclaje") funcionan correctamente.', advice: 'Tu estado proteico es normal. Es una buena señal de nutrición y función hepática y renal adecuadas. ¡Sigue comiendo una dieta balanceada!' };
@@ -565,7 +534,6 @@
             },
             ast: {
                 label: 'Transaminasa GOT/AST', unit: 'U/L', keywords: ['transaminasa got/ast', 'ast', 'got'], type: 'numeric',
-                description: 'La Aspartato Aminotransferasa (AST) es una enzima que se encuentra principalmente en el hígado y el corazón. Cuando estos órganos están dañados, la AST se libera en la sangre.',
                 interpret: (v) => {
                     let interpretation = { conventional: 'Rango: 0 - 38 U/L.' };
                     if (v < 38) return { ...interpretation, tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'Tus niveles de AST son normales. Esto es como confirmar que las "alarmas de incendio" de tu hígado y corazón están en silencio, lo que sugiere que no hay un daño celular significativo en este momento.', advice: '¡Hígado feliz! Un nivel normal de AST es una excelente señal de salud hepática. Consejo: Para mantenerlo así, modera el consumo de alcohol y evita los alimentos ultra-procesados.' };
@@ -574,7 +542,6 @@
             },
             ldh: {
                 label: 'Deshidrogenasa Láctica (LDH)', unit: 'U/L', keywords: ['deshidrogenasa lactica', 'ldh'], type: 'numeric',
-                description: 'La LDH es una enzima que se encuentra en casi todos los tejidos del cuerpo. Ayuda en el proceso de convertir el azúcar en energía. Niveles elevados pueden indicar daño tisular en alguna parte del cuerpo.',
                 interpret: (v) => {
                     let interpretation = { conventional: 'Rango: 200 - 450 U/L.' };
                     if (v >= 200 && v <= 450) return { ...interpretation, tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'Tus niveles de LDH están dentro del rango esperado. La "luz de check engine" de tu cuerpo está apagada, lo que no sugiere un daño tisular generalizado o estrés celular importante.', advice: 'Sin señales de alarma. Un LDH normal es bueno, ya que descarta un daño celular masivo en el cuerpo.' };
@@ -583,7 +550,6 @@
             },
             alkalinePhosphatase: {
                 label: 'Fosfatasa Alcalina', unit: 'U/L', keywords: ['fosfatasa alcalina'], type: 'numeric',
-                description: 'Es una enzima que se encuentra en altas concentraciones en el hígado, las vías biliares y los huesos. Es un marcador clave para la salud de estos sistemas.',
                 interpret: (v) => {
                     let interpretation = { conventional: 'Rango: 80 - 306 U/L.' };
                     if (v >= 80 && v <= 306) return { ...interpretation, tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'Tus niveles son normales, lo que sugiere que el sistema de "tuberías" de tu hígado (vías biliares) fluye sin problemas y que el proceso de "construcción y demolición" de tus huesos está en equilibrio.', advice: 'Buen funcionamiento de hígado y huesos. Un resultado normal aquí es una gran noticia para la salud de tus vías biliares y tu metabolismo óseo.' };
@@ -592,7 +558,6 @@
             },
             phosphorus: {
                 label: 'Fósforo', unit: 'mg/dL', keywords: ['fosforo'], type: 'numeric',
-                description: 'El fósforo es un mineral esencial para la formación de huesos y dientes, la producción de energía y la función celular. Su nivel está estrechamente regulado por los riñones.',
                 interpret: (v) => {
                     let interpretation = { conventional: 'Rango: 2.5 - 4.5 mg/dL.' };
                     if (v >= 2.5 && v <= 4.5) return { ...interpretation, tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'Tus niveles de fósforo están bien regulados. Esto es crucial, ya que el fósforo y el calcio trabajan en un delicado equilibrio, gestionado por tus riñones y la hormona paratiroidea (PTH), para mantener tus huesos fuertes y tus células con energía.', advice: '¡Equilibrio mineral correcto! Un fósforo normal es vital para la salud de tus huesos y la producción de energía. Buena señal de que tus riñones están haciendo bien su trabajo.' };
@@ -601,7 +566,6 @@
             },
             calcium: {
                 label: 'Calcio', unit: 'mg/dL', keywords: ['calcio'], type: 'numeric',
-                description: 'Es el mineral más abundante en el cuerpo, crucial para la salud ósea, la contracción muscular, la función nerviosa y la coagulación de la sangre.',
                 interpret: (v) => {
                     let interpretation = { conventional: 'Rango: 8.5 - 10.5 mg/dL.' };
                     if (v >= 8.5 && v <= 10.5) return { ...interpretation, tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'Tus niveles de calcio en sangre están en un rango saludable. El cuerpo regula este nivel de forma muy estricta, incluso si tiene que "robar" calcio de los huesos para mantenerlo estable. Por lo tanto, un valor normal no siempre significa que tus huesos estén bien, pero sí que el sistema de regulación inmediata funciona.', advice: 'Nivel de calcio en sangre estable. Consejo: Para proteger tus reservas de calcio en los huesos, asegúrate de consumir suficiente calcio y vitamina D en tu dieta.' };
@@ -610,7 +574,6 @@
             },
             bun: {
                 label: 'Nitrógeno Ureico (BUN)', unit: 'mg/dL', keywords: ['nitrogeno ureico', 'bun'], type: 'numeric',
-                description: 'El BUN mide la cantidad de nitrógeno en la sangre que proviene de la urea, un producto de desecho del metabolismo de las proteínas. Es un indicador de la función renal y del estado de hidratación.',
                 interpret: (v) => {
                     let interpretation = { conventional: 'Rango: 0 - 20 mg/dL.' };
                     if (v > 7 && v < 20) return { ...interpretation, tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'Tus riñones parecen estar manejando bien los desechos de proteínas y tu estado de hidratación es probablemente adecuado. Es un buen indicador de equilibrio.', advice: `Buena señal de función renal e hidratación. Consejo: Mantenerse bien hidratado y no excederse en el consumo de proteínas ayuda a mantener este valor en rango. ${HYDRATION_ADVICE}` };
@@ -619,7 +582,6 @@
             },
             urea: {
                 label: 'Uremia', unit: 'mg/dL', keywords: ['uremia', 'urea'], type: 'numeric',
-                description: 'La urea es el principal producto de desecho del metabolismo de las proteínas, producida en el hígado y eliminada por los riñones. Es una medida más directa de la función renal que el BUN.',
                 interpret: (v) => {
                     let interpretation = { conventional: 'Rango: 10 - 50 mg/dL.' };
                     if (v >= 10 && v <= 50) return { ...interpretation, tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'La eliminación de los "residuos" del metabolismo de las proteínas por parte de tus riñones es adecuada. Tu sistema de "limpieza" funciona eficientemente.', advice: '¡Filtros renales funcionando bien! Un nivel normal de urea es una confirmación de que tus riñones están eliminando los desechos de forma eficiente.' };
@@ -628,7 +590,6 @@
             },
             totalBilirubin: {
                 label: 'Bilirrubina Total', unit: 'mg/dL', keywords: ['bilirrubina total'], type: 'numeric',
-                description: 'La bilirrubina es un pigmento amarillento que se produce durante la descomposición normal de los glóbulos rojos. Es procesada por el hígado antes de ser eliminada del cuerpo.',
                 interpret: (v) => {
                     let interpretation = { conventional: 'Rango: 0.1 - 1.0 mg/dL.' };
                     if (v >= 0.1 && v <= 1.0) return { ...interpretation, tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'Tu hígado está procesando y eliminando eficientemente los "residuos" del reciclaje de glóbulos rojos. Es una buena señal de la capacidad de desintoxicación de tu hígado.', advice: 'Tu sistema de reciclaje de glóbulos rojos y tu hígado funcionan bien. Un nivel normal es una gran noticia.' };
@@ -637,7 +598,6 @@
             },
             albumin: {
                 label: 'Albúmina', unit: 'g/dL', keywords: ['albumina'], type: 'numeric',
-                description: 'La albúmina es la proteína más abundante en el plasma sanguíneo, producida por el hígado. Ayuda a mantener el líquido dentro de los vasos sanguíneos y transporta hormonas, vitaminas y enzimas.',
                 interpret: (v) => {
                     let interpretation = { conventional: 'Rango: 3.5 - 5.0 g/dL.' };
                     if (v >= 3.5 && v <= 5.0) return { ...interpretation, tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'Tu hígado está produciendo una cantidad adecuada de esta proteína vital. Esto indica una buena función hepática y un estado nutricional sólido. <strong>La albúmina actúa como un "imán" para el agua,</strong> manteniendo la presión osmótica y evitando que el líquido se escape de los vasos sanguíneos.', advice: '¡Excelente! Un buen nivel de albúmina refleja una buena nutrición y un hígado sano. Es una de las mejores señales de salud general.' };
@@ -646,7 +606,6 @@
             },
             agRatio: {
                 label: 'Índice A/G', unit: '', keywords: ['indice a/g', 'índice a/g'], type: 'numeric',
-                description: 'El ratio Albúmina/Globulina (A/G) compara la cantidad de albúmina en tu sangre con la cantidad de globulinas. Puede dar pistas sobre la causa de un cambio en los niveles de proteínas totales.',
                 interpret: (v) => {
                     let interpretation = { conventional: 'Rango: 1.2 - 2.2' };
                     if (v >= 1.2 && v <= 2.2) return { ...interpretation, tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'El balance entre tus proteínas de "transporte y mantenimiento" (Albúmina) y las de "defensa e inflamación" (Globulinas) es adecuado. Es una señal de equilibrio general.', advice: 'Un buen equilibrio entre los diferentes tipos de proteínas en tu sangre. Es una señal de bajo estado inflamatorio y buena salud general.' };
@@ -655,7 +614,6 @@
             },
             globulins: {
                 label: 'Globulinas', unit: 'g/dL', keywords: ['globulinas'], type: 'numeric',
-                description: 'Las globulinas son un grupo de proteínas en la sangre, algunas producidas por el hígado y otras por el sistema inmunitario. Son cruciales para la inmunidad y el transporte de sustancias.',
                 interpret: (v) => {
                     let interpretation = { conventional: 'Rango: 1.5 - 3.5 g/dL' };
                     if (v >= 1.5 && v <= 3.5) return { ...interpretation, tag: { text: 'NORMAL', color: 'bg-green-500' }, physiological: 'Tus niveles de globulinas son normales. Esto sugiere que tu sistema inmunitario no está "hiperactivo" ni "debilitado", y que tu estado inflamatorio general está en calma.', advice: 'Tu sistema inmune parece estar en equilibrio. Un nivel normal de globulinas es una buena señal de que no hay infecciones o inflamaciones crónicas activas.' };
@@ -664,7 +622,6 @@
             },
             creatinine: { 
                 label: 'Creatinina', unit: 'mg/dL', keywords: ['creatinina'], type: 'numeric',
-                description: 'Es un producto de desecho que se genera por el desgaste normal de los músculos. Tus riñones son los encargados de filtrarla y eliminarla, por lo que es un excelente indicador de qué tan bien están funcionando.',
                 interpret: (v) => {
                     let interpretation = { conventional: 'Rango normal: 0.7-1.3 mg/dL.' };
                     if (v >= 0.7 && v <= 1.3) return { ...interpretation, tag: {text: 'ÓPTIMO', color: 'bg-green-500'}, physiological: 'Un nivel normal indica que tus riñones están "filtrando la basura" de la sangre de manera eficiente. La creatinina es un marcador muy fiable porque se produce y se elimina a un ritmo bastante constante.', advice: `¡Excelente función renal! Este es uno de los mejores indicadores de que tus riñones están sanos. Consejo: Mantente bien hidratado y controla tu presión arterial para protegerlos a largo plazo. ${HYDRATION_ADVICE}` };
@@ -673,7 +630,6 @@
             },
             tsh: { 
                 label: 'TSH', unit: 'uUI/mL', keywords: ['tsh', 'tiroestimulante'], type: 'numeric',
-                description: 'La TSH es la hormona que tu cerebro le envía a la glándula tiroides para decirle "¡Hey, ponte a trabajar!". Mide la comunicación entre cerebro y tiroides, que es la glándula que controla el termostato de tu metabolismo.',
                 interpret: (v) => {
                     let interpretation = { conventional: 'Rango de laboratorio: 0.4 - 4.5 uUI/mL.' };
                     if (v > 0.5 && v < 2.5) return { ...interpretation, tag: {text: 'ÓPTIMO', color: 'bg-green-500'}, physiological: 'Este es el rango funcional óptimo. <strong>Imagina que el cerebro es el jefe y la tiroides el trabajador.</strong> Un TSH en este rango significa que el jefe está hablando en un tono de voz normal, y el trabajador está respondiendo eficientemente. Tu metabolismo está bien regulado.', advice: '¡Comunicación perfecta! Un TSH en el rango óptimo indica que la comunicación entre tu cerebro y tu tiroides es excelente. Tu metabolismo te lo agradece.' };
@@ -1196,25 +1152,32 @@
         }
         
         function generateTextReport(text) {
-            const reportContent = document.getElementById('report-content');
-            const formattedText = text
-                .replace(/\*\*(.*?)\*\*/g, '<h3 class="font-bold text-lg mt-4 mb-2 text-indigo-300">$1</h3>') // Headers
-                .replace(/\n\n---/g, '<hr class="my-4 border-white/10">') // Separator for follow-ups
-                .replace(/\n\* (.*?)(?=\n\*|\n\n|$)/g, '<p class="pl-4 border-l-2 border-white/20">$1</p>') // List items
-                .replace(/\n/g, '<br>'); 
-            reportContent.innerHTML = `<div class="card p-6 text-gray-300 space-y-3">${formattedText}</div>`;
-            
             appState.doctorQuestions = [];
-            const questionSection = text.split(/preguntas clave para tu médico/i)[1];
-            if (questionSection) {
-                 const questions = questionSection.match(/(\*|\-)\s(.*?)(?=\n\*|\n\-|$)/g);
-                 if (questions) {
-                    appState.doctorQuestions = questions.map(q => q.replace(/(\*|\-)\s/, '').trim());
-                 }
+            const questionSectionRegex = /\*\*(Preguntas Clave para tu Médico|PARA UNA MEJOR INTERPRETACIÓN)\*\*([\s\S]*)/i;
+            const questionSectionMatch = text.match(questionSectionRegex);
+            
+            let textForDisplay = text;
+
+            if (questionSectionMatch) {
+                const questionSectionText = questionSectionMatch[2];
+                const questions = questionSectionText.match(/(\*|\-|\d\.)\s(.*?)(?=\n(\*|\-|\d\.)|$)/g);
+                if (questions) {
+                    appState.doctorQuestions = questions.map(q => q.replace(/(\*|\-|\d\.)\s/, '').trim());
+                }
+                // Remove the section from the text to be displayed
+                textForDisplay = text.replace(questionSectionRegex, '').trim();
             }
             
+            const reportContent = document.getElementById('report-content');
+            const formattedText = textForDisplay
+                .replace(/\*\*(.*?)\*\*/g, '<h3 class="font-bold text-lg mt-4 mb-2 text-indigo-300">$1</h3>')
+                .replace(/\n\n---/g, '<hr class="my-4 border-white/10">')
+                .replace(/\n\* (.*?)(?=\n\*|\n\n|$)/g, '<p class="pl-4 border-l-2 border-white/20">$1</p>')
+                .replace(/\n/g, '<br>'); 
+                
+            reportContent.innerHTML = `<div class="card p-6 text-gray-300 space-y-3">${formattedText}</div>`;
+            
             followUpBtn.style.display = 'block';
-            updateQuestionsList();
         }
 
         function generateBiomarkerReport(results) {
