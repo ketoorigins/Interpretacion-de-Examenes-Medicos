@@ -12,10 +12,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&display=swap" rel="stylesheet">
-    
-    <!-- Tesseract.js para OCR -->
-    <script src='https://unpkg.com/tesseract.js@v5.1.0/dist/tesseract.min.js'></script>
-    
+        
     <!-- pdf.js para leer PDFs -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.min.js"></script>
     <script>pdfjsLib.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.10.377/pdf.worker.min.js`;</script>
@@ -1164,7 +1161,6 @@
                 if (questions) {
                     appState.doctorQuestions = questions.map(q => q.replace(/(\*|\-|\d\.)\s/, '').trim());
                 }
-                // Remove the section from the text to be displayed
                 textForDisplay = text.replace(questionSectionRegex, '').trim();
             }
             
