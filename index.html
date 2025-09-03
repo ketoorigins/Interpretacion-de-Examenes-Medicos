@@ -77,6 +77,13 @@
             height: 40px;
             animation: spin 1s linear infinite;
         }
+        .marker-title-glow {
+            text-shadow: 0 0 8px rgba(168, 85, 247, 0.5), 0 0 12px rgba(79, 70, 229, 0.5);
+        }
+        .neon-yellow-border {
+            border-color: #FBBF24; /* amber-400 */
+            box-shadow: 0 0 5px rgba(251, 191, 36, 0.6), 0 0 10px rgba(251, 191, 36, 0.4);
+        }
         @keyframes spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
@@ -450,13 +457,13 @@
                 3. **Preguntas Clave para tu Médico**
 
                 Dentro de "Hallazgos Principales", para CADA biomarcador, DEBES seguir este formato al pie de la letra, en una lista:
-                - **Nombre del Marcador:** [Valor]. [ESTADO:Explicación Fisiológica. || En simple: Explicación Coloquial con analogía. || Consejo Modal: Texto detallado para el pop-up.]
+                - **Nombre del Marcador:** [Valor]. [ESTADO:Explicación Fisiológica. || En simple: Explicación Coloquial con analogía y emojis relevantes 🧪. || Consejo Modal: Texto detallado para el pop-up.]
 
                 **Los únicos estados permitidos son OPTIMO, MEJORABLE, ATENCION.** No uses otros. El "Consejo Modal" debe ser un texto más profundo.
 
                 **Ejemplos de cómo DEBE verse tu respuesta en "Hallazgos Principales":**
-                - **Colesterol Total:** 250 mg/dL. [ATENCION:El colesterol es una lipoproteína que transporta grasas; su exceso se asocia con aterosclerosis. || En simple: Es como tener mucho tráfico en las autopistas de tu cuerpo. || Consejo Modal:Un colesterol total elevado es una señal de advertencia importante. Significa que hay un exceso de partículas de grasa en tu sangre que pueden pegarse a tus arterias, endureciéndolas y estrechándolas. Es crucial hablar con tu médico sobre este valor para crear un plan.]
-                - **Vitamina D:** 45 ng/mL. [OPTIMO:Nivel adecuado para la homeostasis del calcio y la función inmune. || En simple: ¡Tus niveles de sol interno están perfectos! || Consejo Modal:¡Felicidades por este excelente resultado! Mantener una Vitamina D óptima es fundamental para tu sistema inmune y la salud de tus huesos. Para seguir así, asegúrate de tener una exposición solar regular y segura (15-20 minutos al día) y consume alimentos ricos en esta vitamina como pescados grasos.]
+                - **Colesterol Total:** 250 mg/dL. [ATENCION:El colesterol es una lipoproteína que transporta grasas; su exceso se asocia con aterosclerosis. || En simple: Es como tener mucho tráfico 🚗 en las autopistas de tu cuerpo. || Consejo Modal:Un colesterol total elevado es una señal de advertencia importante. Significa que hay un exceso de partículas de grasa en tu sangre que pueden pegarse a tus arterias, endureciéndolas y estrechándolas. Es crucial hablar con tu médico sobre este valor para crear un plan.]
+                - **Vitamina D:** 45 ng/mL. [OPTIMO:Nivel adecuado para la homeostasis del calcio y la función inmune. || En simple: ¡Tus niveles de sol interno ☀️ están perfectos! || Consejo Modal:¡Felicidades por este excelente resultado! Mantener una Vitamina D óptima es fundamental para tu sistema inmune y la salud de tus huesos. Para seguir así, asegúrate de tener una exposición solar regular y segura (15-20 minutos al día) y consume alimentos ricos en esta vitamina como pescados grasos.]
 
                 **Reglas Adicionales:**
                 - NO te presentes como médico.
@@ -568,16 +575,15 @@
             const questionRegex = /\*\*\s*Preguntas Clave para tu Médico\s*\*\*([\s\S]*)/i;
             const questionMatch = reportText.match(questionRegex);
             
+            appState.doctorQuestions = [];
             if (questionMatch && questionMatch[1]) {
                 const questionContent = questionMatch[1].trim();
                 appState.doctorQuestions = questionContent.split('\n')
                     .map(q => q.replace(/^(\*|\-|\d+\.)\s*/, '').trim())
                     .filter(q => q.length > 5);
-                reportText = reportText.replace(questionRegex, ''); // Eliminar la sección del texto
-            } else {
-                 appState.doctorQuestions = [];
+                reportText = reportText.replace(questionRegex, ''); 
             }
-            updateQuestionsList(); // Actualizar el panel principal INMEDIATAMENTE
+            updateQuestionsList();
 
             // --- 2. Procesar y Renderizar el resto del reporte ---
             const sections = reportText.split(/\*\*(.*?)\*\*/g).filter(s => s.trim());
@@ -587,7 +593,7 @@
                 const title = sections[i].trim();
                 let content = sections[i + 1] ? sections[i + 1].trim() : '';
 
-                html += `<h3 class="font-bold text-lg mt-4 mb-2 text-indigo-300">${title}</h3>`;
+                html += `<h3 class="font-bold text-lg mt-4 mb-2 text-indigo-300 marker-title-glow">${title}</h3>`;
 
                 if (title === 'Hallazgos Principales') {
                     html += '<div class="space-y-4">';
@@ -600,8 +606,16 @@
                         if (!nameMatch || !dataMatch) return;
 
                         const biomarkerName = nameMatch[2].trim();
-                        const valuePartMatch = lineContent.match(/:\*\*\s*(.*?)\.\s*\[/);
-                        const value = valuePartMatch ? valuePartMatch[1] : 'Sin valor';
+                        
+                        // Lógica de extracción de valor mejorada
+                        const valueStartIndex = lineContent.indexOf(nameMatch[0]) + nameMatch[0].length;
+                        const valueEndIndex = lineContent.indexOf(dataMatch[0]);
+                        let value = lineContent.substring(valueStartIndex, valueEndIndex).trim();
+                        value = value.replace(/\.$/, '').trim();
+                        if (!value) {
+                           value = "Sin valor";
+                        }
+
 
                         const status = dataMatch[1].toUpperCase();
                         const fullExplanation = dataMatch[2];
@@ -624,15 +638,15 @@
                             <div class="card p-4 space-y-3 report-card">
                                 <div class="flex justify-between items-start">
                                     <div>
-                                        <h4 class="font-bold text-lg text-white">${biomarkerName}</h4>
-                                        <p class="text-2xl font-black brand-gradient-text">${value}</p>
+                                        <h4 class="font-bold text-lg text-white marker-title-glow">${biomarkerName}</h4>
+                                        <p class="text-4xl font-black brand-gradient-text">${value}</p>
                                     </div>
-                                    <span 
+                                    <button 
                                         class="text-xs font-bold text-white px-3 py-1 rounded-full cursor-pointer hover:scale-110 transition-transform ${statusInfo.color}"
                                         onclick="showModal('${sanitizedBiomarkerName}', '${sanitizedModalAdvice}')"
                                     >
                                         ${statusInfo.text}
-                                    </span>
+                                    </button>
                                 </div>
                                 <div class="text-sm space-y-2 text-gray-300 border-t border-white/10 pt-3">
                                     ${physiologicalExplanation ? `<p><strong class="text-indigo-300">Contexto Fisiológico:</strong> ${physiologicalExplanation}</p>` : ''}
@@ -643,7 +657,7 @@
                     html += '</div>';
 
                 } else {
-                    html += `<div class="card p-6 text-gray-300 space-y-3">${content.replace(/\n/g, '<br>')}</div>`;
+                    html += `<div class="card p-6 text-gray-300 space-y-3 neon-yellow-border">${content.replace(/\n/g, '<br>')}</div>`;
                 }
             }
 
