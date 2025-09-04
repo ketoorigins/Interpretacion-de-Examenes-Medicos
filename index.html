@@ -120,36 +120,36 @@
             <h2 class="text-2xl font-bold text-center">👤 Crea tu Perfil</h2>
             <p class="text-center text-gray-400 text-sm">Estos datos son cruciales para una interpretación contextualizada.</p>
             <form id="profile-form" class="space-y-4">
-                 <div>
-                     <label for="name" class="block text-sm font-medium text-gray-300 mb-1">Nombre</label>
-                     <input type="text" id="name" required class="w-full custom-input" placeholder="Ej: Juan Pérez">
-                 </div>
-                 <div>
-                     <label for="dob" class="block text-sm font-medium text-gray-300 mb-1">Fecha de Nacimiento</label>
-                     <input type="date" id="dob" required class="w-full custom-input">
-                 </div>
-                 <div>
-                     <label for="sex" class="block text-sm font-medium text-gray-300 mb-1">Sexo Biológico</label>
-                     <select id="sex" required class="w-full custom-input">
-                         <option value="">Seleccionar...</option>
-                         <option value="male">♂️ Masculino</option>
-                         <option value="female">♀️ Femenino</option>
-                     </select>
-                 </div>
-                 <div>
-                     <label for="diet" class="block text-sm font-medium text-gray-300 mb-1">Enfoque Nutricional</label>
-                     <select id="diet" required class="w-full custom-input">
-                         <option value="keto">🥑 Bajo en Carbohidratos / Keto</option>
-                         <option value="standard">🍔 Estándar / Occidental</option>
-                         <option value="low-fat">🥗 Baja en Grasa</option>
-                         <option value="vegan">🌱 Basada en Plantas</option>
-                         <option value="other">❓ Otro</option>
-                     </select>
-                 </div>
-                 <div>
-                    <label for="api-key" class="block text-sm font-medium text-gray-300 mb-1">Tu API Key de Google AI</label>
-                    <input type="password" id="api-key" required class="w-full custom-input" placeholder="Pega tu clave aquí">
-                 </div>
+                <div>
+                    <label for="name" class="block text-sm font-medium text-gray-300 mb-1">Nombre</label>
+                    <input type="text" id="name" required class="w-full custom-input" placeholder="Ej: Juan Pérez">
+                </div>
+                <div>
+                    <label for="dob" class="block text-sm font-medium text-gray-300 mb-1">Fecha de Nacimiento</label>
+                    <input type="date" id="dob" required class="w-full custom-input">
+                </div>
+                <div>
+                    <label for="sex" class="block text-sm font-medium text-gray-300 mb-1">Sexo Biológico</label>
+                    <select id="sex" required class="w-full custom-input">
+                        <option value="">Seleccionar...</option>
+                        <option value="male">♂️ Masculino</option>
+                        <option value="female">♀️ Femenino</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="diet" class="block text-sm font-medium text-gray-300 mb-1">Enfoque Nutricional</label>
+                    <select id="diet" required class="w-full custom-input">
+                        <option value="keto">🥑 Bajo en Carbohidratos / Keto</option>
+                        <option value="standard">🍔 Estándar / Occidental</option>
+                        <option value="low-fat">🥗 Baja en Grasa</option>
+                        <option value="vegan">🌱 Basada en Plantas</option>
+                        <option value="other">❓ Otro</option>
+                    </select>
+                </div>
+                <div>
+                  <label for="api-key" class="block text-sm font-medium text-gray-300 mb-1">Tu API Key de Google AI</label>
+                  <input type="password" id="api-key" required class="w-full custom-input" placeholder="Pega tu clave aquí">
+                </div>
                 <button type="submit" class="w-full brand-gradient-bg text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-indigo-500/40 hover:scale-105 transform transition-transform duration-300 mt-4">
                     Guardar Perfil
                 </button>
@@ -165,14 +165,14 @@
             </div>
             
             <div class="grid grid-cols-2 gap-4">
-                 <button id="add-exam-file-btn" class="w-full brand-gradient-bg text-white font-bold p-4 rounded-2xl shadow-lg shadow-indigo-500/40 flex flex-col items-center justify-center text-center hover:scale-105 transform transition-transform duration-300 space-y-2">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>
-                     <span class="text-sm font-semibold">Subir Archivo</span>
-                 </button>
-                 <button id="scan-document-btn" class="w-full brand-gradient-bg text-white font-bold p-4 rounded-2xl shadow-lg shadow-indigo-500/40 flex flex-col items-center justify-center text-center hover:scale-105 transform transition-transform duration-300 space-y-2">
-                      <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M14.5 10a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/><path d="M12 12h.01"/><path d="M18 20a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2"/><path d="M6 12v2a2 2 0 0 0 2 2h2"/></svg>
-                     <span class="text-sm font-semibold">Escanear Doc.</span>
-                 </button>
+                <button id="add-exam-file-btn" class="w-full brand-gradient-bg text-white font-bold p-4 rounded-2xl shadow-lg shadow-indigo-500/40 flex flex-col items-center justify-center text-center hover:scale-105 transform transition-transform duration-300 space-y-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>
+                    <span class="text-sm font-semibold">Subir Archivo</span>
+                </button>
+                <button id="scan-document-btn" class="w-full brand-gradient-bg text-white font-bold p-4 rounded-2xl shadow-lg shadow-indigo-500/40 flex flex-col items-center justify-center text-center hover:scale-105 transform transition-transform duration-300 space-y-2">
+                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M14.5 10a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/><path d="M12 12h.01"/><path d="M18 20a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2"/><path d="M6 12v2a2 2 0 0 0 2 2h2"/></svg>
+                    <span class="text-sm font-semibold">Escanear Doc.</span>
+                </button>
             </div>
 
             <input type="file" id="file-input" class="hidden" accept="image/*">
@@ -274,7 +274,7 @@
             screens.forEach(s => s.classList.add('hidden'));
             const screenToShow = document.getElementById(screenId);
             if(screenToShow) {
-                 setTimeout(() => screenToShow.classList.remove('hidden'), 50);
+                setTimeout(() => screenToShow.classList.remove('hidden'), 50);
             }
         }
         
@@ -384,8 +384,8 @@
                 hideModal();
 
             } catch (error) {
-                 console.error("Error al procesar pregunta de seguimiento:", error);
-                 showModal('Error', `No se pudo procesar tu pregunta: ${error.message}`);
+                console.error("Error al procesar pregunta de seguimiento:", error);
+                showModal('Error', `No se pudo procesar tu pregunta: ${error.message}`);
             }
         });
         
@@ -501,10 +501,10 @@
 
                     if (!response.ok) {
                         if (response.status === 429 || response.status === 503) { // Specific statuses for overload
-                             console.warn(`Model overloaded. Retrying in ${delay / 1000}s...`);
-                             await new Promise(resolve => setTimeout(resolve, delay));
-                             delay *= 2; // Exponential backoff
-                             continue; // Retry
+                            console.warn(`Model overloaded. Retrying in ${delay / 1000}s...`);
+                            await new Promise(resolve => setTimeout(resolve, delay));
+                            delay *= 2; // Exponential backoff
+                            continue; // Retry
                         }
                         const errorBody = await response.json();
                         throw new Error(errorBody.error.message || `Error del servidor: ${response.status}`);
@@ -517,7 +517,7 @@
                 }
             }
         }
-                     
+                      
         async function callGeminiAPI(text, customSystemPrompt) {
             const apiKey = appState.userProfile.apiKey;
             if (!apiKey) throw new Error("API Key no proporcionada.");
@@ -568,10 +568,72 @@
             });
         }
         
+        function parseBiomarkerLine(lineContent) {
+            const dataMatch = lineContent.match(/\[\s*(OPTIMO|MEJORABLE|ATENCION)\s*:\s*(.*?)\s*\]/i);
+            if (!dataMatch) return null;
+
+            const nameAndValuePart = lineContent.substring(0, dataMatch.index).trim();
+            const colonIndex = nameAndValuePart.lastIndexOf(':');
+            
+            let biomarkerName, value;
+            if (colonIndex !== -1) {
+                biomarkerName = nameAndValuePart.substring(0, colonIndex).replace(/(\*\*|-)\s*/g, '').trim();
+                value = nameAndValuePart.substring(colonIndex + 1).trim();
+            } else {
+                biomarkerName = "Resultado";
+                value = nameAndValuePart;
+            }
+
+            value = value.replace(/\.$/, '').trim();
+            if (!value) value = "Sin valor";
+
+            const status = dataMatch[1].toUpperCase();
+            const fullExplanationText = dataMatch[2];
+            
+            const statusInfo = {
+                'OPTIMO': { text: 'ÓPTIMO', color: 'bg-green-500', valueColor: 'text-green-400' },
+                'MEJORABLE': { text: 'MEJORABLE', color: 'bg-yellow-500', valueColor: 'text-yellow-400' },
+                'ATENCION': { text: 'REQUIERE ATENCIÓN', color: 'bg-red-500', valueColor: 'text-red-400' }
+            }[status];
+            if (!statusInfo) return null;
+
+            const parts = fullExplanationText.split('||');
+            const statusRegex = new RegExp(`^\\s*${status}:`, 'i');
+            const physiologicalExplanation = (parts[0] || '').replace(statusRegex, '').trim();
+            const colloquialExplanation = (parts[1] || '').replace(/En simple:/i, '').trim();
+            const modalAdviceText = (parts[2] || '').replace(/Consejo Modal:/i, '').trim();
+
+            let fullModalMessage = '';
+            if (physiologicalExplanation) fullModalMessage += `<p class="mb-3"><strong class="text-indigo-300">Contexto Fisiológico:</strong> ${physiologicalExplanation}</p>`;
+            if (colloquialExplanation) fullModalMessage += `<p class="mb-3"><strong class="text-indigo-300">En simple:</strong> ${colloquialExplanation}</p>`;
+            if (modalAdviceText) fullModalMessage += `<p><strong class="text-indigo-300">Consejo Detallado:</strong> ${modalAdviceText}</p>`;
+            if (!fullModalMessage) fullModalMessage = fullExplanationText.replace(statusRegex, '').trim();
+
+            const sanitizedModalAdvice = fullModalMessage.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+            const sanitizedBiomarkerName = biomarkerName.replace(/'/g, "\\'");
+
+            return `
+                <div class="card p-4">
+                    <div class="flex justify-between items-center">
+                        <div>
+                            <h4 class="font-bold text-lg text-white marker-title-glow">${biomarkerName}</h4>
+                            <p class="text-2xl font-black ${statusInfo.valueColor}">${value}</p>
+                        </div>
+                        <button 
+                            class="text-xs font-bold text-white px-3 py-1 rounded-full cursor-pointer hover:scale-110 transition-transform ${statusInfo.color} flex-shrink-0"
+                            onclick="showModal('${sanitizedBiomarkerName}', '${sanitizedModalAdvice}')"
+                        >
+                            ${statusInfo.text}
+                        </button>
+                    </div>
+                </div>`;
+        }
+
         function generateTextReport(text) {
             let reportText = text;
-            
-            // --- 1. Extraer Preguntas ---
+            const reportContainer = document.getElementById('report-content');
+            reportContainer.innerHTML = '';
+
             const questionRegex = /\*\*\s*Preguntas Clave para tu Médico\s*\*\*([\s\S]*)/i;
             const questionMatch = reportText.match(questionRegex);
             
@@ -585,84 +647,59 @@
             }
             updateQuestionsList();
 
-            // --- 2. Procesar y Renderizar el resto del reporte ---
-            const sections = reportText.split(/\*\*(.*?)\*\*/g).filter(s => s.trim());
-            let html = '';
+            const sections = reportText.split(/\n?(?=\*\*.*?\*\*)/).filter(s => s.trim());
 
-            for (let i = 0; i < sections.length; i += 2) {
-                const title = sections[i].trim();
-                let content = sections[i + 1] ? sections[i + 1].trim() : '';
-
-                html += `<h3 class="font-bold text-lg mt-4 mb-2 text-indigo-300 marker-title-glow">${title}</h3>`;
-
-                if (title === 'Hallazgos Principales') {
-                    html += '<div class="space-y-4">';
-                    const items = content.split(/\n\s*(?:\*|\-)\s/g).filter(item => item.trim());
-                    
-                    items.forEach(lineContent => {
-                        const nameMatch = lineContent.match(/(\*\*|)(.*?)(?:\*\*|):\s/);
-                        const dataMatch = lineContent.match(/\[\s*(OPTIMO|MEJORABLE|ATENCION)\s*:\s*(.*?)\s*\]/i);
-
-                        if (!nameMatch || !dataMatch) return;
-
-                        const biomarkerName = nameMatch[2].trim();
-                        
-                        // Lógica de extracción de valor mejorada
-                        const valueStartIndex = lineContent.indexOf(nameMatch[0]) + nameMatch[0].length;
-                        const valueEndIndex = lineContent.indexOf(dataMatch[0]);
-                        let value = lineContent.substring(valueStartIndex, valueEndIndex).trim();
-                        value = value.replace(/\.$/, '').trim();
-                        if (!value) {
-                           value = "Sin valor";
-                        }
-
-
-                        const status = dataMatch[1].toUpperCase();
-                        const fullExplanation = dataMatch[2];
-                        const statusInfo = {
-                            'OPTIMO': { text: 'ÓPTIMO', color: 'bg-green-500' },
-                            'MEJORABLE': { text: 'MEJORABLE', color: 'bg-yellow-500' },
-                            'ATENCION': { text: 'REQUIERE ATENCIÓN', color: 'bg-red-500' }
-                        }[status];
-
-                        if (!statusInfo) return;
-
-                        const parts = fullExplanation.split('||');
-                        const physiologicalExplanation = (parts[0] || '').trim();
-                        const colloquialExplanation = (parts[1] || '').replace(/En simple:/i, '').trim();
-                        const modalAdvice = (parts[2] || fullExplanation).replace(/Consejo Modal:/i, '').trim();
-                        const sanitizedModalAdvice = modalAdvice.replace(/'/g, "\\'").replace(/"/g, "&quot;").replace(/\n/g, "<br>");
-                        const sanitizedBiomarkerName = biomarkerName.replace(/'/g, "\\'");
-
-                        html += `
-                            <div class="card p-4 space-y-3 report-card">
-                                <div class="flex justify-between items-start">
-                                    <div>
-                                        <h4 class="font-bold text-lg text-white marker-title-glow">${biomarkerName}</h4>
-                                        <p class="text-4xl font-black brand-gradient-text">${value}</p>
-                                    </div>
-                                    <button 
-                                        class="text-xs font-bold text-white px-3 py-1 rounded-full cursor-pointer hover:scale-110 transition-transform ${statusInfo.color}"
-                                        onclick="showModal('${sanitizedBiomarkerName}', '${sanitizedModalAdvice}')"
-                                    >
-                                        ${statusInfo.text}
-                                    </button>
-                                </div>
-                                <div class="text-sm space-y-2 text-gray-300 border-t border-white/10 pt-3">
-                                    ${physiologicalExplanation ? `<p><strong class="text-indigo-300">Contexto Fisiológico:</strong> ${physiologicalExplanation}</p>` : ''}
-                                    ${colloquialExplanation ? `<p><strong class="text-indigo-300">En simple:</strong> ${colloquialExplanation}</p>` : ''}
-                                </div>
-                            </div>`;
-                    });
-                    html += '</div>';
-
+            sections.forEach(section => {
+                const trimmedSection = section.trim();
+                const titleMatch = trimmedSection.match(/^\*\*(.*?)\*\*([\s\S]*)/);
+                
+                let title, content;
+                if (titleMatch) {
+                    title = titleMatch[1].trim();
+                    content = titleMatch[2].trim();
                 } else {
-                    html += `<div class="card p-6 text-gray-300 space-y-3 neon-yellow-border">${content.replace(/\n/g, '<br>')}</div>`;
+                    content = trimmedSection;
+                    title = null; // No title if it doesn't match
                 }
-            }
 
-            document.getElementById('report-content').innerHTML = html;
+                if (title) {
+                    const titleElement = document.createElement('h3');
+                    titleElement.className = "font-bold text-lg mt-4 mb-2 text-indigo-300 marker-title-glow";
+                    titleElement.textContent = title;
+                    reportContainer.appendChild(titleElement);
+                }
+                
+                const lines = content.split('\n').filter(l => l.trim());
+                let accumulatedPlainText = [];
+
+                const flushPlainText = () => {
+                    // This is the critical fix: only create a card if there's actual, visible text.
+                    if (accumulatedPlainText.join('').trim().length > 0) {
+                        const textCard = document.createElement('div');
+                        textCard.className = 'card p-6 text-gray-300 space-y-3';
+                        textCard.innerHTML = accumulatedPlainText.join('<br>');
+                        reportContainer.appendChild(textCard);
+                    }
+                    accumulatedPlainText = [];
+                };
+
+                lines.forEach(line => {
+                    const cleanedLine = line.replace(/^(\*|\-)\s*/, '').trim();
+                    const cardHtml = parseBiomarkerLine(cleanedLine);
+
+                    if (cardHtml) {
+                        flushPlainText(); // Render any plain text before this biomarker
+                        const cardWrapper = document.createElement('div');
+                        cardWrapper.innerHTML = cardHtml;
+                        reportContainer.appendChild(cardWrapper.firstElementChild);
+                    } else {
+                        accumulatedPlainText.push(cleanedLine);
+                    }
+                });
+                flushPlainText(); // Render any remaining plain text at the end
+            });
         }
+
 
         function updateQuestionsList() {
             const list = document.getElementById('questions-list');
