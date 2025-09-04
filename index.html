@@ -466,6 +466,7 @@
                 - **Vitamina D:** 45 ng/mL. [OPTIMO:Nivel adecuado para la homeostasis del calcio y la función inmune. || En simple: ¡Tus niveles de sol interno ☀️ están perfectos! || Consejo Modal:¡Felicidades por este excelente resultado! Mantener una Vitamina D óptima es fundamental para tu sistema inmune y la salud de tus huesos. Para seguir así, asegúrate de tener una exposición solar regular y segura (15-20 minutos al día) y consume alimentos ricos en esta vitamina como pescados grasos.]
 
                 **Reglas Adicionales:**
+                - **Enfoque Keto OBLIGATORIO:** Todas las recomendaciones nutricionales DEBEN ser estrictamente cetogénicas (keto) o bajas en carbohidratos. NO menciones granos, azúcares, legumbres, tubérculos altos en almidón o frutas altas en azúcar. Enfócate en grasas saludables (aguacate, aceite de oliva), proteínas moderadas (carnes, pescados, huevos) y vegetales de hoja verde.
                 - NO te presentes como médico.
                 - Sé empático, nunca alarmista.
                 - Formula 2 o 3 preguntas en la sección correspondiente.
@@ -659,7 +660,7 @@
                     content = titleMatch[2].trim();
                 } else {
                     content = trimmedSection;
-                    title = null; // No title if it doesn't match
+                    title = null; 
                 }
 
                 if (title) {
@@ -673,7 +674,6 @@
                 let accumulatedPlainText = [];
 
                 const flushPlainText = () => {
-                    // This is the critical fix: only create a card if there's actual, visible text.
                     if (accumulatedPlainText.join('').trim().length > 0) {
                         const textCard = document.createElement('div');
                         textCard.className = 'card p-6 text-gray-300 space-y-3';
@@ -688,7 +688,7 @@
                     const cardHtml = parseBiomarkerLine(cleanedLine);
 
                     if (cardHtml) {
-                        flushPlainText(); // Render any plain text before this biomarker
+                        flushPlainText();
                         const cardWrapper = document.createElement('div');
                         cardWrapper.innerHTML = cardHtml;
                         reportContainer.appendChild(cardWrapper.firstElementChild);
@@ -696,7 +696,7 @@
                         accumulatedPlainText.push(cleanedLine);
                     }
                 });
-                flushPlainText(); // Render any remaining plain text at the end
+                flushPlainText();
             });
         }
 
