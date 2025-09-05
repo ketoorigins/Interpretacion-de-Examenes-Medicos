@@ -349,7 +349,7 @@
         document.getElementById('back-to-dashboard-from-report-btn').addEventListener('click', () => showScreen('dashboard-screen'));
 
         followUpBtn.addEventListener('click', () => {
-            if (!appState.userProfile.apiKey) {
+             if (!appState.userProfile.apiKey) {
                 showModal("API Key Requerida", "Por favor, introduce tu API Key en la pantalla de perfil para usar esta función.");
                 return;
             }
@@ -414,7 +414,7 @@
             appState.userProfile.sex = document.getElementById('sex').value;
             appState.userProfile.diet = document.getElementById('diet').value;
             appState.userProfile.apiKey = document.getElementById('api-key').value;
-
+            
             const birthDate = new Date(appState.userProfile.dob);
             const today = new Date();
             let age = today.getFullYear() - birthDate.getFullYear();
@@ -429,7 +429,7 @@
             const file = event.target.files[0];
             if (!file) return;
 
-            if (!appState.userProfile.apiKey) {
+             if (!appState.userProfile.apiKey) {
                 showModal("API Key Requerida", "Por favor, primero completa tu perfil e introduce tu API Key de Google AI para continuar.");
                 return;
             }
@@ -522,7 +522,10 @@
                       
         async function callGeminiAPI(text, customSystemPrompt) {
             const apiKey = appState.userProfile.apiKey;
-            if (!apiKey) throw new Error("API Key no proporcionada.");
+            if (!apiKey) {
+                showModal("API Key no configurada", "Por favor, introduce tu API Key en la pantalla de perfil para continuar.");
+                throw new Error("API Key no configurada.");
+            }
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
             const payload = {
                 contents: [{ parts: [{ text }] }],
@@ -537,7 +540,10 @@
 
         async function callGeminiAPIWithImage(prompt, imageData) {
             const apiKey = appState.userProfile.apiKey;
-            if (!apiKey) throw new Error("API Key no proporcionada.");
+             if (!apiKey) {
+                showModal("API Key no configurada", "Por favor, introduce tu API Key en la pantalla de perfil para continuar.");
+                throw new Error("API Key no configurada.");
+            }
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${apiKey}`;
             const payload = {
                 contents: [{
