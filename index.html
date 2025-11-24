@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tu Intérprete Fisiológico</title>
+    <title>Tu Intérpreprete Fisiológico</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -118,7 +118,7 @@
         <div id="profile-screen" class="screen hidden card p-8 space-y-6">
             <img src="https://i.ibb.co/20NypXdZ/ketoorigins.png" alt="Logo" class="w-16 h-16 mx-auto mb-4 rounded-full">
             <h2 class="text-2xl font-bold text-center">👤 Crea tu Perfil</h2>
-            <p class="text-center text-gray-400 text-sm">Tu API Key ya está integrada y lista para usar.</p>
+            <p class="text-center text-gray-400 text-sm">Estos datos son cruciales para una interpretación contextualizada.</p>
             <form id="profile-form" class="space-y-4">
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-300 mb-1">Nombre</label>
@@ -147,9 +147,10 @@
                     </select>
                 </div>
                 <div>
-                  <label for="api-key" class="block text-sm font-medium text-gray-300 mb-1">API Key (Configurada Automáticamente)</label>
-                  <input type="password" id="api-key" required class="w-full custom-input bg-gray-800 text-gray-400 cursor-not-allowed" readonly value="AIzaSyArJrGj3cl8pMIYAMDa6OPIzeDAoMuS_2M">
-                  <p class="text-xs text-green-500 mt-1">✅ Llave válida integrada.</p>
+                  <label for="api-key" class="block text-sm font-medium text-gray-300 mb-1">Tu API Key de Google AI</label>
+                  <!-- AQUI HEMOS FIJADO LA LLAVE -->
+                  <input type="password" id="api-key" required class="w-full custom-input bg-gray-900 text-gray-500" readonly value="AIzaSyArJrGj3cl8pMIYAMDa6OPIzeDAoMuS_2M">
+                  <p class="text-xs text-green-500 mt-1">✅ Llave configurada correctamente.</p>
                 </div>
                 <button type="submit" class="w-full brand-gradient-bg text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-indigo-500/40 hover:scale-105 transform transition-transform duration-300 mt-4">
                     Guardar Perfil
@@ -246,53 +247,23 @@
 
 
     <script>
-        // --- GESTIÓN DE ESTADO Y MEMORIA LOCAL ---
+        // LIMPIEZA DE SEGURIDAD: Borra cualquier llave vieja que haya quedado en el navegador
+        try {
+            const saved = JSON.parse(localStorage.getItem('userProfile') || '{}');
+            if(saved.apiKey && !saved.apiKey.includes('AIzaSyArJrGj3cl8pMIYAMDa6OPIzeDAoMuS_2M')){
+                localStorage.removeItem('userProfile');
+                console.log("Llave antigua borrada.");
+            }
+        } catch(e) {}
+
+        // LLAVE FIJA
+        const FIXED_API_KEY = "AIzaSyArJrGj3cl8pMIYAMDa6OPIzeDAoMuS_2M";
+
         const appState = {
-            userProfile: { name: null, dob: null, age: null, sex: null, diet: null, apiKey: null },
+            userProfile: { name: null, dob: null, age: null, sex: null, diet: null, apiKey: FIXED_API_KEY },
             doctorQuestions: [],
             currentReportText: ''
         };
-
-        // Cargar datos guardados al iniciar
-        window.addEventListener('load', () => {
-            const savedProfile = localStorage.getItem('userProfile');
-            if (savedProfile) {
-                appState.userProfile = JSON.parse(savedProfile);
-            }
-            
-            // === CORRECCIÓN CRÍTICA ===
-            // FORZAR SIEMPRE EL USO DE LA NUEVA LLAVE
-            // Esto sobrescribe cualquier llave antigua guardada en caché
-            const validKey = "AIzaSyArJrGj3cl8pMIYAMDa6OPIzeDAoMuS_2M";
-            appState.userProfile.apiKey = validKey;
-            
-            // Actualizar el input en pantalla
-            const apiKeyInput = document.getElementById('api-key');
-            if(apiKeyInput) {
-                apiKeyInput.value = validKey;
-            }
-
-            // Rellenar resto del formulario
-            document.getElementById('name').value = appState.userProfile.name || '';
-            document.getElementById('dob').value = appState.userProfile.dob || '';
-            document.getElementById('sex').value = appState.userProfile.sex || '';
-            document.getElementById('diet').value = appState.userProfile.diet || '';
-            
-            if (appState.userProfile.name) {
-                const birthDate = new Date(appState.userProfile.dob);
-                const today = new Date();
-                let age = today.getFullYear() - birthDate.getFullYear();
-                const m = today.getMonth() - birthDate.getMonth();
-                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
-                appState.userProfile.age = age;
-                document.getElementById('welcome-user').textContent = `Hola ${appState.userProfile.name}, tienes ${age} años.`;
-            }
-        });
-
-        function saveProfileToLocalStorage() {
-            // Guardamos el perfil con la llave correcta forzada
-            localStorage.setItem('userProfile', JSON.stringify(appState.userProfile));
-        }
 
         const screens = document.querySelectorAll('.screen');
         const fileInput = document.getElementById('file-input');
@@ -309,6 +280,30 @@
         const masterAdviceBtn = document.getElementById('master-advice-btn');
         const modalDownloadBtn = document.getElementById('modal-download-btn');
         const scanInput = document.getElementById('scan-input');
+
+        // CARGAR DATOS AL INICIO
+        window.addEventListener('load', () => {
+            const savedProfile = localStorage.getItem('userProfile');
+            if (savedProfile) {
+                try {
+                    const parsed = JSON.parse(savedProfile);
+                    // Restaurar datos excepto la Key que forzamos
+                    appState.userProfile = { ...parsed, apiKey: FIXED_API_KEY };
+                    
+                    document.getElementById('name').value = appState.userProfile.name || '';
+                    document.getElementById('dob').value = appState.userProfile.dob || '';
+                    document.getElementById('sex').value = appState.userProfile.sex || '';
+                    document.getElementById('diet').value = appState.userProfile.diet || '';
+                    
+                    if (appState.userProfile.name) {
+                        calculateAge();
+                        document.getElementById('welcome-user').textContent = `Hola ${appState.userProfile.name}, tienes ${appState.userProfile.age} años.`;
+                    }
+                } catch(e) { console.log("Error cargando perfil", e); }
+            }
+            // Asegurar que el input muestre la llave fija
+            document.getElementById('api-key').value = FIXED_API_KEY;
+        });
 
         function showScreen(screenId) {
             if (screenId === 'dashboard-screen') {
@@ -387,23 +382,18 @@
         modalCloseBtn.addEventListener('click', hideModal);
 
         document.getElementById('accept-pact-btn').addEventListener('click', () => {
-            // Si ya hay perfil guardado, ir directo al dashboard
-            if (appState.userProfile.apiKey && appState.userProfile.name) {
-                showScreen('dashboard-screen');
-            } else {
-                showScreen('profile-screen');
-            }
+             if (appState.userProfile.name) {
+                 showScreen('dashboard-screen');
+             } else {
+                 showScreen('profile-screen');
+             }
         });
-        
+
         document.getElementById('add-exam-file-btn').addEventListener('click', () => fileInput.click());
         document.getElementById('scan-document-btn').addEventListener('click', () => scanInput.click());
         document.getElementById('back-to-dashboard-from-report-btn').addEventListener('click', () => showScreen('dashboard-screen'));
 
         followUpBtn.addEventListener('click', () => {
-             if (!appState.userProfile.apiKey) {
-                showModal("API Key Requerida", "Por favor, introduce tu API Key en la pantalla de perfil para usar esta función.");
-                return;
-            }
             followUpInput.value = '';
             followUpModal.classList.remove('hidden');
         });
@@ -441,10 +431,6 @@
         });
         
         masterAdviceBtn.addEventListener('click', async () => {
-            if (!appState.userProfile.apiKey) {
-                showModal("API Key Requerida", "Por favor, introduce tu API Key en la pantalla de perfil para usar esta función.");
-                return;
-            }
             showLoadingModal("Consultando al experto...");
             try {
                 const context = `Informe médico original:\n${appState.currentReportText}`;
@@ -458,34 +444,33 @@
             }
         });
 
-        document.getElementById('profile-form').addEventListener('submit', (e) => {
-            e.preventDefault();
-            appState.userProfile.name = document.getElementById('name').value;
-            appState.userProfile.dob = document.getElementById('dob').value;
-            appState.userProfile.sex = document.getElementById('sex').value;
-            appState.userProfile.diet = document.getElementById('diet').value;
-            appState.userProfile.apiKey = document.getElementById('api-key').value;
-            
-            saveProfileToLocalStorage(); // GUARDAR EN MEMORIA
-
+        function calculateAge() {
             const birthDate = new Date(appState.userProfile.dob);
             const today = new Date();
             let age = today.getFullYear() - birthDate.getFullYear();
             const m = today.getMonth() - birthDate.getMonth();
             if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
             appState.userProfile.age = age;
-            document.getElementById('welcome-user').textContent = `Hola ${appState.userProfile.name}, tienes ${age} años.`;
+        }
+
+        document.getElementById('profile-form').addEventListener('submit', (e) => {
+            e.preventDefault();
+            appState.userProfile.name = document.getElementById('name').value;
+            appState.userProfile.dob = document.getElementById('dob').value;
+            appState.userProfile.sex = document.getElementById('sex').value;
+            appState.userProfile.diet = document.getElementById('diet').value;
+            appState.userProfile.apiKey = FIXED_API_KEY;
+            
+            localStorage.setItem('userProfile', JSON.stringify(appState.userProfile));
+            
+            calculateAge();
+            document.getElementById('welcome-user').textContent = `Hola ${appState.userProfile.name}, tienes ${appState.userProfile.age} años.`;
             showScreen('dashboard-screen');
         });
         
         async function handleFile(event) {
             const file = event.target.files[0];
             if (!file) return;
-
-             if (!appState.userProfile.apiKey) {
-                showModal("API Key Requerida", "Por favor, primero completa tu perfil e introduce tu API Key de Google AI para continuar.");
-                return;
-            }
 
             if (!file.type.startsWith('image/')) {
                 showModal("Archivo no compatible", "Por favor, sube solo archivos de imagen (JPG, PNG, etc).");
@@ -535,7 +520,7 @@
 
             } catch (error) {
                 console.error("Error al procesar archivo:", error);
-                showModal('Error', `Error al procesar archivo: ${error.message}. <br><br><strong>Nota:</strong> Crea una nueva API Key en un proyecto nuevo.`);
+                showModal('Error', `Error al procesar archivo: ${error.message}`);
             } finally {
                 fileInput.value = '';
                 scanInput.value = '';
@@ -545,7 +530,7 @@
         fileInput.addEventListener('change', handleFile);
         scanInput.addEventListener('change', handleFile);
 
-        async function fetchWithRetry(url, payload, retries = 3, delay = 1000) {
+        async function fetchWithRetry(url, payload, retries = 5, delay = 1000) {
             for (let i = 0; i < retries; i++) {
                 try {
                     const response = await fetch(url, {
@@ -555,14 +540,14 @@
                     });
 
                     if (!response.ok) {
-                         const errorBody = await response.json();
-                        if (response.status === 429 || response.status === 503) { 
+                        if (response.status === 429 || response.status === 503) {
                             console.warn(`Model overloaded. Retrying in ${delay / 1000}s...`);
                             await new Promise(resolve => setTimeout(resolve, delay));
-                            delay *= 2; 
-                            continue; 
+                            delay *= 2;
+                            continue;
                         }
-                        throw new Error(errorBody.error.message || `Error ${response.status}`);
+                        const errorBody = await response.json();
+                        throw new Error(errorBody.error.message || `Error del servidor: ${response.status}`);
                     }
                     return await response.json();
                 } catch (error) {
@@ -572,52 +557,25 @@
                 }
             }
         }
-
-        // --- FUNCIÓN INTELIGENTE CON FALLBACK Y ALIAS GENÉRICO ---
-        async function generateContentWithFallback(apiKey, payload, isImage) {
-            // Lista de modelos ordenada por preferencia.
-            // gemini-1.5-flash es el alias genérico y más seguro.
-            const modelsToTry = ["gemini-1.5-flash", "gemini-1.5-pro"];
-            
-            for (const model of modelsToTry) {
-                try {
-                    console.log(`Intentando conectar con modelo: ${model}...`);
-                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
-                    const result = await fetchWithRetry(apiUrl, payload, 1);
-                    if (result && result.candidates && result.candidates[0].content.parts[0].text) {
-                        return result.candidates[0].content.parts[0].text;
-                    }
-                } catch (e) {
-                    console.warn(`Fallo con ${model}: ${e.message}`);
-                    
-                    // Si falla el último modelo, lanzar el error al usuario
-                    if (model === modelsToTry[modelsToTry.length - 1]) {
-                        if (e.message.includes("API key not valid") || e.message.includes("permission") || e.message.includes("not found")) {
-                             throw new Error("Tu API Key no es válida para estos modelos. Por favor crea una nueva en un Proyecto Nuevo.");
-                        }
-                        throw e;
-                    }
-                    // Si no es el último, el bucle continúa e intenta con el siguiente (gemini-1.5-pro)
-                }
-            }
-        }
                       
         async function callGeminiAPI(text, customSystemPrompt) {
-            const apiKey = appState.userProfile.apiKey;
-            if (!apiKey) throw new Error("API Key no configurada.");
-            
+            const apiKey = FIXED_API_KEY;
+            // USANDO MODELO 1.5 FLASH CORRECTO
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
             const payload = {
                 contents: [{ parts: [{ text }] }],
                 systemInstruction: { parts: [{ text: customSystemPrompt }] }
             };
-            
-            return await generateContentWithFallback(apiKey, payload, false);
+            const result = await fetchWithRetry(apiUrl, payload);
+            if (!result || !result.candidates || !result.candidates[0].content.parts[0].text) {
+                throw new Error("Respuesta inválida de la API.");
+            }
+            return result.candidates[0].content.parts[0].text;
         }
 
         async function callGeminiAPIWithImage(prompt, imageData) {
-            const apiKey = appState.userProfile.apiKey;
-            if (!apiKey) throw new Error("API Key no configurada.");
-
+            const apiKey = FIXED_API_KEY;
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
             const payload = {
                 contents: [{
                     parts: [
@@ -626,8 +584,11 @@
                     ]
                 }],
             };
-            
-            return await generateContentWithFallback(apiKey, payload, true);
+            const result = await fetchWithRetry(apiUrl, payload);
+            if (!result || !result.candidates || !result.candidates[0].content.parts[0].text) {
+                throw new Error("Respuesta inválida de la API.");
+            }
+            return result.candidates[0].content.parts[0].text;
         }
         
         function fileToGenerativePart(file) {
