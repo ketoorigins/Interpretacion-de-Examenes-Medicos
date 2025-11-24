@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tu Intérpreprete Fisiológico</title>
+    <title>Tu Intérprete Fisiológico</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -108,10 +108,6 @@
                 <h2 class="font-semibold text-lg text-center">🤝 Nuestro Pacto</h2>
                 <p class="text-gray-400">Esta herramienta es <strong class="text-white">educativa</strong>. No ofrece diagnósticos ni reemplaza a tu médico.</p>
                 <p class="text-gray-400">Su propósito es darte contexto sobre tus biomarcadores y ayudarte a formular <strong class="text-white">preguntas inteligentes</strong> para tu próxima consulta.</p>
-                <!-- AVISO DE LIMPIEZA -->
-                <p class="text-xs text-red-400 font-mono mt-2 text-center border border-red-900/50 p-2 rounded bg-red-900/10">
-                    ⚠️ Memoria Caché Borrada: Nueva Llave Activada
-                </p>
             </div>
             <button id="accept-pact-btn" class="w-full brand-gradient-bg text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-indigo-500/40 hover:scale-105 transform transition-transform duration-300">
                 Entendido, empezar ahora
@@ -150,11 +146,9 @@
                         <option value="other">❓ Otro</option>
                     </select>
                 </div>
-                <div class="opacity-75">
-                  <label for="api-key" class="block text-sm font-medium text-green-400 mb-1">Tu API Key (Integrada)</label>
-                  <!-- CAMPO DE LLAVE BLOQUEADO Y VISIBLE -->
-                  <input type="text" id="api-key" required class="w-full custom-input bg-gray-900 text-gray-400 font-mono text-xs" readonly value="AIzaSyArJrGj3cl8pMIYAMDa6OPIzeDAoMuS_2M">
-                  <p class="text-xs text-green-500 mt-1">✅ Llave configurada correctamente en el código.</p>
+                <div>
+                  <label for="api-key" class="block text-sm font-medium text-gray-300 mb-1">Tu API Key de Google AI</label>
+                  <input type="password" id="api-key" required class="w-full custom-input" placeholder="Pega tu clave aquí">
                 </div>
                 <button type="submit" class="w-full brand-gradient-bg text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-indigo-500/40 hover:scale-105 transform transition-transform duration-300 mt-4">
                     Guardar Perfil
@@ -251,23 +245,8 @@
 
 
     <script>
-        // === ZONA DE SEGURIDAD: LIMPIEZA DE CACHÉ CORRUPTA ===
-        // Esto borra la llave antigua guardada en el navegador automáticamente
-        try {
-            const saved = JSON.parse(localStorage.getItem('userProfile') || '{}');
-            // Si la llave guardada NO es la nueva, borramos todo el perfil para evitar errores
-            if(saved.apiKey && !saved.apiKey.includes('S_2M')){
-                localStorage.removeItem('userProfile');
-                console.log("♻️ Llave antigua detectada y eliminada.");
-            }
-        } catch(e) {}
-
-        // === TU LLAVE MAESTRA (CONFIGURADA MANUALMENTE) ===
-        const FIXED_API_KEY = "AIzaSyArJrGj3cl8pMIYAMDa6OPIzeDAoMuS_2M";
-
         const appState = {
-            // Inicializamos con la llave fija por defecto
-            userProfile: { name: null, dob: null, age: null, sex: null, diet: null, apiKey: FIXED_API_KEY },
+            userProfile: { name: null, dob: null, age: null, sex: null, diet: null, apiKey: null },
             doctorQuestions: [],
             currentReportText: ''
         };
@@ -287,31 +266,6 @@
         const masterAdviceBtn = document.getElementById('master-advice-btn');
         const modalDownloadBtn = document.getElementById('modal-download-btn');
         const scanInput = document.getElementById('scan-input');
-
-        // CARGAR DATOS AL INICIO
-        window.addEventListener('load', () => {
-            const savedProfile = localStorage.getItem('userProfile');
-            if (savedProfile) {
-                try {
-                    const parsed = JSON.parse(savedProfile);
-                    // Restaurar datos de usuario PERO forzar la llave nueva siempre
-                    appState.userProfile = { ...parsed, apiKey: FIXED_API_KEY };
-                    
-                    document.getElementById('name').value = appState.userProfile.name || '';
-                    document.getElementById('dob').value = appState.userProfile.dob || '';
-                    document.getElementById('sex').value = appState.userProfile.sex || '';
-                    document.getElementById('diet').value = appState.userProfile.diet || '';
-                    
-                    if (appState.userProfile.name) {
-                        calculateAge();
-                        document.getElementById('welcome-user').textContent = `Hola ${appState.userProfile.name}, tienes ${appState.userProfile.age} años.`;
-                    }
-                } catch(e) { console.log("Error cargando perfil", e); }
-            }
-            // Asegurar visualmente que el input tenga la llave correcta
-            const keyInput = document.getElementById('api-key');
-            if(keyInput) keyInput.value = FIXED_API_KEY;
-        });
 
         function showScreen(screenId) {
             if (screenId === 'dashboard-screen') {
@@ -389,20 +343,16 @@
 
         modalCloseBtn.addEventListener('click', hideModal);
 
-        document.getElementById('accept-pact-btn').addEventListener('click', () => {
-             // Navegación inteligente: si ya hay nombre, ir al dashboard
-             if (appState.userProfile.name) {
-                 showScreen('dashboard-screen');
-             } else {
-                 showScreen('profile-screen');
-             }
-        });
-
+        document.getElementById('accept-pact-btn').addEventListener('click', () => showScreen('profile-screen'));
         document.getElementById('add-exam-file-btn').addEventListener('click', () => fileInput.click());
         document.getElementById('scan-document-btn').addEventListener('click', () => scanInput.click());
         document.getElementById('back-to-dashboard-from-report-btn').addEventListener('click', () => showScreen('dashboard-screen'));
 
         followUpBtn.addEventListener('click', () => {
+             if (!appState.userProfile.apiKey) {
+                showModal("API Key Requerida", "Por favor, introduce tu API Key en la pantalla de perfil para usar esta función.");
+                return;
+            }
             followUpInput.value = '';
             followUpModal.classList.remove('hidden');
         });
@@ -440,6 +390,10 @@
         });
         
         masterAdviceBtn.addEventListener('click', async () => {
+            if (!appState.userProfile.apiKey) {
+                showModal("API Key Requerida", "Por favor, introduce tu API Key en la pantalla de perfil para usar esta función.");
+                return;
+            }
             showLoadingModal("Consultando al experto...");
             try {
                 const context = `Informe médico original:\n${appState.currentReportText}`;
@@ -453,35 +407,32 @@
             }
         });
 
-        function calculateAge() {
-            if(!appState.userProfile.dob) return;
-            const birthDate = new Date(appState.userProfile.dob);
-            const today = new Date();
-            let age = today.getFullYear() - birthDate.getFullYear();
-            const m = today.getMonth() - birthDate.getMonth();
-            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
-            appState.userProfile.age = age;
-        }
-
         document.getElementById('profile-form').addEventListener('submit', (e) => {
             e.preventDefault();
             appState.userProfile.name = document.getElementById('name').value;
             appState.userProfile.dob = document.getElementById('dob').value;
             appState.userProfile.sex = document.getElementById('sex').value;
             appState.userProfile.diet = document.getElementById('diet').value;
-            // IMPORTANTE: Guardar siempre la llave fija, no lo que ponga el usuario
-            appState.userProfile.apiKey = FIXED_API_KEY;
+            appState.userProfile.apiKey = document.getElementById('api-key').value;
             
-            localStorage.setItem('userProfile', JSON.stringify(appState.userProfile));
-            
-            calculateAge();
-            document.getElementById('welcome-user').textContent = `Hola ${appState.userProfile.name}, tienes ${appState.userProfile.age} años.`;
+            const birthDate = new Date(appState.userProfile.dob);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const m = today.getMonth() - birthDate.getMonth();
+            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
+            appState.userProfile.age = age;
+            document.getElementById('welcome-user').textContent = `Hola ${appState.userProfile.name}, tienes ${age} años.`;
             showScreen('dashboard-screen');
         });
         
         async function handleFile(event) {
             const file = event.target.files[0];
             if (!file) return;
+
+             if (!appState.userProfile.apiKey) {
+                showModal("API Key Requerida", "Por favor, primero completa tu perfil e introduce tu API Key de Google AI para continuar.");
+                return;
+            }
 
             if (!file.type.startsWith('image/')) {
                 showModal("Archivo no compatible", "Por favor, sube solo archivos de imagen (JPG, PNG, etc).");
@@ -541,7 +492,7 @@
         fileInput.addEventListener('change', handleFile);
         scanInput.addEventListener('change', handleFile);
 
-        async function fetchWithRetry(url, payload, retries = 3, delay = 1000) {
+        async function fetchWithRetry(url, payload, retries = 5, delay = 1000) {
             for (let i = 0; i < retries; i++) {
                 try {
                     const response = await fetch(url, {
@@ -551,11 +502,11 @@
                     });
 
                     if (!response.ok) {
-                        if (response.status === 429 || response.status === 503) {
+                        if (response.status === 429 || response.status === 503) { // Specific statuses for overload
                             console.warn(`Model overloaded. Retrying in ${delay / 1000}s...`);
                             await new Promise(resolve => setTimeout(resolve, delay));
-                            delay *= 2;
-                            continue;
+                            delay *= 2; // Exponential backoff
+                            continue; // Retry
                         }
                         const errorBody = await response.json();
                         throw new Error(errorBody.error.message || `Error del servidor: ${response.status}`);
@@ -568,11 +519,14 @@
                 }
             }
         }
-                      
+                       
         async function callGeminiAPI(text, customSystemPrompt) {
-            // USAMOS LA CONSTANTE FIJA PARA EVITAR ERRORES DE CACHÉ
-            const apiKey = FIXED_API_KEY;
-            
+            const apiKey = appState.userProfile.apiKey;
+            if (!apiKey) {
+                showModal("API Key no configurada", "Por favor, introduce tu API Key en la pantalla de perfil para continuar.");
+                throw new Error("API Key no configurada.");
+            }
+            // URL CORREGIDA: Usa el modelo estable gemini-1.5-flash
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
             const payload = {
                 contents: [{ parts: [{ text }] }],
@@ -586,10 +540,14 @@
         }
 
         async function callGeminiAPIWithImage(prompt, imageData) {
-            // USAMOS LA CONSTANTE FIJA
-            const apiKey = FIXED_API_KEY;
-            
+            const apiKey = appState.userProfile.apiKey;
+             if (!apiKey) {
+                showModal("API Key no configurada", "Por favor, introduce tu API Key en la pantalla de perfil para continuar.");
+                throw new Error("API Key no configurada.");
+            }
+            // URL CORREGIDA: Usa el modelo estable gemini-1.5-flash
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
+            
             const payload = {
                 contents: [{
                     parts: [
