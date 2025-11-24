@@ -108,6 +108,10 @@
                 <h2 class="font-semibold text-lg text-center">🤝 Nuestro Pacto</h2>
                 <p class="text-gray-400">Esta herramienta es <strong class="text-white">educativa</strong>. No ofrece diagnósticos ni reemplaza a tu médico.</p>
                 <p class="text-gray-400">Su propósito es darte contexto sobre tus biomarcadores y ayudarte a formular <strong class="text-white">preguntas inteligentes</strong> para tu próxima consulta.</p>
+                <!-- AVISO DE LIMPIEZA -->
+                <p class="text-xs text-red-400 font-mono mt-2 text-center border border-red-900/50 p-2 rounded bg-red-900/10">
+                    ⚠️ Memoria Caché Borrada: Nueva Llave Activada
+                </p>
             </div>
             <button id="accept-pact-btn" class="w-full brand-gradient-bg text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-indigo-500/40 hover:scale-105 transform transition-transform duration-300">
                 Entendido, empezar ahora
@@ -146,11 +150,11 @@
                         <option value="other">❓ Otro</option>
                     </select>
                 </div>
-                <div>
-                  <label for="api-key" class="block text-sm font-medium text-gray-300 mb-1">Tu API Key de Google AI</label>
-                  <!-- AQUI HEMOS FIJADO LA LLAVE -->
-                  <input type="password" id="api-key" required class="w-full custom-input bg-gray-900 text-gray-500" readonly value="AIzaSyArJrGj3cl8pMIYAMDa6OPIzeDAoMuS_2M">
-                  <p class="text-xs text-green-500 mt-1">✅ Llave configurada correctamente.</p>
+                <div class="opacity-75">
+                  <label for="api-key" class="block text-sm font-medium text-green-400 mb-1">Tu API Key (Integrada)</label>
+                  <!-- CAMPO DE LLAVE BLOQUEADO Y VISIBLE -->
+                  <input type="text" id="api-key" required class="w-full custom-input bg-gray-900 text-gray-400 font-mono text-xs" readonly value="AIzaSyArJrGj3cl8pMIYAMDa6OPIzeDAoMuS_2M">
+                  <p class="text-xs text-green-500 mt-1">✅ Llave configurada correctamente en el código.</p>
                 </div>
                 <button type="submit" class="w-full brand-gradient-bg text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-indigo-500/40 hover:scale-105 transform transition-transform duration-300 mt-4">
                     Guardar Perfil
@@ -247,19 +251,22 @@
 
 
     <script>
-        // LIMPIEZA DE SEGURIDAD: Borra cualquier llave vieja que haya quedado en el navegador
+        // === ZONA DE SEGURIDAD: LIMPIEZA DE CACHÉ CORRUPTA ===
+        // Esto borra la llave antigua guardada en el navegador automáticamente
         try {
             const saved = JSON.parse(localStorage.getItem('userProfile') || '{}');
-            if(saved.apiKey && !saved.apiKey.includes('AIzaSyArJrGj3cl8pMIYAMDa6OPIzeDAoMuS_2M')){
+            // Si la llave guardada NO es la nueva, borramos todo el perfil para evitar errores
+            if(saved.apiKey && !saved.apiKey.includes('S_2M')){
                 localStorage.removeItem('userProfile');
-                console.log("Llave antigua borrada.");
+                console.log("♻️ Llave antigua detectada y eliminada.");
             }
         } catch(e) {}
 
-        // LLAVE FIJA
+        // === TU LLAVE MAESTRA (CONFIGURADA MANUALMENTE) ===
         const FIXED_API_KEY = "AIzaSyArJrGj3cl8pMIYAMDa6OPIzeDAoMuS_2M";
 
         const appState = {
+            // Inicializamos con la llave fija por defecto
             userProfile: { name: null, dob: null, age: null, sex: null, diet: null, apiKey: FIXED_API_KEY },
             doctorQuestions: [],
             currentReportText: ''
@@ -287,7 +294,7 @@
             if (savedProfile) {
                 try {
                     const parsed = JSON.parse(savedProfile);
-                    // Restaurar datos excepto la Key que forzamos
+                    // Restaurar datos de usuario PERO forzar la llave nueva siempre
                     appState.userProfile = { ...parsed, apiKey: FIXED_API_KEY };
                     
                     document.getElementById('name').value = appState.userProfile.name || '';
@@ -301,8 +308,9 @@
                     }
                 } catch(e) { console.log("Error cargando perfil", e); }
             }
-            // Asegurar que el input muestre la llave fija
-            document.getElementById('api-key').value = FIXED_API_KEY;
+            // Asegurar visualmente que el input tenga la llave correcta
+            const keyInput = document.getElementById('api-key');
+            if(keyInput) keyInput.value = FIXED_API_KEY;
         });
 
         function showScreen(screenId) {
@@ -382,6 +390,7 @@
         modalCloseBtn.addEventListener('click', hideModal);
 
         document.getElementById('accept-pact-btn').addEventListener('click', () => {
+             // Navegación inteligente: si ya hay nombre, ir al dashboard
              if (appState.userProfile.name) {
                  showScreen('dashboard-screen');
              } else {
@@ -445,6 +454,7 @@
         });
 
         function calculateAge() {
+            if(!appState.userProfile.dob) return;
             const birthDate = new Date(appState.userProfile.dob);
             const today = new Date();
             let age = today.getFullYear() - birthDate.getFullYear();
@@ -459,6 +469,7 @@
             appState.userProfile.dob = document.getElementById('dob').value;
             appState.userProfile.sex = document.getElementById('sex').value;
             appState.userProfile.diet = document.getElementById('diet').value;
+            // IMPORTANTE: Guardar siempre la llave fija, no lo que ponga el usuario
             appState.userProfile.apiKey = FIXED_API_KEY;
             
             localStorage.setItem('userProfile', JSON.stringify(appState.userProfile));
@@ -530,7 +541,7 @@
         fileInput.addEventListener('change', handleFile);
         scanInput.addEventListener('change', handleFile);
 
-        async function fetchWithRetry(url, payload, retries = 5, delay = 1000) {
+        async function fetchWithRetry(url, payload, retries = 3, delay = 1000) {
             for (let i = 0; i < retries; i++) {
                 try {
                     const response = await fetch(url, {
@@ -559,8 +570,9 @@
         }
                       
         async function callGeminiAPI(text, customSystemPrompt) {
+            // USAMOS LA CONSTANTE FIJA PARA EVITAR ERRORES DE CACHÉ
             const apiKey = FIXED_API_KEY;
-            // USANDO MODELO 1.5 FLASH CORRECTO
+            
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
             const payload = {
                 contents: [{ parts: [{ text }] }],
@@ -574,7 +586,9 @@
         }
 
         async function callGeminiAPIWithImage(prompt, imageData) {
+            // USAMOS LA CONSTANTE FIJA
             const apiKey = FIXED_API_KEY;
+            
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
             const payload = {
                 contents: [{
