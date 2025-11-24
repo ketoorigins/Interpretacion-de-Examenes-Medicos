@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tu Intérpreprete Fisiológico</title>
+    <title>Tu Intérprete Fisiológico</title>
     
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -118,7 +118,7 @@
         <div id="profile-screen" class="screen hidden card p-8 space-y-6">
             <img src="https://i.ibb.co/20NypXdZ/ketoorigins.png" alt="Logo" class="w-16 h-16 mx-auto mb-4 rounded-full">
             <h2 class="text-2xl font-bold text-center">👤 Crea tu Perfil</h2>
-            <p class="text-center text-gray-400 text-sm">Estos datos son cruciales para una interpretación contextualizada.</p>
+            <p class="text-center text-gray-400 text-sm">Usa una API Key nueva creada en "Proyecto Nuevo" para evitar errores.</p>
             <form id="profile-form" class="space-y-4">
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-300 mb-1">Nombre</label>
@@ -147,8 +147,9 @@
                     </select>
                 </div>
                 <div>
-                  <label for="api-key" class="block text-sm font-medium text-gray-300 mb-1">Tu API Key de Google AI</label>
-                  <input type="password" id="api-key" required class="w-full custom-input" placeholder="Pega tu clave aquí">
+                  <label for="api-key" class="block text-sm font-medium text-gray-300 mb-1">Tu API Key de Google AI Studio</label>
+                  <input type="password" id="api-key" required class="w-full custom-input" placeholder="Pega tu clave nueva aquí">
+                  <p class="text-xs text-gray-500 mt-1">Se guardará automáticamente para tu próxima visita.</p>
                 </div>
                 <button type="submit" class="w-full brand-gradient-bg text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-indigo-500/40 hover:scale-105 transform transition-transform duration-300 mt-4">
                     Guardar Perfil
@@ -245,11 +246,47 @@
 
 
     <script>
+        // --- GESTIÓN DE ESTADO Y MEMORIA LOCAL ---
         const appState = {
             userProfile: { name: null, dob: null, age: null, sex: null, diet: null, apiKey: null },
             doctorQuestions: [],
             currentReportText: ''
         };
+
+        // Cargar datos guardados al iniciar
+        window.addEventListener('load', () => {
+            const savedProfile = localStorage.getItem('userProfile');
+            if (savedProfile) {
+                appState.userProfile = JSON.parse(savedProfile);
+            }
+            
+            // INTEGRACIÓN: Usar la API Key proporcionada por defecto si no existe
+            if (!appState.userProfile.apiKey) {
+                appState.userProfile.apiKey = "AIzaSyArJrGj3cl8pMIYAMDa6OPIzeDAoMuS_2M";
+            }
+
+            // Rellenar formulario
+            document.getElementById('name').value = appState.userProfile.name || '';
+            document.getElementById('dob').value = appState.userProfile.dob || '';
+            document.getElementById('sex').value = appState.userProfile.sex || '';
+            document.getElementById('diet').value = appState.userProfile.diet || '';
+            // Poner la key en el input (sea la guardada o la hardcodeada)
+            document.getElementById('api-key').value = appState.userProfile.apiKey;
+            
+            if (appState.userProfile.name) {
+                const birthDate = new Date(appState.userProfile.dob);
+                const today = new Date();
+                let age = today.getFullYear() - birthDate.getFullYear();
+                const m = today.getMonth() - birthDate.getMonth();
+                if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
+                appState.userProfile.age = age;
+                document.getElementById('welcome-user').textContent = `Hola ${appState.userProfile.name}, tienes ${age} años.`;
+            }
+        });
+
+        function saveProfileToLocalStorage() {
+            localStorage.setItem('userProfile', JSON.stringify(appState.userProfile));
+        }
 
         const screens = document.querySelectorAll('.screen');
         const fileInput = document.getElementById('file-input');
@@ -343,7 +380,15 @@
 
         modalCloseBtn.addEventListener('click', hideModal);
 
-        document.getElementById('accept-pact-btn').addEventListener('click', () => showScreen('profile-screen'));
+        document.getElementById('accept-pact-btn').addEventListener('click', () => {
+            // Si ya hay perfil guardado, ir directo al dashboard
+            if (appState.userProfile.apiKey && appState.userProfile.name) {
+                showScreen('dashboard-screen');
+            } else {
+                showScreen('profile-screen');
+            }
+        });
+        
         document.getElementById('add-exam-file-btn').addEventListener('click', () => fileInput.click());
         document.getElementById('scan-document-btn').addEventListener('click', () => scanInput.click());
         document.getElementById('back-to-dashboard-from-report-btn').addEventListener('click', () => showScreen('dashboard-screen'));
@@ -415,6 +460,8 @@
             appState.userProfile.diet = document.getElementById('diet').value;
             appState.userProfile.apiKey = document.getElementById('api-key').value;
             
+            saveProfileToLocalStorage(); // GUARDAR EN MEMORIA
+
             const birthDate = new Date(appState.userProfile.dob);
             const today = new Date();
             let age = today.getFullYear() - birthDate.getFullYear();
@@ -482,7 +529,7 @@
 
             } catch (error) {
                 console.error("Error al procesar archivo:", error);
-                showModal('Error', `Error al procesar archivo: ${error.message}`);
+                showModal('Error', `Error al procesar archivo: ${error.message}. <br><br><strong>Nota:</strong> Crea una nueva API Key en un proyecto nuevo.`);
             } finally {
                 fileInput.value = '';
                 scanInput.value = '';
@@ -492,7 +539,7 @@
         fileInput.addEventListener('change', handleFile);
         scanInput.addEventListener('change', handleFile);
 
-        async function fetchWithRetry(url, payload, retries = 5, delay = 1000) {
+        async function fetchWithRetry(url, payload, retries = 3, delay = 1000) {
             for (let i = 0; i < retries; i++) {
                 try {
                     const response = await fetch(url, {
@@ -502,14 +549,14 @@
                     });
 
                     if (!response.ok) {
-                        if (response.status === 429 || response.status === 503) { // Specific statuses for overload
+                         const errorBody = await response.json();
+                        if (response.status === 429 || response.status === 503) { 
                             console.warn(`Model overloaded. Retrying in ${delay / 1000}s...`);
                             await new Promise(resolve => setTimeout(resolve, delay));
-                            delay *= 2; // Exponential backoff
-                            continue; // Retry
+                            delay *= 2; 
+                            continue; 
                         }
-                        const errorBody = await response.json();
-                        throw new Error(errorBody.error.message || `Error del servidor: ${response.status}`);
+                        throw new Error(errorBody.error.message || `Error ${response.status}`);
                     }
                     return await response.json();
                 } catch (error) {
@@ -519,34 +566,52 @@
                 }
             }
         }
+
+        // --- FUNCIÓN INTELIGENTE CON FALLBACK Y ALIAS GENÉRICO ---
+        async function generateContentWithFallback(apiKey, payload, isImage) {
+            // Lista de modelos ordenada por preferencia.
+            // gemini-1.5-flash es el alias genérico y más seguro.
+            const modelsToTry = ["gemini-1.5-flash", "gemini-1.5-pro"];
+            
+            for (const model of modelsToTry) {
+                try {
+                    console.log(`Intentando conectar con modelo: ${model}...`);
+                    const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+                    const result = await fetchWithRetry(apiUrl, payload, 1);
+                    if (result && result.candidates && result.candidates[0].content.parts[0].text) {
+                        return result.candidates[0].content.parts[0].text;
+                    }
+                } catch (e) {
+                    console.warn(`Fallo con ${model}: ${e.message}`);
+                    
+                    // Si falla el último modelo, lanzar el error al usuario
+                    if (model === modelsToTry[modelsToTry.length - 1]) {
+                        if (e.message.includes("API key not valid") || e.message.includes("permission") || e.message.includes("not found")) {
+                             throw new Error("Tu API Key no es válida para estos modelos. Por favor crea una nueva en un Proyecto Nuevo.");
+                        }
+                        throw e;
+                    }
+                    // Si no es el último, el bucle continúa e intenta con el siguiente (gemini-1.5-pro)
+                }
+            }
+        }
                       
         async function callGeminiAPI(text, customSystemPrompt) {
             const apiKey = appState.userProfile.apiKey;
-            if (!apiKey) {
-                showModal("API Key no configurada", "Por favor, introduce tu API Key en la pantalla de perfil para continuar.");
-                throw new Error("API Key no configurada.");
-            }
-            // CHANGED: Use specific version -001 to ensure availability
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-001:generateContent?key=${apiKey}`;
+            if (!apiKey) throw new Error("API Key no configurada.");
+            
             const payload = {
                 contents: [{ parts: [{ text }] }],
                 systemInstruction: { parts: [{ text: customSystemPrompt }] }
             };
-            const result = await fetchWithRetry(apiUrl, payload);
-            if (!result || !result.candidates || !result.candidates[0].content.parts[0].text) {
-                throw new Error("Respuesta inválida de la API.");
-            }
-            return result.candidates[0].content.parts[0].text;
+            
+            return await generateContentWithFallback(apiKey, payload, false);
         }
 
         async function callGeminiAPIWithImage(prompt, imageData) {
             const apiKey = appState.userProfile.apiKey;
-             if (!apiKey) {
-                showModal("API Key no configurada", "Por favor, introduce tu API Key en la pantalla de perfil para continuar.");
-                throw new Error("API Key no configurada.");
-            }
-            // CHANGED: Use specific version -001 to ensure availability
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-001:generateContent?key=${apiKey}`;
+            if (!apiKey) throw new Error("API Key no configurada.");
+
             const payload = {
                 contents: [{
                     parts: [
@@ -555,11 +620,8 @@
                     ]
                 }],
             };
-            const result = await fetchWithRetry(apiUrl, payload);
-            if (!result || !result.candidates || !result.candidates[0].content.parts[0].text) {
-                throw new Error("Respuesta inválida de la API.");
-            }
-            return result.candidates[0].content.parts[0].text;
+            
+            return await generateContentWithFallback(apiKey, payload, true);
         }
         
         function fileToGenerativePart(file) {
