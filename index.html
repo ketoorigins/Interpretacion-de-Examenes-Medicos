@@ -118,7 +118,7 @@
         <div id="profile-screen" class="screen hidden card p-8 space-y-6">
             <img src="https://i.ibb.co/20NypXdZ/ketoorigins.png" alt="Logo" class="w-16 h-16 mx-auto mb-4 rounded-full">
             <h2 class="text-2xl font-bold text-center">👤 Crea tu Perfil</h2>
-            <p class="text-center text-gray-400 text-sm">Usa una API Key nueva creada en "Proyecto Nuevo" para evitar errores.</p>
+            <p class="text-center text-gray-400 text-sm">Tu API Key ya está integrada y lista para usar.</p>
             <form id="profile-form" class="space-y-4">
                 <div>
                     <label for="name" class="block text-sm font-medium text-gray-300 mb-1">Nombre</label>
@@ -147,9 +147,9 @@
                     </select>
                 </div>
                 <div>
-                  <label for="api-key" class="block text-sm font-medium text-gray-300 mb-1">Tu API Key de Google AI Studio</label>
-                  <input type="password" id="api-key" required class="w-full custom-input" placeholder="Pega tu clave nueva aquí">
-                  <p class="text-xs text-gray-500 mt-1">Se guardará automáticamente para tu próxima visita.</p>
+                  <label for="api-key" class="block text-sm font-medium text-gray-300 mb-1">API Key (Configurada Automáticamente)</label>
+                  <input type="password" id="api-key" required class="w-full custom-input bg-gray-800 text-gray-400 cursor-not-allowed" readonly value="AIzaSyArJrGj3cl8pMIYAMDa6OPIzeDAoMuS_2M">
+                  <p class="text-xs text-green-500 mt-1">✅ Llave válida integrada.</p>
                 </div>
                 <button type="submit" class="w-full brand-gradient-bg text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-indigo-500/40 hover:scale-105 transform transition-transform duration-300 mt-4">
                     Guardar Perfil
@@ -260,18 +260,23 @@
                 appState.userProfile = JSON.parse(savedProfile);
             }
             
-            // INTEGRACIÓN: Usar la API Key proporcionada por defecto si no existe
-            if (!appState.userProfile.apiKey) {
-                appState.userProfile.apiKey = "AIzaSyArJrGj3cl8pMIYAMDa6OPIzeDAoMuS_2M";
+            // === CORRECCIÓN CRÍTICA ===
+            // FORZAR SIEMPRE EL USO DE LA NUEVA LLAVE
+            // Esto sobrescribe cualquier llave antigua guardada en caché
+            const validKey = "AIzaSyArJrGj3cl8pMIYAMDa6OPIzeDAoMuS_2M";
+            appState.userProfile.apiKey = validKey;
+            
+            // Actualizar el input en pantalla
+            const apiKeyInput = document.getElementById('api-key');
+            if(apiKeyInput) {
+                apiKeyInput.value = validKey;
             }
 
-            // Rellenar formulario
+            // Rellenar resto del formulario
             document.getElementById('name').value = appState.userProfile.name || '';
             document.getElementById('dob').value = appState.userProfile.dob || '';
             document.getElementById('sex').value = appState.userProfile.sex || '';
             document.getElementById('diet').value = appState.userProfile.diet || '';
-            // Poner la key en el input (sea la guardada o la hardcodeada)
-            document.getElementById('api-key').value = appState.userProfile.apiKey;
             
             if (appState.userProfile.name) {
                 const birthDate = new Date(appState.userProfile.dob);
@@ -285,6 +290,7 @@
         });
 
         function saveProfileToLocalStorage() {
+            // Guardamos el perfil con la llave correcta forzada
             localStorage.setItem('userProfile', JSON.stringify(appState.userProfile));
         }
 
