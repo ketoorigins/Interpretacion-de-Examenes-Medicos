@@ -64,6 +64,7 @@
             padding: 0.75rem;
             outline: none;
             transition: border-color 0.2s, box-shadow 0.2s;
+            color: white;
         }
         .custom-input:focus {
             border-color: #4F46E5;
@@ -79,10 +80,6 @@
         }
         .marker-title-glow {
             text-shadow: 0 0 8px rgba(168, 85, 247, 0.5), 0 0 12px rgba(79, 70, 229, 0.5);
-        }
-        .neon-yellow-border {
-            border-color: #FBBF24; /* amber-400 */
-            box-shadow: 0 0 5px rgba(251, 191, 36, 0.6), 0 0 10px rgba(251, 191, 36, 0.4);
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
@@ -112,6 +109,8 @@
             <button id="accept-pact-btn" class="w-full brand-gradient-bg text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-indigo-500/40 hover:scale-105 transform transition-transform duration-300">
                 Entendido, empezar ahora
             </button>
+            <!-- Botón discreto para resetear la API Key si es necesario -->
+            <button onclick="resetApiKey()" class="text-xs text-gray-600 hover:text-gray-400 underline mt-4">Restablecer Configuración</button>
         </div>
 
         <!-- Pantalla de Perfil de Usuario -->
@@ -146,10 +145,7 @@
                         <option value="other">❓ Otro</option>
                     </select>
                 </div>
-                <div>
-                  <label for="api-key" class="block text-sm font-medium text-gray-300 mb-1">Tu API Key de Google AI</label>
-                  <input type="password" id="api-key" required class="w-full custom-input" placeholder="Pega tu clave aquí">
-                </div>
+                <!-- API Key eliminada de aquí para limpieza visual -->
                 <button type="submit" class="w-full brand-gradient-bg text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-indigo-500/40 hover:scale-105 transform transition-transform duration-300 mt-4">
                     Guardar Perfil
                 </button>
@@ -218,6 +214,19 @@
 
     </div>
 
+    <!-- Modal Seguro para pedir API Key (Solo una vez) -->
+    <div id="apikey-modal" class="fixed inset-0 bg-black bg-opacity-95 flex items-center justify-center p-4 z-50 hidden">
+        <div class="card p-8 max-w-sm w-full space-y-4 shadow-2xl shadow-indigo-500/30 border border-indigo-500/50">
+            <div class="text-center">
+                <h3 class="text-xl font-bold mb-2">🔑 Configuración Inicial</h3>
+                <p class="text-sm text-gray-400 mb-4">Para funcionar, la app necesita tu clave API de Google AI. Se guardará de forma segura en tu dispositivo.</p>
+            </div>
+            <input type="password" id="secure-api-input" class="w-full custom-input" placeholder="Pega tu API Key nueva aquí...">
+            <p class="text-xs text-gray-500 mt-2">Nunca compartas esta clave. Si limpias el caché, tendrás que ingresarla nuevamente.</p>
+            <button id="save-api-btn" class="w-full brand-gradient-bg text-white font-bold py-2 px-8 rounded-lg mt-4">Guardar y Continuar</button>
+        </div>
+    </div>
+
     <!-- Modal Personalizado para Notificaciones y Carga -->
     <div id="custom-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden z-50">
         <div class="card p-8 max-w-sm w-full space-y-4 shadow-2xl shadow-purple-500/20">
@@ -246,7 +255,7 @@
 
     <script>
         const appState = {
-            userProfile: { name: null, dob: null, age: null, sex: null, diet: null, apiKey: null },
+            userProfile: { name: null, dob: null, age: null, sex: null, diet: null }, // Ya no guardamos la API aquí para que no se filtre en logs
             doctorQuestions: [],
             currentReportText: ''
         };
@@ -266,6 +275,47 @@
         const masterAdviceBtn = document.getElementById('master-advice-btn');
         const modalDownloadBtn = document.getElementById('modal-download-btn');
         const scanInput = document.getElementById('scan-input');
+        
+        // Elementos del nuevo sistema de API seguro
+        const apiKeyModal = document.getElementById('apikey-modal');
+        const secureApiInput = document.getElementById('secure-api-input');
+        const saveApiBtn = document.getElementById('save-api-btn');
+
+        // Función para gestionar la API Key de forma segura
+        function getApiKey() {
+            return localStorage.getItem('gemini_api_key_secure');
+        }
+
+        function checkApiKeyPresence() {
+            const key = getApiKey();
+            if (!key) {
+                apiKeyModal.classList.remove('hidden');
+            } else {
+                apiKeyModal.classList.add('hidden');
+            }
+        }
+
+        saveApiBtn.addEventListener('click', () => {
+            const key = secureApiInput.value.trim();
+            if (key.length > 10) {
+                localStorage.setItem('gemini_api_key_secure', key);
+                apiKeyModal.classList.add('hidden');
+                showModal("¡Configurado!", "Tu llave ha sido guardada en este dispositivo de forma segura.");
+            } else {
+                alert("Por favor ingresa una API Key válida");
+            }
+        });
+
+        // Función global para resetear la clave si el usuario quiere cambiarla
+        window.resetApiKey = function() {
+            localStorage.removeItem('gemini_api_key_secure');
+            location.reload();
+        }
+
+        // Verificar API al iniciar
+        document.addEventListener('DOMContentLoaded', () => {
+            checkApiKeyPresence();
+        });
 
         function showScreen(screenId) {
             if (screenId === 'dashboard-screen') {
@@ -349,8 +399,8 @@
         document.getElementById('back-to-dashboard-from-report-btn').addEventListener('click', () => showScreen('dashboard-screen'));
 
         followUpBtn.addEventListener('click', () => {
-             if (!appState.userProfile.apiKey) {
-                showModal("API Key Requerida", "Por favor, introduce tu API Key en la pantalla de perfil para usar esta función.");
+             if (!getApiKey()) {
+                checkApiKeyPresence(); // Si no hay API, pedirla
                 return;
             }
             followUpInput.value = '';
@@ -390,8 +440,8 @@
         });
         
         masterAdviceBtn.addEventListener('click', async () => {
-            if (!appState.userProfile.apiKey) {
-                showModal("API Key Requerida", "Por favor, introduce tu API Key en la pantalla de perfil para usar esta función.");
+            if (!getApiKey()) {
+                checkApiKeyPresence();
                 return;
             }
             showLoadingModal("Consultando al experto...");
@@ -413,7 +463,8 @@
             appState.userProfile.dob = document.getElementById('dob').value;
             appState.userProfile.sex = document.getElementById('sex').value;
             appState.userProfile.diet = document.getElementById('diet').value;
-            appState.userProfile.apiKey = document.getElementById('api-key').value;
+            
+            // Ya no leemos api-key del formulario aquí
             
             const birthDate = new Date(appState.userProfile.dob);
             const today = new Date();
@@ -429,8 +480,9 @@
             const file = event.target.files[0];
             if (!file) return;
 
-             if (!appState.userProfile.apiKey) {
-                showModal("API Key Requerida", "Por favor, primero completa tu perfil e introduce tu API Key de Google AI para continuar.");
+            // Verificación de API Key desde LocalStorage
+             if (!getApiKey()) {
+                checkApiKeyPresence(); // Mostrar modal si falta
                 return;
             }
 
@@ -519,14 +571,14 @@
                 }
             }
         }
-                       
+                      
         async function callGeminiAPI(text, customSystemPrompt) {
-            const apiKey = appState.userProfile.apiKey;
+            const apiKey = getApiKey(); // Usar la función segura
             if (!apiKey) {
-                showModal("API Key no configurada", "Por favor, introduce tu API Key en la pantalla de perfil para continuar.");
+                checkApiKeyPresence();
                 throw new Error("API Key no configurada.");
             }
-            // CORREGIDO: Usar el modelo específico para el entorno de preview
+            // UPDATE: Usamos gemini-2.5-flash-preview-09-2025 en lugar de gemini-1.5-flash para compatibilidad con el entorno
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
             const payload = {
                 contents: [{ parts: [{ text }] }],
@@ -540,14 +592,13 @@
         }
 
         async function callGeminiAPIWithImage(prompt, imageData) {
-            const apiKey = appState.userProfile.apiKey;
+            const apiKey = getApiKey(); // Usar la función segura
              if (!apiKey) {
-                showModal("API Key no configurada", "Por favor, introduce tu API Key en la pantalla de perfil para continuar.");
+                checkApiKeyPresence();
                 throw new Error("API Key no configurada.");
             }
-            // CORREGIDO: Usar el modelo específico para el entorno de preview
+            // UPDATE: Usamos gemini-2.5-flash-preview-09-2025 en lugar de gemini-1.5-flash para compatibilidad con el entorno
             const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-            
             const payload = {
                 contents: [{
                     parts: [
