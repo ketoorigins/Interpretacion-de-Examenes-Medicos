@@ -35,7 +35,7 @@
             background: linear-gradient(90deg, #4F46E5, #A855F7);
         }
         .master-gradient-bg {
-            background: linear-gradient(90deg, #F97316, #EF4444); /* Orange-500 to Red-500 */
+            background: linear-gradient(90deg, #F97316, #EF4444);
         }
         .screen {
             transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
@@ -51,11 +51,6 @@
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 1.5rem;
             transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-        }
-        .report-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 8px 25px rgba(168, 85, 247, 0.15);
-            border-color: rgba(168, 85, 247, 0.4);
         }
         .custom-input {
             background-color: #0D0C1D;
@@ -109,8 +104,6 @@
             <button id="accept-pact-btn" class="w-full brand-gradient-bg text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-indigo-500/40 hover:scale-105 transform transition-transform duration-300">
                 Entendido, empezar ahora
             </button>
-            <!-- Botón discreto para resetear la API Key si es necesario -->
-            <button onclick="resetApiKey()" class="text-xs text-gray-600 hover:text-gray-400 underline mt-4">Restablecer Configuración</button>
         </div>
 
         <!-- Pantalla de Perfil de Usuario -->
@@ -145,7 +138,6 @@
                         <option value="other">❓ Otro</option>
                     </select>
                 </div>
-                <!-- API Key eliminada de aquí para limpieza visual -->
                 <button type="submit" class="w-full brand-gradient-bg text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-indigo-500/40 hover:scale-105 transform transition-transform duration-300 mt-4">
                     Guardar Perfil
                 </button>
@@ -177,14 +169,14 @@
             <div class="card p-6">
                 <h3 class="font-bold text-lg mb-3">❓ Mis Preguntas para el Médico</h3>
                 <div id="questions-list" class="space-y-2 text-sm text-gray-300">
-                    <p class="text-gray-500">Aún no has generado preguntas. Aparecerán aquí después de tu primer análisis.</p>
+                    <p class="text-gray-500">Aparecerán aquí después de tu primer análisis.</p>
                 </div>
             </div>
 
             <div class="card p-6">
                 <h3 class="font-bold text-lg mb-2">🔬 Enfoque de la Semana</h3>
                 <p class="text-sm text-gray-400">
-                    <strong class="text-white">El Ratio Triglicéridos/HDL:</strong> Este no es un marcador que suelen darte en el laboratorio, pero es uno de los indicadores más potentes de resistencia a la insulina y salud metabólica. Un ratio por debajo de 1.5 es considerado óptimo. ¿Cómo está el tuyo?
+                    <strong class="text-white">El Ratio Triglicéridos/HDL:</strong> Indicador potente de salud metabólica. Un ratio por debajo de 1.5 es considerado óptimo.
                 </p>
             </div>
         </div>
@@ -199,14 +191,14 @@
                     🎓 Recibir Consejo Profesional
                 </button>
                 <button id="follow-up-btn" class="w-full brand-gradient-bg text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-indigo-500/40 hover:scale-105 transform transition-transform duration-300">
-                    Hacer una Pregunta de Seguimiento
+                    Hacer Pregunta de Seguimiento
                 </button>
                 <div class="flex space-x-2">
                     <button id="download-pdf-btn" class="w-full bg-white/10 text-white font-bold py-2 px-4 rounded-xl hover:bg-white/20 transition-colors text-sm">
                         Descargar PDF
                     </button>
                     <button id="back-to-dashboard-from-report-btn" class="w-full bg-white/5 text-white font-bold py-2 px-4 rounded-xl hover:bg-white/10 transition-colors text-sm">
-                        Volver al Panel
+                        Volver
                     </button>
                 </div>
             </div>
@@ -214,20 +206,7 @@
 
     </div>
 
-    <!-- Modal Seguro para pedir API Key (Solo una vez) -->
-    <div id="apikey-modal" class="fixed inset-0 bg-black bg-opacity-95 flex items-center justify-center p-4 z-50 hidden">
-        <div class="card p-8 max-w-sm w-full space-y-4 shadow-2xl shadow-indigo-500/30 border border-indigo-500/50">
-            <div class="text-center">
-                <h3 class="text-xl font-bold mb-2">🔑 Configuración Inicial</h3>
-                <p class="text-sm text-gray-400 mb-4">Para funcionar, la app necesita tu clave API de Google AI. Se guardará de forma segura en tu dispositivo.</p>
-            </div>
-            <input type="password" id="secure-api-input" class="w-full custom-input" placeholder="Pega tu API Key nueva aquí...">
-            <p class="text-xs text-gray-500 mt-2">Nunca compartas esta clave. Si limpias el caché, tendrás que ingresarla nuevamente.</p>
-            <button id="save-api-btn" class="w-full brand-gradient-bg text-white font-bold py-2 px-8 rounded-lg mt-4">Guardar y Continuar</button>
-        </div>
-    </div>
-
-    <!-- Modal Personalizado para Notificaciones y Carga -->
+    <!-- Modal Personalizado -->
     <div id="custom-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden z-50">
         <div class="card p-8 max-w-sm w-full space-y-4 shadow-2xl shadow-purple-500/20">
             <div id="modal-loader" class="hidden mx-auto loader"></div>
@@ -240,11 +219,11 @@
         </div>
     </div>
 
-    <!-- Modal para Pregunta de Seguimiento -->
+    <!-- Modal Seguimiento -->
     <div id="follow-up-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden z-50">
         <div class="card p-8 max-w-sm w-full text-center space-y-4 shadow-2xl shadow-purple-500/20">
-            <h3 id="follow-up-modal-title" class="text-xl font-bold">Haz una pregunta sobre tu reporte</h3>
-            <textarea id="follow-up-input" class="w-full custom-input h-24 text-sm" placeholder="Ej: ¿Qué significa 'estenosis foraminal'?"></textarea>
+            <h3 class="text-xl font-bold">Pregunta sobre tu reporte</h3>
+            <textarea id="follow-up-input" class="w-full custom-input h-24 text-sm" placeholder="Ej: ¿Qué significa este valor?"></textarea>
             <div class="flex space-x-2">
                 <button id="follow-up-cancel-btn" class="w-full bg-white/5 text-white font-bold py-2 px-8 rounded-lg">Cancelar</button>
                 <button id="follow-up-submit-btn" class="w-full brand-gradient-bg text-white font-bold py-2 px-8 rounded-lg">Enviar</button>
@@ -252,87 +231,39 @@
         </div>
     </div>
 
-
     <script>
+        // API KEY AUTOMÁTICA SEGÚN REQUERIMIENTOS DEL ENTORNO
+        const apiKey = ""; 
+
         const appState = {
-            userProfile: { name: null, dob: null, age: null, sex: null, diet: null }, // Ya no guardamos la API aquí para que no se filtre en logs
+            userProfile: { name: null, dob: null, age: null, sex: null, diet: null },
             doctorQuestions: [],
             currentReportText: ''
         };
 
         const screens = document.querySelectorAll('.screen');
         const fileInput = document.getElementById('file-input');
+        const scanInput = document.getElementById('scan-input');
         const customModal = document.getElementById('custom-modal');
         const modalTitle = document.getElementById('modal-title');
         const modalMessage = document.getElementById('modal-message');
         const modalCloseBtn = document.getElementById('modal-close-btn');
         const modalLoader = document.getElementById('modal-loader');
-        const followUpModal = document.getElementById('follow-up-modal');
-        const followUpBtn = document.getElementById('follow-up-btn');
-        const followUpCancelBtn = document.getElementById('follow-up-cancel-btn');
-        const followUpSubmitBtn = document.getElementById('follow-up-submit-btn');
-        const followUpInput = document.getElementById('follow-up-input');
-        const masterAdviceBtn = document.getElementById('master-advice-btn');
         const modalDownloadBtn = document.getElementById('modal-download-btn');
-        const scanInput = document.getElementById('scan-input');
-        
-        // Elementos del nuevo sistema de API seguro
-        const apiKeyModal = document.getElementById('apikey-modal');
-        const secureApiInput = document.getElementById('secure-api-input');
-        const saveApiBtn = document.getElementById('save-api-btn');
-
-        // Función para gestionar la API Key de forma segura
-        function getApiKey() {
-            return localStorage.getItem('gemini_api_key_secure');
-        }
-
-        function checkApiKeyPresence() {
-            const key = getApiKey();
-            if (!key) {
-                apiKeyModal.classList.remove('hidden');
-            } else {
-                apiKeyModal.classList.add('hidden');
-            }
-        }
-
-        saveApiBtn.addEventListener('click', () => {
-            const key = secureApiInput.value.trim();
-            if (key.length > 10) {
-                localStorage.setItem('gemini_api_key_secure', key);
-                apiKeyModal.classList.add('hidden');
-                showModal("¡Configurado!", "Tu llave ha sido guardada en este dispositivo de forma segura.");
-            } else {
-                alert("Por favor ingresa una API Key válida");
-            }
-        });
-
-        // Función global para resetear la clave si el usuario quiere cambiarla
-        window.resetApiKey = function() {
-            localStorage.removeItem('gemini_api_key_secure');
-            location.reload();
-        }
-
-        // Verificar API al iniciar
-        document.addEventListener('DOMContentLoaded', () => {
-            checkApiKeyPresence();
-        });
+        const followUpModal = document.getElementById('follow-up-modal');
+        const followUpInput = document.getElementById('follow-up-input');
 
         function showScreen(screenId) {
-            if (screenId === 'dashboard-screen') {
-                updateQuestionsList();
-            }
+            if (screenId === 'dashboard-screen') updateQuestionsList();
             screens.forEach(s => s.classList.add('hidden'));
             const screenToShow = document.getElementById(screenId);
-            if(screenToShow) {
-                setTimeout(() => screenToShow.classList.remove('hidden'), 50);
-            }
+            if(screenToShow) setTimeout(() => screenToShow.classList.remove('hidden'), 50);
         }
         
         function showModal(title, message, showCloseButton = true, adviceText = null) {
             modalTitle.textContent = title;
             modalMessage.innerHTML = message;
             modalLoader.classList.add('hidden');
-            
             modalCloseBtn.style.display = showCloseButton ? 'block' : 'none';
             modalDownloadBtn.classList.add('hidden');
             modalCloseBtn.classList.add('w-full', 'brand-gradient-bg');
@@ -342,44 +273,12 @@
                 modalDownloadBtn.classList.remove('hidden');
                 modalCloseBtn.classList.remove('w-full', 'brand-gradient-bg');
                 modalCloseBtn.classList.add('w-1/2', 'bg-white/10');
-                modalDownloadBtn.classList.add('w-1/2');
-
-                const newDownloadBtn = modalDownloadBtn.cloneNode(true);
-                modalDownloadBtn.parentNode.replaceChild(newDownloadBtn, modalDownloadBtn);
-                
-                newDownloadBtn.addEventListener('click', () => {
-                    downloadAdviceAsPdf(title, adviceText);
-                });
-
+                modalDownloadBtn.onclick = () => downloadAdviceAsPdf(title, adviceText);
             } 
-
             customModal.classList.remove('hidden');
         }
 
-        function downloadAdviceAsPdf(title, advice) {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            doc.setFont('Helvetica');
-
-            let y = 15;
-            doc.setFontSize(20);
-            doc.text(title.replace(/🎓\s/g, ''), 105, y, { align: 'center' });
-            y += 10;
-            doc.setFontSize(12);
-            doc.text(`Para: ${appState.userProfile.name || 'Usuario'}`, 20, y);
-            y += 15;
-            
-            doc.setFontSize(10);
-            doc.setFont('Helvetica', 'normal');
-            const cleanAdvice = advice.replace(/\*\*(.*?)\*\*/g, '$1');
-            let adviceLines = doc.splitTextToSize(cleanAdvice, 170);
-            doc.text(adviceLines, 20, y);
-
-            doc.save("ConsejoProfesional.pdf");
-        }
-
-
-        function showLoadingModal(message = "Interpretando tu examen...") {
+        function showLoadingModal(message = "Procesando...") {
             modalTitle.textContent = "Procesando...";
             modalMessage.textContent = message;
             modalLoader.classList.remove('hidden');
@@ -387,9 +286,7 @@
             customModal.classList.remove('hidden');
         }
 
-        function hideModal() {
-            customModal.classList.add('hidden');
-        }
+        function hideModal() { customModal.classList.add('hidden'); }
 
         modalCloseBtn.addEventListener('click', hideModal);
 
@@ -398,65 +295,6 @@
         document.getElementById('scan-document-btn').addEventListener('click', () => scanInput.click());
         document.getElementById('back-to-dashboard-from-report-btn').addEventListener('click', () => showScreen('dashboard-screen'));
 
-        followUpBtn.addEventListener('click', () => {
-             if (!getApiKey()) {
-                checkApiKeyPresence(); // Si no hay API, pedirla
-                return;
-            }
-            followUpInput.value = '';
-            followUpModal.classList.remove('hidden');
-        });
-
-        followUpCancelBtn.addEventListener('click', () => {
-            followUpModal.classList.add('hidden');
-        });
-
-        followUpSubmitBtn.addEventListener('click', async () => {
-            const userQuestion = followUpInput.value.trim();
-            if (!userQuestion) {
-                showModal('Pregunta vacía', 'Por favor, escribe una pregunta.');
-                return;
-            }
-
-            followUpModal.classList.add('hidden');
-            showLoadingModal("Consultando al asistente...");
-
-            try {
-                const context = appState.currentReportText;
-                const followUpPrompt = `Contexto del Informe Médico Original:\n\n${context}\n\n---\n\nPregunta del Usuario:\n\n${userQuestion}`;
-                const followUpSystemPrompt = "Actúa como un asistente de IA educativo y amigable. Un usuario te hará una pregunta sobre su informe médico. El informe original se te da como contexto. Responde a su pregunta de forma muy clara y sencilla, como si se lo explicaras a un amigo o a un familiar, usando analogías si es necesario. Basa tu respuesta SÓLO en la información del informe. No inventes datos. Mantén un tono empático, NUNCA te presentes como médico y siempre recuérdale al final que la última palabra la tiene su médico de cabecera.";
-                
-                const newResponse = await callGeminiAPI(followUpPrompt, followUpSystemPrompt);
-
-                appState.currentReportText += `\n\n---\n\n**Mi Pregunta:** ${userQuestion}\n\n**Respuesta del Asistente:**\n${newResponse}`;
-                
-                generateTextReport(appState.currentReportText);
-                hideModal();
-
-            } catch (error) {
-                console.error("Error al procesar pregunta de seguimiento:", error);
-                showModal('Error', `No se pudo procesar tu pregunta: ${error.message}`);
-            }
-        });
-        
-        masterAdviceBtn.addEventListener('click', async () => {
-            if (!getApiKey()) {
-                checkApiKeyPresence();
-                return;
-            }
-            showLoadingModal("Consultando al experto...");
-            try {
-                const context = `Informe médico original:\n${appState.currentReportText}`;
-                const masterSystemPrompt = "Actúas como un sabio mentor en fisiología y bienestar, hablando con alguien que no es experto, puede ser desde un joven hasta un adulto mayor. Basado en el siguiente informe, ofrece un 'Consejo Profesional'. No es un diagnóstico, sino una lección profunda y educativa que conecte los resultados del informe con un gran principio de la salud. Usa analogías muy claras y sencillas (piensa en cosas de la vida diaria: un auto, una casa, un jardín) y un tono inspirador y cercano. El objetivo es que la persona se vaya con una idea poderosa y aplicable para su vida. La respuesta debe ser concisa, de alto impacto y NUNCA debe sonar como un consejo médico directo.";
-                const advice = await callGeminiAPI(context, masterSystemPrompt);
-                const formattedAdvice = advice.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>').replace(/\n/g, '<br>');
-                showModal("🎓 Consejo Profesional", formattedAdvice, true, advice);
-            } catch (error) {
-                console.error("Error al obtener consejo profesional:", error);
-                showModal('Error', `No se pudo generar el consejo: ${error.message}`);
-            }
-        });
-
         document.getElementById('profile-form').addEventListener('submit', (e) => {
             e.preventDefault();
             appState.userProfile.name = document.getElementById('name').value;
@@ -464,85 +302,15 @@
             appState.userProfile.sex = document.getElementById('sex').value;
             appState.userProfile.diet = document.getElementById('diet').value;
             
-            // Ya no leemos api-key del formulario aquí
-            
             const birthDate = new Date(appState.userProfile.dob);
             const today = new Date();
             let age = today.getFullYear() - birthDate.getFullYear();
-            const m = today.getMonth() - birthDate.getMonth();
-            if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) age--;
+            if (today.getMonth() < birthDate.getMonth() || (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate())) age--;
             appState.userProfile.age = age;
+            
             document.getElementById('welcome-user').textContent = `Hola ${appState.userProfile.name}, tienes ${age} años.`;
             showScreen('dashboard-screen');
         });
-        
-        async function handleFile(event) {
-            const file = event.target.files[0];
-            if (!file) return;
-
-            // Verificación de API Key desde LocalStorage
-             if (!getApiKey()) {
-                checkApiKeyPresence(); // Mostrar modal si falta
-                return;
-            }
-
-            if (!file.type.startsWith('image/')) {
-                showModal("Archivo no compatible", "Por favor, sube solo archivos de imagen (JPG, PNG, etc).");
-                return;
-            }
-
-            showLoadingModal("Analizando la imagen y consultando a la IA...");
-            
-            try {
-                const base64ImageData = await fileToGenerativePart(file);
-                const userPrompt = `Tu misión es analizar la imagen de un informe médico y actuar como un "traductor" de salud para un usuario no experto. Usa un lenguaje simple, cercano y con analogías.
-                
-                **Contexto del Paciente:**
-                - Edad: ${appState.userProfile.age} años
-                - Sexo: ${appState.userProfile.sex}
-                - Dieta: ${appState.userProfile.diet}
-
-                **Instrucciones de Formato OBLIGATORIAS:**
-                Tu respuesta DEBE tener TRES secciones con estos títulos EXACTOS:
-                1. **Hallazgos Principales**
-                2. **Recomendaciones**
-                3. **Preguntas Clave para tu Médico**
-
-                Dentro de "Hallazgos Principales", para CADA biomarcador, DEBES seguir este formato al pie de la letra, en una lista:
-                - **Nombre del Marcador:** [Valor]. [ESTADO:Explicación Fisiológica. || En simple: Explicación Coloquial con analogía y emojis relevantes 🧪. || Consejo Modal: Texto detallado para el pop-up.]
-
-                **Los únicos estados permitidos son OPTIMO, MEJORABLE, ATENCION.** No uses otros. El "Consejo Modal" debe ser un texto más profundo.
-
-                **Ejemplos de cómo DEBE verse tu respuesta en "Hallazgos Principales":**
-                - **Colesterol Total:** 250 mg/dL. [ATENCION:El colesterol es una lipoproteína que transporta grasas; su exceso se asocia con aterosclerosis. || En simple: Es como tener mucho tráfico 🚗 en las autopistas de tu cuerpo. || Consejo Modal:Un colesterol total elevado es una señal de advertencia importante. Significa que hay un exceso de partículas de grasa en tu sangre que pueden pegarse a tus arterias, endureciéndolas y estrechándolas. Es crucial hablar con tu médico sobre este valor para crear un plan.]
-                - **Vitamina D:** 45 ng/mL. [OPTIMO:Nivel adecuado para la homeostasis del calcio y la función inmune. || En simple: ¡Tus niveles de sol interno ☀️ están perfectos! || Consejo Modal:¡Felicidades por este excelente resultado! Mantener una Vitamina D óptima es fundamental para tu sistema inmune y la salud de tus huesos. Para seguir así, asegúrate de tener una exposición solar regular y segura (15-20 minutos al día) y consume alimentos ricos en esta vitamina como pescados grasos.]
-
-                **Reglas Adicionales:**
-                - **Enfoque Keto y Control de Porciones (INQUEBRANTABLE):** Todas las recomendaciones nutricionales DEBEN ser estrictamente cetogénicas. **PROHIBICIÓN ABSOLUTA:** Bajo NINGUNA circunstancia uses las frases "llena tu plato", "llena tus platos" o cualquier variación que sugiera comer en abundancia. DEBES usar exclusivamente frases como "incluye una porción adecuada de..." o "modera tu consumo de...". NO menciones granos, azúcares, legumbres, tubérculos altos en almidón o frutas altas en azúcar. Enfócate en grasas saludables (aguacate, aceite de oliva), proteínas moderadas (carnes, pescados, huevos) y vegetales fibrosos (brócoli, coliflor, espinacas).
-                - **Hidratación Específica:** Cuando recomiendes hidratación, DEBES sugerir específicamente "agua mineral con una pizca de sal de mar y un chorrito de limón". No sugieras "agua pura" ni "electrolitos" de forma genérica.
-                - NO te presentes como médico.
-                - Sé empático, nunca alarmista.
-                - Formula 2 o 3 preguntas en la sección correspondiente.
-                - La imagen puede tener texto de baja calidad; haz tu mejor esfuerzo para leerla.`;
-
-                const geminiResponse = await callGeminiAPIWithImage(userPrompt, base64ImageData);
-                
-                appState.currentReportText = geminiResponse;
-                generateTextReport(geminiResponse);
-                hideModal();
-                showScreen('report-screen');
-
-            } catch (error) {
-                console.error("Error al procesar archivo:", error);
-                showModal('Error', `Error al procesar archivo: ${error.message}`);
-            } finally {
-                fileInput.value = '';
-                scanInput.value = '';
-            }
-        }
-        
-        fileInput.addEventListener('change', handleFile);
-        scanInput.addEventListener('change', handleFile);
 
         async function fetchWithRetry(url, payload, retries = 5, delay = 1000) {
             for (let i = 0; i < retries; i++) {
@@ -552,267 +320,147 @@
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
-
                     if (!response.ok) {
-                        if (response.status === 429 || response.status === 503) { // Specific statuses for overload
-                            console.warn(`Model overloaded. Retrying in ${delay / 1000}s...`);
-                            await new Promise(resolve => setTimeout(resolve, delay));
-                            delay *= 2; // Exponential backoff
-                            continue; // Retry
+                        if (response.status === 429 || response.status === 503) {
+                            await new Promise(r => setTimeout(r, delay));
+                            delay *= 2; continue;
                         }
-                        const errorBody = await response.json();
-                        throw new Error(errorBody.error.message || `Error del servidor: ${response.status}`);
+                        throw new Error(`Error: ${response.status}`);
                     }
                     return await response.json();
                 } catch (error) {
                     if (i === retries - 1) throw error;
-                    await new Promise(resolve => setTimeout(resolve, delay));
+                    await new Promise(r => setTimeout(r, delay));
                     delay *= 2;
                 }
             }
         }
-                      
-        async function callGeminiAPI(text, customSystemPrompt) {
-            const apiKey = getApiKey(); // Usar la función segura
-            if (!apiKey) {
-                checkApiKeyPresence();
-                throw new Error("API Key no configurada.");
-            }
-            // UPDATE: Usamos gemini-2.5-flash-preview-09-2025 en lugar de gemini-1.5-flash para compatibilidad con el entorno
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+
+        async function callGemini(prompt, systemPrompt, imageData = null) {
+            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            const parts = [{ text: prompt }];
+            if (imageData) parts.push(imageData);
+
             const payload = {
-                contents: [{ parts: [{ text }] }],
-                systemInstruction: { parts: [{ text: customSystemPrompt }] }
+                contents: [{ parts }],
+                systemInstruction: systemPrompt ? { parts: [{ text: systemPrompt }] } : undefined
             };
-            const result = await fetchWithRetry(apiUrl, payload);
-            if (!result || !result.candidates || !result.candidates[0].content.parts[0].text) {
-                throw new Error("Respuesta inválida de la API.");
-            }
+
+            const result = await fetchWithRetry(url, payload);
             return result.candidates[0].content.parts[0].text;
         }
 
-        async function callGeminiAPIWithImage(prompt, imageData) {
-            const apiKey = getApiKey(); // Usar la función segura
-             if (!apiKey) {
-                checkApiKeyPresence();
-                throw new Error("API Key no configurada.");
-            }
-            // UPDATE: Usamos gemini-2.5-flash-preview-09-2025 en lugar de gemini-1.5-flash para compatibilidad con el entorno
-            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
-            const payload = {
-                contents: [{
-                    parts: [
-                        { text: prompt },
-                        imageData
-                    ]
-                }],
-            };
-            const result = await fetchWithRetry(apiUrl, payload);
-            if (!result || !result.candidates || !result.candidates[0].content.parts[0].text) {
-                throw new Error("Respuesta inválida de la API.");
-            }
-            return result.candidates[0].content.parts[0].text;
-        }
-        
-        function fileToGenerativePart(file) {
-            return new Promise((resolve, reject) => {
+        async function handleFile(event) {
+            const file = event.target.files[0];
+            if (!file) return;
+            showLoadingModal("Interpretando resultados...");
+
+            try {
                 const reader = new FileReader();
-                reader.onloadend = () => {
-                    resolve({
-                        inlineData: {
-                            mimeType: file.type,
-                            data: reader.result.split(',')[1]
-                        }
-                    });
-                };
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
-            });
-        }
-        
-        function parseBiomarkerLine(lineContent) {
-            const dataMatch = lineContent.match(/\[\s*(OPTIMO|MEJORABLE|ATENCION)\s*:\s*(.*?)\s*\]/i);
-            if (!dataMatch) return null;
+                const base64Promise = new Promise(resolve => {
+                    reader.onload = () => resolve(reader.result.split(',')[1]);
+                    reader.readAsDataURL(file);
+                });
+                const base64 = await base64Promise;
 
-            const nameAndValuePart = lineContent.substring(0, dataMatch.index).trim();
-            const colonIndex = nameAndValuePart.lastIndexOf(':');
-            
-            let biomarkerName, value;
-            if (colonIndex !== -1) {
-                biomarkerName = nameAndValuePart.substring(0, colonIndex).replace(/(\*\*|-)\s*/g, '').trim();
-                value = nameAndValuePart.substring(colonIndex + 1).trim();
-            } else {
-                biomarkerName = "Resultado";
-                value = nameAndValuePart;
+                const sysPrompt = `Actúa como un traductor fisiológico educativo. Analiza la imagen. 
+                Contexto: ${appState.userProfile.age} años, ${appState.userProfile.sex}, Dieta: ${appState.userProfile.diet}.
+                Formato: 1. **Hallazgos Principales**, 2. **Recomendaciones**, 3. **Preguntas Clave para tu Médico**.
+                Para hallazgos usa: - **Nombre:** [Valor]. [ESTADO:Fisio. || En simple: Analogía 🧪. || Consejo Modal: Detalle.]
+                Estados: OPTIMO, MEJORABLE, ATENCION. Recomendaciones estrictas Keto.`;
+
+                const response = await callGemini("Analiza este informe médico.", sysPrompt, {
+                    inlineData: { mimeType: file.type, data: base64 }
+                });
+
+                appState.currentReportText = response;
+                generateTextReport(response);
+                hideModal();
+                showScreen('report-screen');
+            } catch (e) {
+                showModal("Error", "No se pudo procesar la imagen.");
             }
-
-            value = value.replace(/\.$/, '').trim();
-            if (!value) value = "Sin valor";
-
-            const status = dataMatch[1].toUpperCase();
-            const fullExplanationText = dataMatch[2];
-            
-            const statusInfo = {
-                'OPTIMO': { text: 'ÓPTIMO', color: 'bg-green-500', valueColor: 'text-green-400' },
-                'MEJORABLE': { text: 'MEJORABLE', color: 'bg-yellow-500', valueColor: 'text-yellow-400' },
-                'ATENCION': { text: 'REQUIERE ATENCIÓN', color: 'bg-red-500', valueColor: 'text-red-400' }
-            }[status];
-            if (!statusInfo) return null;
-
-            const parts = fullExplanationText.split('||');
-            const statusRegex = new RegExp(`^\\s*${status}:`, 'i');
-            const physiologicalExplanation = (parts[0] || '').replace(statusRegex, '').trim();
-            const colloquialExplanation = (parts[1] || '').replace(/En simple:/i, '').trim();
-            const modalAdviceText = (parts[2] || '').replace(/Consejo Modal:/i, '').trim();
-
-            let fullModalMessage = '';
-            if (physiologicalExplanation) fullModalMessage += `<p class="mb-3"><strong class="text-indigo-300">Contexto Fisiológico:</strong> ${physiologicalExplanation}</p>`;
-            if (colloquialExplanation) fullModalMessage += `<p class="mb-3"><strong class="text-indigo-300">En simple:</strong> ${colloquialExplanation}</p>`;
-            if (modalAdviceText) fullModalMessage += `<p><strong class="text-indigo-300">Consejo Detallado:</strong> ${modalAdviceText}</p>`;
-            if (!fullModalMessage) fullModalMessage = fullExplanationText.replace(statusRegex, '').trim();
-
-            const sanitizedModalAdvice = fullModalMessage.replace(/'/g, "\\'").replace(/"/g, "&quot;");
-            const sanitizedBiomarkerName = biomarkerName.replace(/'/g, "\\'");
-
-            return `
-                <div class="card p-4">
-                    <div class="flex justify-between items-center">
-                        <div>
-                            <h4 class="font-bold text-lg text-white marker-title-glow">${biomarkerName}</h4>
-                            <p class="text-2xl font-black ${statusInfo.valueColor}">${value}</p>
-                        </div>
-                        <button 
-                            class="text-xs font-bold text-white px-3 py-1 rounded-full cursor-pointer hover:scale-110 transition-transform ${statusInfo.color} flex-shrink-0"
-                            onclick="showModal('${sanitizedBiomarkerName}', '${sanitizedModalAdvice}')"
-                        >
-                            ${statusInfo.text}
-                        </button>
-                    </div>
-                </div>`;
         }
+
+        fileInput.addEventListener('change', handleFile);
+        scanInput.addEventListener('change', handleFile);
+
+        document.getElementById('follow-up-btn').onclick = () => {
+            followUpInput.value = '';
+            followUpModal.classList.remove('hidden');
+        };
+
+        document.getElementById('follow-up-cancel-btn').onclick = () => followUpModal.classList.add('hidden');
+
+        document.getElementById('follow-up-submit-btn').onclick = async () => {
+            const q = followUpInput.value.trim();
+            if (!q) return;
+            followUpModal.classList.add('hidden');
+            showLoadingModal("Consultando...");
+            try {
+                const res = await callGemini(`Contexto:\n${appState.currentReportText}\n\nPregunta: ${q}`, "Asistente educativo amigable. Responde basado en el informe.");
+                appState.currentReportText += `\n\n**Pregunta:** ${q}\n\n**Respuesta:** ${res}`;
+                generateTextReport(appState.currentReportText);
+                hideModal();
+            } catch (e) { showModal("Error", "Error en la consulta."); }
+        };
+
+        document.getElementById('master-advice-btn').onclick = async () => {
+            showLoadingModal("Generando consejo...");
+            try {
+                const advice = await callGemini(`Informe:\n${appState.currentReportText}`, "Mentor sabio en bienestar. Da un consejo de alto impacto con analogías sobre el informe.");
+                showModal("🎓 Consejo Profesional", advice.replace(/\n/g, '<br>'), true, advice);
+            } catch (e) { showModal("Error", "Error al generar consejo."); }
+        };
 
         function generateTextReport(text) {
-            let reportText = text;
-            const reportContainer = document.getElementById('report-content');
-            reportContainer.innerHTML = '';
-
-            const questionRegex = /\*\*\s*Preguntas Clave para tu Médico\s*\*\*([\s\S]*)/i;
-            const questionMatch = reportText.match(questionRegex);
+            const container = document.getElementById('report-content');
+            container.innerHTML = '';
             
-            appState.doctorQuestions = [];
-            if (questionMatch && questionMatch[1]) {
-                const questionContent = questionMatch[1].trim();
-                appState.doctorQuestions = questionContent.split('\n')
-                    .map(q => q.replace(/^(\*|\-|\d+\.)\s*/, '').trim())
-                    .filter(q => q.length > 5);
-                reportText = reportText.replace(questionRegex, ''); 
+            // Extracción de preguntas
+            const qMatch = text.match(/\*\*Preguntas Clave para tu Médico\*\*([\s\S]*)/i);
+            if (qMatch) {
+                appState.doctorQuestions = qMatch[1].trim().split('\n').filter(l => l.length > 5).map(l => l.replace(/^[-*]\s*/, ''));
+                text = text.replace(qMatch[0], '');
             }
             updateQuestionsList();
 
-            const sections = reportText.split(/\n?(?=\*\*.*?\*\*)/).filter(s => s.trim());
-
-            sections.forEach(section => {
-                const trimmedSection = section.trim();
-                const titleMatch = trimmedSection.match(/^\*\*(.*?)\*\*([\s\S]*)/);
-                
-                let title, content;
-                if (titleMatch) {
-                    title = titleMatch[1].trim();
-                    content = titleMatch[2].trim();
-                } else {
-                    content = trimmedSection;
-                    title = null; 
-                }
-
-                if (title) {
-                    const titleElement = document.createElement('h3');
-                    titleElement.className = "font-bold text-lg mt-4 mb-2 text-indigo-300 marker-title-glow";
-                    titleElement.textContent = title;
-                    reportContainer.appendChild(titleElement);
-                }
-                
-                const lines = content.split('\n').filter(l => l.trim());
-                let accumulatedPlainText = [];
-
-                const flushPlainText = () => {
-                    if (accumulatedPlainText.join('').trim().length > 0) {
-                        const textCard = document.createElement('div');
-                        textCard.className = 'card p-6 text-gray-300 space-y-3';
-                        textCard.innerHTML = accumulatedPlainText.join('<br>');
-                        reportContainer.appendChild(textCard);
-                    }
-                    accumulatedPlainText = [];
-                };
-
-                lines.forEach(line => {
-                    const cleanedLine = line.replace(/^(\*|\-)\s*/, '').trim();
-                    const cardHtml = parseBiomarkerLine(cleanedLine);
-
-                    if (cardHtml) {
-                        flushPlainText();
-                        const cardWrapper = document.createElement('div');
-                        cardWrapper.innerHTML = cardHtml;
-                        reportContainer.appendChild(cardWrapper.firstElementChild);
-                    } else {
-                        accumulatedPlainText.push(cleanedLine);
-                    }
-                });
-                flushPlainText();
+            const sections = text.split(/\n?(?=\*\*.*?\*\*)/).filter(s => s.trim());
+            sections.forEach(sec => {
+                const card = document.createElement('div');
+                card.className = "card p-6 space-y-4";
+                card.innerHTML = sec.replace(/\*\*(.*?)\*\*/g, '<strong class="text-indigo-300">$1</strong>').replace(/\n/g, '<br>');
+                container.appendChild(card);
             });
         }
-
 
         function updateQuestionsList() {
             const list = document.getElementById('questions-list');
-            if (appState.doctorQuestions.length > 0) {
-                list.innerHTML = appState.doctorQuestions.map(q => `<p class="border-l-2 border-indigo-400 pl-3">${q}</p>`).join('');
-            } else {
-                list.innerHTML = '<p class="text-gray-500">Aún no has generado preguntas. Aparecerán aquí después de tu primer análisis.</p>';
-            }
+            list.innerHTML = appState.doctorQuestions.length ? 
+                appState.doctorQuestions.map(q => `<p class="border-l-2 border-indigo-400 pl-3">${q}</p>`).join('') :
+                '<p class="text-gray-500">Aparecerán aquí tras el análisis.</p>';
         }
-        
-        document.getElementById('download-pdf-btn').addEventListener('click', () => {
+
+        function downloadAdviceAsPdf(title, text) {
             const { jsPDF } = window.jspdf;
             const doc = new jsPDF();
-            
-            doc.setFont('Helvetica', 'normal');
-            let y = 15;
-            doc.setFontSize(20);
-            doc.setFont('Helvetica', 'bold');
-            doc.text("Tu Reporte Fisiológico", 105, y, { align: 'center' });
-            y += 10;
-            
+            doc.setFontSize(18); doc.text(title, 20, 20);
             doc.setFontSize(10);
-            doc.setFont('Helvetica', 'normal');
-            
-            const cleanReportText = appState.currentReportText
-                .replace(/\[(OPTIMO|MEJORABLE|ATENCION):(.*?)\]/g, '[$1]') // Simplify status tags for PDF
-                .replace(/\*\*(.*?)\*\*/g, '$1\n')
-                .replace(/<br>/g, '\n');
-            let reportLines = doc.splitTextToSize(cleanReportText, 180);
+            const lines = doc.splitTextToSize(text, 170);
+            doc.text(lines, 20, 35);
+            doc.save("Consejo.pdf");
+        }
 
-            const boldRegex = /^(Hallazgos Principales|Recomendaciones|Preguntas Clave para tu Médico|Mi Pregunta|Respuesta del Asistente)/;
+        document.getElementById('download-pdf-btn').onclick = () => {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.text("Tu Reporte Fisiológico", 105, 20, { align: 'center' });
+            const lines = doc.splitTextToSize(appState.currentReportText.replace(/\*\*/g, ''), 180);
+            doc.setFontSize(9);
+            doc.text(lines, 15, 30);
+            doc.save("Reporte.pdf");
+        };
 
-            let currentY = y;
-            reportLines.forEach(line => {
-                if (currentY > 280) {
-                    doc.addPage();
-                    currentY = 15;
-                }
-                const trimmedLine = line.trim();
-                if (boldRegex.test(trimmedLine)) {
-                    doc.setFont('Helvetica', 'bold');
-                    doc.text(trimmedLine, 15, currentY);
-                    doc.setFont('Helvetica', 'normal');
-                } else {
-                    doc.text(trimmedLine, 15, currentY);
-                }
-                currentY += 5;
-            });
-            
-            doc.save("ReporteFisiologico.pdf");
-        });
-        
         showScreen('welcome-screen');
     </script>
 </body>
