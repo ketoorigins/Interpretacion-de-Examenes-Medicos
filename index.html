@@ -50,7 +50,7 @@
             background-color: #16152B;
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 1.5rem;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .custom-input {
             background-color: #0D0C1D;
@@ -58,12 +58,7 @@
             border-radius: 0.5rem;
             padding: 0.75rem;
             outline: none;
-            transition: border-color 0.2s, box-shadow 0.2s;
             color: white;
-        }
-        .custom-input:focus {
-            border-color: #4F46E5;
-            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.5);
         }
         .loader {
             border: 4px solid #f3f3f3;
@@ -73,8 +68,8 @@
             height: 40px;
             animation: spin 1s linear infinite;
         }
-        .marker-title-glow {
-            text-shadow: 0 0 8px rgba(168, 85, 247, 0.5), 0 0 12px rgba(79, 70, 229, 0.5);
+        .marker-glow {
+            text-shadow: 0 0 8px rgba(168, 85, 247, 0.4);
         }
         @keyframes spin {
             0% { transform: rotate(0deg); }
@@ -89,77 +84,71 @@
         <!-- Pantalla de Bienvenida -->
         <div id="welcome-screen" class="screen text-center space-y-8">
              <div class="flex justify-center">
-                 <div class="relative w-48 h-48 rounded-full p-1.5 bg-gradient-to-br from-indigo-500 to-fuchsia-500 shadow-2xl shadow-purple-500/30 flex items-center justify-center">
-                     <div class="bg-[#0D0C1D] w-full h-full rounded-full p-1.5">
-                         <img src="https://i.ibb.co/20NypXdZ/ketoorigins.png" alt="Logo" class="w-full h-full rounded-full object-cover" onerror="this.onerror=null;this.src='https://placehold.co/180x180/0D0C1D/FFFFFF?text=Logo';">
+                 <div class="relative w-40 h-40 rounded-full p-1 bg-gradient-to-br from-indigo-500 to-fuchsia-500 shadow-2xl flex items-center justify-center">
+                     <div class="bg-[#0D0C1D] w-full h-full rounded-full p-1">
+                         <img src="https://i.ibb.co/20NypXdZ/ketoorigins.png" alt="Logo" class="w-full h-full rounded-full object-cover">
                      </div>
                  </div>
              </div>
-            <h1 class="text-3xl font-bold tracking-tight">🧬 Tu Intérprete <span class="brand-gradient-text">Fisiológico</span></h1>
+            <h1 class="text-3xl font-bold">🧬 Intérprete <span class="brand-gradient-text">Fisiológico</span></h1>
             <div class="card p-6 text-left text-sm space-y-4">
                 <h2 class="font-semibold text-lg text-center">🤝 Nuestro Pacto</h2>
-                <p class="text-gray-400">Esta herramienta es <strong class="text-white">educativa</strong>. No ofrece diagnósticos ni reemplaza a tu médico.</p>
-                <p class="text-gray-400">Su propósito es darte contexto sobre tus biomarcadores y ayudarte a formular <strong class="text-white">preguntas inteligentes</strong> para tu próxima consulta.</p>
+                <p class="text-gray-400">Esta herramienta es <strong class="text-white">educativa</strong>. No ofrece diagnósticos médicos.</p>
+                <p class="text-gray-400">Te ayudamos a entender tus biomarcadores para que hagas <strong class="text-white">mejores preguntas</strong> a tu médico.</p>
             </div>
-            <button id="accept-pact-btn" class="w-full brand-gradient-bg text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-indigo-500/40 hover:scale-105 transform transition-transform duration-300">
-                Entendido, empezar ahora
+            <button id="accept-pact-btn" class="w-full brand-gradient-bg text-white font-bold py-3 px-6 rounded-xl shadow-lg hover:scale-105 transition-transform">
+                Entendido, empezar
             </button>
         </div>
 
-        <!-- Pantalla de Perfil de Usuario -->
+        <!-- Perfil -->
         <div id="profile-screen" class="screen hidden card p-8 space-y-6">
-            <img src="https://i.ibb.co/20NypXdZ/ketoorigins.png" alt="Logo" class="w-16 h-16 mx-auto mb-4 rounded-full">
-            <h2 class="text-2xl font-bold text-center">👤 Crea tu Perfil</h2>
-            <p class="text-center text-gray-400 text-sm">Estos datos son cruciales para una interpretación contextualizada.</p>
+            <h2 class="text-2xl font-bold text-center">👤 Tu Perfil</h2>
             <form id="profile-form" class="space-y-4">
                 <div>
-                    <label for="name" class="block text-sm font-medium text-gray-300 mb-1">Nombre</label>
-                    <input type="text" id="name" required class="w-full custom-input" placeholder="Ej: Juan Pérez">
+                    <label class="block text-sm text-gray-300 mb-1">Nombre</label>
+                    <input type="text" id="name" required class="w-full custom-input" placeholder="Tu nombre">
                 </div>
                 <div>
-                    <label for="dob" class="block text-sm font-medium text-gray-300 mb-1">Fecha de Nacimiento</label>
+                    <label class="block text-sm text-gray-300 mb-1">Nacimiento</label>
                     <input type="date" id="dob" required class="w-full custom-input">
                 </div>
                 <div>
-                    <label for="sex" class="block text-sm font-medium text-gray-300 mb-1">Sexo Biológico</label>
+                    <label class="block text-sm text-gray-300 mb-1">Sexo Biológico</label>
                     <select id="sex" required class="w-full custom-input">
-                        <option value="">Seleccionar...</option>
-                        <option value="male">♂️ Masculino</option>
-                        <option value="female">♀️ Femenino</option>
+                        <option value="Masculino">Masculino</option>
+                        <option value="Femenino">Femenino</option>
                     </select>
                 </div>
                 <div>
-                    <label for="diet" class="block text-sm font-medium text-gray-300 mb-1">Enfoque Nutricional</label>
+                    <label class="block text-sm text-gray-300 mb-1">Dieta</label>
                     <select id="diet" required class="w-full custom-input">
-                        <option value="keto">🥑 Bajo en Carbohidratos / Keto</option>
-                        <option value="standard">🍔 Estándar / Occidental</option>
-                        <option value="low-fat">🥗 Baja en Grasa</option>
-                        <option value="vegan">🌱 Basada en Plantas</option>
-                        <option value="other">❓ Otro</option>
+                        <option value="Keto">Keto / Low Carb</option>
+                        <option value="Estándar">Estándar</option>
+                        <option value="Vegana">Vegana</option>
                     </select>
                 </div>
-                <button type="submit" class="w-full brand-gradient-bg text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-indigo-500/40 hover:scale-105 transform transition-transform duration-300 mt-4">
-                    Guardar Perfil
+                <button type="submit" class="w-full brand-gradient-bg text-white font-bold py-3 rounded-xl hover:scale-105 transition-transform">
+                    Continuar
                 </button>
             </form>
         </div>
 
-        <!-- Panel Principal (Dashboard) -->
+        <!-- Dashboard -->
         <div id="dashboard-screen" class="screen hidden space-y-6">
             <div class="text-center">
-                <img src="https://i.ibb.co/20NypXdZ/ketoorigins.png" alt="Logo" class="w-16 h-16 mx-auto mb-2 rounded-full">
-                <h2 class="text-3xl font-bold">🚀 Panel Principal</h2>
-                <p id="welcome-user" class="text-gray-400"></p>
+                <h2 class="text-2xl font-bold">🚀 Panel de Control</h2>
+                <p id="welcome-user" class="text-gray-400 text-sm"></p>
             </div>
             
             <div class="grid grid-cols-2 gap-4">
-                <button id="add-exam-file-btn" class="w-full brand-gradient-bg text-white font-bold p-4 rounded-2xl shadow-lg shadow-indigo-500/40 flex flex-col items-center justify-center text-center hover:scale-105 transform transition-transform duration-300 space-y-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14.899A7 7 0 1 1 15.71 8h1.79a4.5 4.5 0 0 1 2.5 8.242"/><path d="M12 12v9"/><path d="m16 16-4-4-4 4"/></svg>
-                    <span class="text-sm font-semibold">Subir Archivo</span>
+                <button id="add-exam-btn" class="brand-gradient-bg text-white p-6 rounded-2xl shadow-lg flex flex-col items-center space-y-2 hover:scale-105 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    <span class="font-bold text-sm">Subir Foto</span>
                 </button>
-                <button id="scan-document-btn" class="w-full brand-gradient-bg text-white font-bold p-4 rounded-2xl shadow-lg shadow-indigo-500/40 flex flex-col items-center justify-center text-center hover:scale-105 transform transition-transform duration-300 space-y-2">
-                     <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 12V6a2 2 0 0 1 2-2h2a2 2 0 0 1 2 2v2"/><path d="M14.5 10a2.5 2.5 0 1 1-5 0 2.5 2.5 0 0 1 5 0Z"/><path d="M12 12h.01"/><path d="M18 20a2 2 0 0 0-2-2h-8a2 2 0 0 0-2 2"/><path d="M6 12v2a2 2 0 0 0 2 2h2"/></svg>
-                    <span class="text-sm font-semibold">Escanear Doc.</span>
+                <button id="scan-doc-btn" class="brand-gradient-bg text-white p-6 rounded-2xl shadow-lg flex flex-col items-center space-y-2 hover:scale-105 transition-transform">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/><circle cx="12" cy="13" r="4"/></svg>
+                    <span class="font-bold text-sm">Cámara</span>
                 </button>
             </div>
 
@@ -167,301 +156,206 @@
             <input type="file" id="scan-input" class="hidden" accept="image/*" capture="environment">
 
             <div class="card p-6">
-                <h3 class="font-bold text-lg mb-3">❓ Mis Preguntas para el Médico</h3>
-                <div id="questions-list" class="space-y-2 text-sm text-gray-300">
-                    <p class="text-gray-500">Aparecerán aquí después de tu primer análisis.</p>
+                <h3 class="font-bold mb-3 text-indigo-300">📋 Preguntas Sugeridas</h3>
+                <div id="questions-list" class="space-y-2 text-xs text-gray-300">
+                    <p class="italic text-gray-500">Analiza un examen para ver preguntas personalizadas.</p>
                 </div>
-            </div>
-
-            <div class="card p-6">
-                <h3 class="font-bold text-lg mb-2">🔬 Enfoque de la Semana</h3>
-                <p class="text-sm text-gray-400">
-                    <strong class="text-white">El Ratio Triglicéridos/HDL:</strong> Indicador potente de salud metabólica. Un ratio por debajo de 1.5 es considerado óptimo.
-                </p>
             </div>
         </div>
 
-        <!-- Pantalla de Reporte -->
-        <div id="report-screen" class="screen hidden space-y-6">
-            <img src="https://i.ibb.co/20NypXdZ/ketoorigins.png" alt="Logo" class="w-16 h-16 mx-auto mb-2 rounded-full">
-            <h2 class="text-3xl font-bold text-center">📊 Tu Reporte Fisiológico</h2>
+        <!-- Reporte -->
+        <div id="report-screen" class="screen hidden space-y-6 pb-10">
+            <h2 class="text-2xl font-bold text-center">📊 Resultados Analizados</h2>
             <div id="report-content" class="space-y-4"></div>
-             <div class="space-y-4">
-                <button id="master-advice-btn" class="w-full master-gradient-bg text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-red-500/40 hover:scale-105 transform transition-transform duration-300">
-                    🎓 Recibir Consejo Profesional
+            
+            <div class="space-y-3">
+                <button id="master-advice-btn" class="w-full master-gradient-bg text-white font-bold py-3 rounded-xl shadow-lg">
+                    🎓 Consejo de Experto
                 </button>
-                <button id="follow-up-btn" class="w-full brand-gradient-bg text-white font-bold py-3 px-6 rounded-xl shadow-lg shadow-indigo-500/40 hover:scale-105 transform transition-transform duration-300">
-                    Hacer Pregunta de Seguimiento
-                </button>
-                <div class="flex space-x-2">
-                    <button id="download-pdf-btn" class="w-full bg-white/10 text-white font-bold py-2 px-4 rounded-xl hover:bg-white/20 transition-colors text-sm">
-                        Descargar PDF
-                    </button>
-                    <button id="back-to-dashboard-from-report-btn" class="w-full bg-white/5 text-white font-bold py-2 px-4 rounded-xl hover:bg-white/10 transition-colors text-sm">
-                        Volver
-                    </button>
+                <div class="flex gap-2">
+                    <button id="download-pdf-btn" class="flex-1 bg-white/10 text-white py-2 rounded-xl text-sm font-bold">PDF</button>
+                    <button id="back-dash-btn" class="flex-1 bg-white/5 text-white py-2 rounded-xl text-sm font-bold">Volver</button>
                 </div>
             </div>
         </div>
 
     </div>
 
-    <!-- Modal Personalizado -->
-    <div id="custom-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden z-50">
-        <div class="card p-8 max-w-sm w-full space-y-4 shadow-2xl shadow-purple-500/20">
+    <!-- Modales -->
+    <div id="custom-modal" class="fixed inset-0 bg-black/80 flex items-center justify-center p-4 hidden z-50">
+        <div class="card p-6 max-w-sm w-full space-y-4">
             <div id="modal-loader" class="hidden mx-auto loader"></div>
-            <h3 id="modal-title" class="text-xl font-bold text-center"></h3>
-            <p id="modal-message" class="text-gray-400 text-left max-h-[60vh] overflow-y-auto break-words"></p>
-            <div id="modal-buttons" class="flex w-full space-x-2 mt-4">
-                <button id="modal-close-btn" class="w-full brand-gradient-bg text-white font-bold py-2 px-8 rounded-lg">Cerrar</button>
-                <button id="modal-download-btn" class="hidden w-1/2 master-gradient-bg text-white font-bold py-2 px-8 rounded-lg">Descargar PDF</button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Modal Seguimiento -->
-    <div id="follow-up-modal" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden z-50">
-        <div class="card p-8 max-w-sm w-full text-center space-y-4 shadow-2xl shadow-purple-500/20">
-            <h3 class="text-xl font-bold">Pregunta sobre tu reporte</h3>
-            <textarea id="follow-up-input" class="w-full custom-input h-24 text-sm" placeholder="Ej: ¿Qué significa este valor?"></textarea>
-            <div class="flex space-x-2">
-                <button id="follow-up-cancel-btn" class="w-full bg-white/5 text-white font-bold py-2 px-8 rounded-lg">Cancelar</button>
-                <button id="follow-up-submit-btn" class="w-full brand-gradient-bg text-white font-bold py-2 px-8 rounded-lg">Enviar</button>
-            </div>
+            <h3 id="modal-title" class="text-xl font-bold text-center text-indigo-300"></h3>
+            <div id="modal-message" class="text-sm text-gray-300 max-h-[60vh] overflow-y-auto leading-relaxed"></div>
+            <button id="modal-close-btn" class="w-full brand-gradient-bg text-white font-bold py-2 rounded-lg">Cerrar</button>
         </div>
     </div>
 
     <script>
-        // API KEY AUTOMÁTICA SEGÚN REQUERIMIENTOS DEL ENTORNO
-        const apiKey = ""; 
+        const apiKey = ""; // Inyectado por el entorno
 
-        const appState = {
-            userProfile: { name: null, dob: null, age: null, sex: null, diet: null },
-            doctorQuestions: [],
-            currentReportText: ''
+        const state = {
+            user: {},
+            report: "",
+            questions: []
         };
 
-        const screens = document.querySelectorAll('.screen');
-        const fileInput = document.getElementById('file-input');
-        const scanInput = document.getElementById('scan-input');
-        const customModal = document.getElementById('custom-modal');
-        const modalTitle = document.getElementById('modal-title');
-        const modalMessage = document.getElementById('modal-message');
-        const modalCloseBtn = document.getElementById('modal-close-btn');
-        const modalLoader = document.getElementById('modal-loader');
-        const modalDownloadBtn = document.getElementById('modal-download-btn');
-        const followUpModal = document.getElementById('follow-up-modal');
-        const followUpInput = document.getElementById('follow-up-input');
+        const $ = id => document.getElementById(id);
 
-        function showScreen(screenId) {
-            if (screenId === 'dashboard-screen') updateQuestionsList();
-            screens.forEach(s => s.classList.add('hidden'));
-            const screenToShow = document.getElementById(screenId);
-            if(screenToShow) setTimeout(() => screenToShow.classList.remove('hidden'), 50);
-        }
-        
-        function showModal(title, message, showCloseButton = true, adviceText = null) {
-            modalTitle.textContent = title;
-            modalMessage.innerHTML = message;
-            modalLoader.classList.add('hidden');
-            modalCloseBtn.style.display = showCloseButton ? 'block' : 'none';
-            modalDownloadBtn.classList.add('hidden');
-            modalCloseBtn.classList.add('w-full', 'brand-gradient-bg');
-            modalCloseBtn.classList.remove('w-1/2', 'bg-white/10');
+        // --- Navegación ---
+        const show = id => {
+            document.querySelectorAll('.screen').forEach(s => s.classList.add('hidden'));
+            $(id).classList.remove('hidden');
+        };
 
-            if (adviceText) {
-                modalDownloadBtn.classList.remove('hidden');
-                modalCloseBtn.classList.remove('w-full', 'brand-gradient-bg');
-                modalCloseBtn.classList.add('w-1/2', 'bg-white/10');
-                modalDownloadBtn.onclick = () => downloadAdviceAsPdf(title, adviceText);
-            } 
-            customModal.classList.remove('hidden');
-        }
+        $('accept-pact-btn').onclick = () => show('profile-screen');
+        $('back-dash-btn').onclick = () => show('dashboard-screen');
+        $('add-exam-btn').onclick = () => $('file-input').click();
+        $('scan-doc-btn').onclick = () => $('scan-input').click();
 
-        function showLoadingModal(message = "Procesando...") {
-            modalTitle.textContent = "Procesando...";
-            modalMessage.textContent = message;
-            modalLoader.classList.remove('hidden');
-            modalCloseBtn.style.display = 'none';
-            customModal.classList.remove('hidden');
-        }
-
-        function hideModal() { customModal.classList.add('hidden'); }
-
-        modalCloseBtn.addEventListener('click', hideModal);
-
-        document.getElementById('accept-pact-btn').addEventListener('click', () => showScreen('profile-screen'));
-        document.getElementById('add-exam-file-btn').addEventListener('click', () => fileInput.click());
-        document.getElementById('scan-document-btn').addEventListener('click', () => scanInput.click());
-        document.getElementById('back-to-dashboard-from-report-btn').addEventListener('click', () => showScreen('dashboard-screen'));
-
-        document.getElementById('profile-form').addEventListener('submit', (e) => {
+        // --- Perfil ---
+        $('profile-form').onsubmit = e => {
             e.preventDefault();
-            appState.userProfile.name = document.getElementById('name').value;
-            appState.userProfile.dob = document.getElementById('dob').value;
-            appState.userProfile.sex = document.getElementById('sex').value;
-            appState.userProfile.diet = document.getElementById('diet').value;
-            
-            const birthDate = new Date(appState.userProfile.dob);
-            const today = new Date();
-            let age = today.getFullYear() - birthDate.getFullYear();
-            if (today.getMonth() < birthDate.getMonth() || (today.getMonth() === birthDate.getMonth() && today.getDate() < birthDate.getDate())) age--;
-            appState.userProfile.age = age;
-            
-            document.getElementById('welcome-user').textContent = `Hola ${appState.userProfile.name}, tienes ${age} años.`;
-            showScreen('dashboard-screen');
-        });
+            state.user = {
+                name: $('name').value,
+                dob: $('dob').value,
+                sex: $('sex').value,
+                diet: $('diet').value
+            };
+            $('welcome-user').textContent = `Hola, ${state.user.name}. Listo para analizar.`;
+            show('dashboard-screen');
+        };
 
-        async function fetchWithRetry(url, payload, retries = 5, delay = 1000) {
-            for (let i = 0; i < retries; i++) {
-                try {
-                    const response = await fetch(url, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(payload)
-                    });
-                    if (!response.ok) {
-                        if (response.status === 429 || response.status === 503) {
-                            await new Promise(r => setTimeout(r, delay));
-                            delay *= 2; continue;
-                        }
-                        throw new Error(`Error: ${response.status}`);
-                    }
-                    return await response.json();
-                } catch (error) {
-                    if (i === retries - 1) throw error;
-                    await new Promise(r => setTimeout(r, delay));
-                    delay *= 2;
-                }
-            }
-        }
-
-        async function callGemini(prompt, systemPrompt, imageData = null) {
+        // --- API & Lógica ---
+        async function callGemini(prompt, system, image = null) {
             const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-09-2025:generateContent?key=${apiKey}`;
+            
             const parts = [{ text: prompt }];
-            if (imageData) parts.push(imageData);
+            if (image) parts.push({ inlineData: image });
 
-            const payload = {
-                contents: [{ parts }],
-                systemInstruction: systemPrompt ? { parts: [{ text: systemPrompt }] } : undefined
+            const body = {
+                contents: [{ role: "user", parts }],
+                systemInstruction: { parts: [{ text: system }] }
             };
 
-            const result = await fetchWithRetry(url, payload);
-            return result.candidates[0].content.parts[0].text;
+            const res = await fetch(url, { method: "POST", body: JSON.stringify(body) });
+            const data = await res.json();
+            if (!data.candidates) throw new Error("Error en respuesta de IA");
+            return data.candidates[0].content.parts[0].text;
         }
 
-        async function handleFile(event) {
-            const file = event.target.files[0];
+        async function processImage(e) {
+            const file = e.target.files[0];
             if (!file) return;
-            showLoadingModal("Interpretando resultados...");
+
+            showModal("Analizando", "Leyendo datos de la imagen...", true);
 
             try {
-                const reader = new FileReader();
-                const base64Promise = new Promise(resolve => {
+                const base64 = await new Promise(resolve => {
+                    const reader = new FileReader();
                     reader.onload = () => resolve(reader.result.split(',')[1]);
                     reader.readAsDataURL(file);
                 });
-                const base64 = await base64Promise;
 
-                const sysPrompt = `Actúa como un traductor fisiológico educativo. Analiza la imagen. 
-                Contexto: ${appState.userProfile.age} años, ${appState.userProfile.sex}, Dieta: ${appState.userProfile.diet}.
-                Formato: 1. **Hallazgos Principales**, 2. **Recomendaciones**, 3. **Preguntas Clave para tu Médico**.
-                Para hallazgos usa: - **Nombre:** [Valor]. [ESTADO:Fisio. || En simple: Analogía 🧪. || Consejo Modal: Detalle.]
-                Estados: OPTIMO, MEJORABLE, ATENCION. Recomendaciones estrictas Keto.`;
+                const sys = `Eres un traductor fisiológico. Analiza el examen de un usuario de ${state.user.sex}, dieta ${state.user.diet}.
+                REGLA ORO: Usa este formato para CADA biomarcador detectado:
+                - **Nombre:** [Valor]. [ESTADO:Breve explicación. || En simple: Analogía 🧪. || Consejo: Detalle para modal.]
+                Estados: OPTIMO, MEJORABLE o ATENCION.
+                Secciones finales: **Recomendaciones** y **Preguntas para el Médico**.`;
 
-                const response = await callGemini("Analiza este informe médico.", sysPrompt, {
-                    inlineData: { mimeType: file.type, data: base64 }
+                const result = await callGemini("Extrae y explica los valores de esta imagen.", sys, {
+                    mimeType: file.type,
+                    data: base64
                 });
 
-                appState.currentReportText = response;
-                generateTextReport(response);
+                state.report = result;
+                renderReport(result);
                 hideModal();
-                showScreen('report-screen');
-            } catch (e) {
-                showModal("Error", "No se pudo procesar la imagen.");
+                show('report-screen');
+            } catch (err) {
+                showModal("Error", "No se pudo reconocer la imagen. Intenta con una foto más clara.");
             }
         }
 
-        fileInput.addEventListener('change', handleFile);
-        scanInput.addEventListener('change', handleFile);
+        $('file-input').onchange = processImage;
+        $('scan-input').onchange = processImage;
 
-        document.getElementById('follow-up-btn').onclick = () => {
-            followUpInput.value = '';
-            followUpModal.classList.remove('hidden');
-        };
+        function renderReport(text) {
+            const container = $('report-content');
+            container.innerHTML = "";
 
-        document.getElementById('follow-up-cancel-btn').onclick = () => followUpModal.classList.add('hidden');
-
-        document.getElementById('follow-up-submit-btn').onclick = async () => {
-            const q = followUpInput.value.trim();
-            if (!q) return;
-            followUpModal.classList.add('hidden');
-            showLoadingModal("Consultando...");
-            try {
-                const res = await callGemini(`Contexto:\n${appState.currentReportText}\n\nPregunta: ${q}`, "Asistente educativo amigable. Responde basado en el informe.");
-                appState.currentReportText += `\n\n**Pregunta:** ${q}\n\n**Respuesta:** ${res}`;
-                generateTextReport(appState.currentReportText);
-                hideModal();
-            } catch (e) { showModal("Error", "Error en la consulta."); }
-        };
-
-        document.getElementById('master-advice-btn').onclick = async () => {
-            showLoadingModal("Generando consejo...");
-            try {
-                const advice = await callGemini(`Informe:\n${appState.currentReportText}`, "Mentor sabio en bienestar. Da un consejo de alto impacto con analogías sobre el informe.");
-                showModal("🎓 Consejo Profesional", advice.replace(/\n/g, '<br>'), true, advice);
-            } catch (e) { showModal("Error", "Error al generar consejo."); }
-        };
-
-        function generateTextReport(text) {
-            const container = document.getElementById('report-content');
-            container.innerHTML = '';
-            
-            // Extracción de preguntas
-            const qMatch = text.match(/\*\*Preguntas Clave para tu Médico\*\*([\s\S]*)/i);
+            // Extraer preguntas
+            const qMatch = text.match(/\*\*Preguntas.*?\*\*([\s\S]*)/i);
             if (qMatch) {
-                appState.doctorQuestions = qMatch[1].trim().split('\n').filter(l => l.length > 5).map(l => l.replace(/^[-*]\s*/, ''));
-                text = text.replace(qMatch[0], '');
+                state.questions = qMatch[1].trim().split('\n').filter(l => l.length > 5);
+                $('questions-list').innerHTML = state.questions.map(q => `<p class="border-l-2 border-indigo-500 pl-2 mb-2">${q.replace(/^[-*]\s*/, '')}</p>`).join('');
             }
-            updateQuestionsList();
 
-            const sections = text.split(/\n?(?=\*\*.*?\*\*)/).filter(s => s.trim());
-            sections.forEach(sec => {
-                const card = document.createElement('div');
-                card.className = "card p-6 space-y-4";
-                card.innerHTML = sec.replace(/\*\*(.*?)\*\*/g, '<strong class="text-indigo-300">$1</strong>').replace(/\n/g, '<br>');
-                container.appendChild(card);
+            // Parsear líneas de biomarcadores
+            const lines = text.split('\n');
+            lines.forEach(line => {
+                const match = line.match(/\[(OPTIMO|MEJORABLE|ATENCION):(.*?)\|\|(.*?)\|\|(.*?)\]/i);
+                if (match) {
+                    const [_, status, fisio, simple, consejo] = match;
+                    const nameVal = line.split('[')[0].replace(/[-*]\s*/, '').trim();
+                    
+                    const colors = { OPTIMO: 'bg-green-500', MEJORABLE: 'bg-yellow-500', ATENCION: 'bg-red-500' };
+                    const card = document.createElement('div');
+                    card.className = "card p-4 border-l-4 " + (status === 'OPTIMO' ? 'border-green-500' : status === 'MEJORABLE' ? 'border-yellow-500' : 'border-red-500');
+                    card.innerHTML = `
+                        <div class="flex justify-between items-center">
+                            <div>
+                                <div class="text-xs text-gray-400 uppercase font-bold">${status}</div>
+                                <div class="font-bold text-white">${nameVal}</div>
+                            </div>
+                            <button class="text-[10px] px-2 py-1 rounded-lg bg-white/10 hover:bg-white/20" onclick="showModal('${nameVal.split(':')[0]}', '${fisio.trim()}<br><br><strong>En simple:</strong> ${simple.trim()}<br><br>${consejo.trim()}')">Ver más</button>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                } else if (line.includes('**')) {
+                    const h = document.createElement('h3');
+                    h.className = "font-bold text-indigo-300 mt-4";
+                    h.textContent = line.replace(/\*\*/g, '');
+                    container.appendChild(h);
+                } else if (line.trim().length > 5) {
+                    const p = document.createElement('p');
+                    p.className = "text-sm text-gray-400";
+                    p.textContent = line.replace(/^[-*]\s*/, '');
+                    container.appendChild(p);
+                }
             });
         }
 
-        function updateQuestionsList() {
-            const list = document.getElementById('questions-list');
-            list.innerHTML = appState.doctorQuestions.length ? 
-                appState.doctorQuestions.map(q => `<p class="border-l-2 border-indigo-400 pl-3">${q}</p>`).join('') :
-                '<p class="text-gray-500">Aparecerán aquí tras el análisis.</p>';
-        }
-
-        function downloadAdviceAsPdf(title, text) {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            doc.setFontSize(18); doc.text(title, 20, 20);
-            doc.setFontSize(10);
-            const lines = doc.splitTextToSize(text, 170);
-            doc.text(lines, 20, 35);
-            doc.save("Consejo.pdf");
-        }
-
-        document.getElementById('download-pdf-btn').onclick = () => {
-            const { jsPDF } = window.jspdf;
-            const doc = new jsPDF();
-            doc.text("Tu Reporte Fisiológico", 105, 20, { align: 'center' });
-            const lines = doc.splitTextToSize(appState.currentReportText.replace(/\*\*/g, ''), 180);
-            doc.setFontSize(9);
-            doc.text(lines, 15, 30);
-            doc.save("Reporte.pdf");
+        $('master-advice-btn').onclick = async () => {
+            showModal("Consultando Experto", "Generando una lección de vida...", true);
+            try {
+                const advice = await callGemini(`Basado en: ${state.report}`, "Eres un mentor sabio. Da un consejo profundo de 3 párrafos usando analogías. No des diagnóstico médico.");
+                showModal("🎓 Lección de Salud", advice);
+            } catch (e) { hideModal(); }
         };
 
-        showScreen('welcome-screen');
+        // --- Modales ---
+        function showModal(title, msg, isLoader = false) {
+            $('modal-title').textContent = title;
+            $('modal-message').innerHTML = msg;
+            $('modal-loader').classList.toggle('hidden', !isLoader);
+            $('modal-close-btn').classList.toggle('hidden', isLoader);
+            $('custom-modal').classList.remove('hidden');
+        }
+        function hideModal() { $('custom-modal').classList.add('hidden'); }
+        $('modal-close-btn').onclick = hideModal;
+
+        // --- PDF ---
+        $('download-pdf-btn').onclick = () => {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFontSize(16);
+            doc.text("Reporte Fisiológico - " + state.user.name, 20, 20);
+            doc.setFontSize(10);
+            const lines = doc.splitTextToSize(state.report.replace(/\*\*/g, ''), 170);
+            doc.text(lines, 20, 35);
+            doc.save("Reporte.pdf");
+        };
     </script>
 </body>
 </html>
