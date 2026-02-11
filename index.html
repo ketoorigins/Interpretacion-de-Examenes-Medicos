@@ -188,7 +188,7 @@
         </div>
 
         <!-- Pantalla de Reporte -->
-        <div id="report-screen" class="screen hidden space-y-6">
+        <div id="report-screen" class="screen hidden space-y-6 pb-8">
             <img src="https://i.ibb.co/20NypXdZ/ketoorigins.png" alt="Logo" class="w-16 h-16 mx-auto mb-2 rounded-full">
             <h2 class="text-3xl font-bold text-center">📊 Tu Reporte Fisiológico</h2>
             <div id="report-content" class="space-y-4"></div>
@@ -278,44 +278,30 @@
         const apiKeyModal = document.getElementById('apikey-modal');
         const saveApiBtn = document.getElementById('save-api-btn');
 
-        function getApiKey() {
-            return INTEGRATED_API_KEY;
-        }
+        function getApiKey() { return INTEGRATED_API_KEY; }
 
-        function checkApiKeyPresence() {
-            // Siempre usamos la integrada
-            apiKeyModal.classList.add('hidden');
-        }
+        function checkApiKeyPresence() { apiKeyModal.classList.add('hidden'); }
 
         saveApiBtn.addEventListener('click', () => {
             apiKeyModal.classList.add('hidden');
             showModal("¡Configurado!", "La aplicación está lista con la nueva clave.");
         });
 
-        window.resetApiKey = function() {
-            location.reload();
-        }
+        window.resetApiKey = function() { location.reload(); }
 
-        document.addEventListener('DOMContentLoaded', () => {
-            checkApiKeyPresence();
-        });
+        document.addEventListener('DOMContentLoaded', () => { checkApiKeyPresence(); });
 
         function showScreen(screenId) {
-            if (screenId === 'dashboard-screen') {
-                updateQuestionsList();
-            }
+            if (screenId === 'dashboard-screen') updateQuestionsList();
             screens.forEach(s => s.classList.add('hidden'));
             const screenToShow = document.getElementById(screenId);
-            if(screenToShow) {
-                setTimeout(() => screenToShow.classList.remove('hidden'), 50);
-            }
+            if(screenToShow) setTimeout(() => screenToShow.classList.remove('hidden'), 50);
         }
         
         function showModal(title, message, showCloseButton = true, adviceText = null) {
             modalTitle.textContent = title;
             modalMessage.innerHTML = message;
             modalLoader.classList.add('hidden');
-            
             modalCloseBtn.style.display = showCloseButton ? 'block' : 'none';
             modalDownloadBtn.classList.add('hidden');
             modalCloseBtn.classList.add('w-full', 'brand-gradient-bg');
@@ -326,13 +312,9 @@
                 modalCloseBtn.classList.remove('w-full', 'brand-gradient-bg');
                 modalCloseBtn.classList.add('w-1/2', 'bg-white/10');
                 modalDownloadBtn.classList.add('w-1/2');
-
                 const newDownloadBtn = modalDownloadBtn.cloneNode(true);
                 modalDownloadBtn.parentNode.replaceChild(newDownloadBtn, modalDownloadBtn);
-                
-                newDownloadBtn.addEventListener('click', () => {
-                    downloadAdviceAsPdf(title, adviceText);
-                });
+                newDownloadBtn.addEventListener('click', () => downloadAdviceAsPdf(title, adviceText));
             } 
             customModal.classList.remove('hidden');
         }
@@ -344,11 +326,9 @@
             let y = 15;
             doc.setFontSize(20);
             doc.text(title.replace(/🎓\s/g, ''), 105, y, { align: 'center' });
-            y += 10;
-            doc.setFontSize(12);
+            y += 10; doc.setFontSize(12);
             doc.text(`Para: ${appState.userProfile.name || 'Usuario'}`, 20, y);
-            y += 15;
-            doc.setFontSize(10);
+            y += 15; doc.setFontSize(10);
             const cleanAdvice = advice.replace(/\*\*(.*?)\*\*/g, '$1');
             let adviceLines = doc.splitTextToSize(cleanAdvice, 170);
             doc.text(adviceLines, 20, y);
@@ -363,10 +343,7 @@
             customModal.classList.remove('hidden');
         }
 
-        function hideModal() {
-            customModal.classList.add('hidden');
-        }
-
+        function hideModal() { customModal.classList.add('hidden'); }
         modalCloseBtn.addEventListener('click', hideModal);
 
         document.getElementById('accept-pact-btn').addEventListener('click', () => showScreen('profile-screen'));
@@ -379,9 +356,7 @@
             followUpModal.classList.remove('hidden');
         });
 
-        followUpCancelBtn.addEventListener('click', () => {
-            followUpModal.classList.add('hidden');
-        });
+        followUpCancelBtn.addEventListener('click', () => followUpModal.classList.add('hidden'));
 
         followUpSubmitBtn.addEventListener('click', async () => {
             const userQuestion = followUpInput.value.trim();
@@ -391,9 +366,9 @@
             try {
                 const context = appState.currentReportText;
                 const prompt = `Contexto del Informe Médico Original:\n\n${context}\n\nPregunta del Usuario: ${userQuestion}`;
-                const sysPrompt = "Actúa como un asistente de IA educativo. Responde de forma clara y sencilla basada SOLO en el informe. No inventes datos. No eres médico.";
+                const sysPrompt = "Actúa como un asistente de IA educativo amigable. Responde de forma muy clara y sencilla basada SOLO en la información del informe. No inventes datos. No eres médico.";
                 const newResponse = await callGeminiAPI(prompt, sysPrompt);
-                appState.currentReportText += `\n\n---\n\n**Mi Pregunta:** ${userQuestion}\n\n**Respuesta:**\n${newResponse}`;
+                appState.currentReportText += `\n\n---\n\n**Mi Pregunta:** ${userQuestion}\n\n**Respuesta del Asistente:**\n${newResponse}`;
                 generateTextReport(appState.currentReportText);
                 hideModal();
             } catch (error) {
@@ -405,7 +380,7 @@
             showLoadingModal("Consultando al experto...");
             try {
                 const context = `Informe médico original:\n${appState.currentReportText}`;
-                const sysPrompt = "Actúas como un sabio mentor en fisiología. Ofrece un 'Consejo Profesional' educativo basado en el informe. Usa analogías claras. No es un diagnóstico médico.";
+                const sysPrompt = "Actúas como un sabio mentor en fisiología. Ofrece un 'Consejo Profesional' educativo basado en el informe. Usa analogías claras y un tono inspirador. No es un diagnóstico médico.";
                 const advice = await callGeminiAPI(context, sysPrompt);
                 const formattedAdvice = advice.replace(/\*\*(.*?)\*\*/g, '<strong class="text-white">$1</strong>').replace(/\n/g, '<br>');
                 showModal("🎓 Consejo Profesional", formattedAdvice, true, advice);
@@ -439,14 +414,19 @@
             showLoadingModal("Analizando la imagen y consultando a la IA...");
             try {
                 const base64ImageData = await fileToGenerativePart(file);
-                const userPrompt = `Analiza la imagen de este informe médico.
+                const userPrompt = `Tu misión es analizar la imagen de un informe médico. 
                 Paciente: ${appState.userProfile.age} años, ${appState.userProfile.sex}, Dieta: ${appState.userProfile.diet}.
-                Formato:
+                
+                **Instrucciones de Formato OBLIGATORIAS:**
+                Respuesta en 3 secciones:
                 1. **Hallazgos Principales**
-                - **Nombre:** [Valor]. [ESTADO:Fisio. || En simple: Analogía 🧪. || Consejo Modal: Detalle.]
-                Estados: OPTIMO, MEJORABLE, ATENCION.
+                - **[Nombre del biomarcador]:** [Valor]. [CLAVE:Explicación Fisiológica. || En simple: Analogía y emojis 🧪. || Consejo Modal: Detalle.]
+                
+                Donde CLAVE debe ser exactamente uno de estos tres: OPTIMO, MEJORABLE o ATENCION.
+                
                 2. **Recomendaciones** (Enfoque Keto estricto, hidratación agua con sal y limón).
                 3. **Preguntas Clave para tu Médico**.`;
+                
                 const geminiResponse = await callGeminiAPIWithImage(userPrompt, base64ImageData);
                 appState.currentReportText = geminiResponse;
                 generateTextReport(geminiResponse);
@@ -467,8 +447,7 @@
             for (let i = 0; i < retries; i++) {
                 try {
                     const response = await fetch(url, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        method: 'POST', headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(payload)
                     });
                     if (!response.ok) {
@@ -512,22 +491,21 @@
         function fileToGenerativePart(file) {
             return new Promise((resolve, reject) => {
                 const reader = new FileReader();
-                reader.onloadend = () => {
-                    resolve({ inlineData: { mimeType: file.type, data: reader.result.split(',')[1] } });
-                };
-                reader.onerror = reject;
-                reader.readAsDataURL(file);
+                reader.onloadend = () => resolve({ inlineData: { mimeType: file.type, data: reader.result.split(',')[1] } });
+                reader.onerror = reject; reader.readAsDataURL(file);
             });
         }
         
         function parseBiomarkerLine(lineContent) {
             const dataMatch = lineContent.match(/\[\s*(OPTIMO|MEJORABLE|ATENCION)\s*:\s*(.*?)\s*\]/i);
             if (!dataMatch) return null;
+            
             const nameAndValuePart = lineContent.substring(0, dataMatch.index).trim();
             const colonIndex = nameAndValuePart.lastIndexOf(':');
             let biomarkerName = colonIndex !== -1 ? nameAndValuePart.substring(0, colonIndex).replace(/(\*\*|-)\s*/g, '').trim() : "Resultado";
             let value = colonIndex !== -1 ? nameAndValuePart.substring(colonIndex + 1).trim() : nameAndValuePart;
             value = value.replace(/\.$/, '').trim() || "Sin valor";
+            
             const status = dataMatch[1].toUpperCase();
             const statusInfo = {
                 'OPTIMO': { text: 'ÓPTIMO', color: 'bg-green-500', valueColor: 'text-green-400' },
@@ -535,11 +513,14 @@
                 'ATENCION': { text: 'REQUIERE ATENCIÓN', color: 'bg-red-500', valueColor: 'text-red-400' }
             }[status];
             if (!statusInfo) return null;
+            
             const parts = dataMatch[2].split('||');
             const physio = (parts[0] || '').replace(new RegExp(`^\\s*${status}:`, 'i'), '').trim();
             const simple = (parts[1] || '').replace(/En simple:/i, '').trim();
-            const modal = (parts[2] || '').replace(/Consejo Modal:/i, '').trim();
-            let fullModal = `<p class="mb-3"><strong>Fisiología:</strong> ${physio}</p><p class="mb-3"><strong>En simple:</strong> ${simple}</p><p><strong>Consejo:</strong> ${modal}</p>`;
+            const modalAdvice = (parts[2] || '').replace(/Consejo Modal:/i, '').trim();
+            
+            let fullModal = `<p class="mb-3"><strong>Fisiología:</strong> ${physio}</p><p class="mb-3"><strong>En simple:</strong> ${simple}</p><p><strong>Consejo:</strong> ${modalAdvice}</p>`;
+            
             return `
                 <div class="card p-4">
                     <div class="flex justify-between items-center">
@@ -547,7 +528,8 @@
                             <h4 class="font-bold text-lg text-white marker-title-glow">${biomarkerName}</h4>
                             <p class="text-2xl font-black ${statusInfo.valueColor}">${value}</p>
                         </div>
-                        <button class="text-xs font-bold text-white px-3 py-1 rounded-full ${statusInfo.color}" onclick="showModal('${biomarkerName.replace(/'/g, "\\'")}', '${fullModal.replace(/'/g, "\\'")}')">
+                        <button class="text-xs font-bold text-white px-3 py-1 rounded-full ${statusInfo.color} cursor-pointer hover:scale-110 transition-transform" 
+                                onclick="showModal('${biomarkerName.replace(/'/g, "\\'")}', '${fullModal.replace(/'/g, "\\'")}')">
                             ${statusInfo.text}
                         </button>
                     </div>
@@ -560,8 +542,10 @@
             const qMatch = text.match(/\*\*\s*Preguntas Clave para tu Médico\s*\*\*([\s\S]*)/i);
             appState.doctorQuestions = qMatch ? qMatch[1].trim().split('\n').map(q => q.replace(/^(\*|\-|\d+\.)\s*/, '').trim()).filter(q => q.length > 5) : [];
             updateQuestionsList();
+            
             const cleanText = text.replace(/\*\*\s*Preguntas Clave para tu Médico\s*\*\*[\s\S]*/i, '');
             const sections = cleanText.split(/\n?(?=\*\*.*?\*\*)/).filter(s => s.trim());
+            
             sections.forEach(section => {
                 const titleMatch = section.match(/^\*\*(.*?)\*\*([\s\S]*)/);
                 if (titleMatch) {
@@ -569,6 +553,7 @@
                     title.className = "font-bold text-lg mt-4 mb-2 text-indigo-300 marker-title-glow";
                     title.textContent = titleMatch[1];
                     reportContainer.appendChild(title);
+                    
                     const lines = titleMatch[2].split('\n').filter(l => l.trim());
                     lines.forEach(line => {
                         const card = parseBiomarkerLine(line);
@@ -598,9 +583,7 @@
             doc.text("Tu Reporte Fisiológico", 105, 15, { align: 'center' });
             const cleanText = appState.currentReportText.replace(/\[.*\]/g, '').replace(/\*\*/g, '');
             const lines = doc.splitTextToSize(cleanText, 180);
-            doc.setFontSize(10);
-            doc.text(lines, 15, 25);
-            doc.save("ReporteFisiologico.pdf");
+            doc.setFontSize(10); doc.text(lines, 15, 25); doc.save("ReporteFisiologico.pdf");
         });
         
         showScreen('welcome-screen');
